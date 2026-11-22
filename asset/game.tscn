@@ -1041,37 +1041,37 @@ size = Vector2(117.46167, 141.66272)
 size = Vector2(62.499817, 57.589783)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh4"]
-size = Vector2(540.0, 300.0)
+size = Vector2(580.0, 580.0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bw1"]
-size = Vector2(250.0, 170.0)
+size = Vector2(255.0, 330.0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh1"]
-size = Vector2(250.0, 190.0)
+size = Vector2(260.0, 370.0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh3"]
-size = Vector2(370.0, 280.0)
+size = Vector2(380.0, 540.0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_ww3"]
-size = Vector2(400.0, 240.0)
+size = Vector2(420.0, 460.0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_ww1"]
-size = Vector2(240.0, 160.0)
+size = Vector2(245.0, 320.0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_wh4"]
-size = Vector2(540.0, 310.0)
+size = Vector2(580.0, 590.0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_fountain"]
-size = Vector2(410.0, 200.0)
+size = Vector2(430.0, 400.0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh2"]
-size = Vector2(285.0, 210.0)
+size = Vector2(300.0, 420.0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_tent"]
-size = Vector2(280.0, 130.0)
+size = Vector2(290.0, 240.0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_windmill"]
-size = Vector2(220.0, 200.0)
+size = Vector2(320.0, 450.0)
 
 [node name="Main Maps" type="Node2D" unique_id=558092317]
 
@@ -1099,7 +1099,7 @@ texture = ExtResource("5_hmqqw")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel4" unique_id=1098694803]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel4/StaticBody2D" unique_id=166364857]
-position = Vector2(-34.0, 150.0)
+position = Vector2(-20.0, 20.0)
 shape = SubResource("RectangleShape2D_bld_bh4")
 
 [node name="HousesAndWarehousesBrickWarehouseLevel1" type="Sprite2D" parent="." unique_id=656623418]
@@ -1110,7 +1110,7 @@ texture = ExtResource("6_2v48b")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickWarehouseLevel1" unique_id=104566439]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickWarehouseLevel1/StaticBody2D" unique_id=1066007674]
-position = Vector2(4.0, 95.0)
+position = Vector2(4.5, 21.0)
 shape = SubResource("RectangleShape2D_bld_bw1")
 
 [node name="HousesAndWarehousesBrickHouseLevel1" type="Sprite2D" parent="." unique_id=609797674]
@@ -1121,7 +1121,7 @@ texture = ExtResource("7_skieg")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel1" unique_id=2135526726]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel1/StaticBody2D" unique_id=495323464]
-position = Vector2(-9.0, 95.0)
+position = Vector2(-9.0, 9.0)
 shape = SubResource("RectangleShape2D_bld_bh1")
 
 [node name="HousesAndWarehousesBrickHouseLevel3" type="Sprite2D" parent="." unique_id=2050333543]
@@ -1132,7 +1132,7 @@ texture = ExtResource("8_yf6j1")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel3" unique_id=2136747015]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel3/StaticBody2D" unique_id=1930711450]
-position = Vector2(14.0, 130.0)
+position = Vector2(14.5, 0.0)
 shape = SubResource("RectangleShape2D_bld_bh3")
 
 [node name="HousesAndWarehousesBrickWarehouseLevel4" type="Sprite2D" parent="." unique_id=1579436526]
@@ -1179,7 +1179,7 @@ texture = ExtResource("10_k8ljt")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenWarehouseLevel3" unique_id=800734536]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenWarehouseLevel3/StaticBody2D" unique_id=474673843]
-position = Vector2(-5.0, 150.0)
+position = Vector2(-4.5, 36.0)
 shape = SubResource("RectangleShape2D_bld_ww3")
 
 [node name="HousesAndWarehousesWoodenWarehouseLevel1" type="Sprite2D" parent="." unique_id=1157789108]
@@ -1190,7 +1190,7 @@ texture = ExtResource("11_d06w5")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenWarehouseLevel1" unique_id=1594041700]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenWarehouseLevel1/StaticBody2D" unique_id=2127615962]
-position = Vector2(-2.5, 95.0)
+position = Vector2(-2.0, 17.0)
 shape = SubResource("RectangleShape2D_bld_ww1")
 
 [node name="HousesAndWarehousesWoodenHouseLevel4" type="Sprite2D" parent="." unique_id=1740416946]
@@ -1201,7 +1201,7 @@ texture = ExtResource("12_ijpt4")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenHouseLevel4" unique_id=1621194781]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenHouseLevel4/StaticBody2D" unique_id=854991834]
-position = Vector2(-35.5, 155.0)
+position = Vector2(-20.0, 15.0)
 shape = SubResource("RectangleShape2D_bld_wh4")
 
 [node name="AirMancurRemovebgPreview" type="Sprite2D" parent="." unique_id=1960370579]
@@ -1212,7 +1212,7 @@ texture = ExtResource("13_uj3wa")
 [node name="StaticBody2D" type="StaticBody2D" parent="AirMancurRemovebgPreview" unique_id=658341853]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AirMancurRemovebgPreview/StaticBody2D" unique_id=966240157]
-position = Vector2(4.0, 105.0)
+position = Vector2(4.0, 15.0)
 shape = SubResource("RectangleShape2D_bld_fountain")
 
 [node name="HousesAndWarehousesBrickHouseLevel2" type="Sprite2D" parent="." unique_id=1048518509]
@@ -1223,7 +1223,7 @@ texture = ExtResource("14_g32df")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel2" unique_id=1762835308]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel2/StaticBody2D" unique_id=1336340134]
-position = Vector2(8.5, 105.0)
+position = Vector2(11.0, 4.0)
 shape = SubResource("RectangleShape2D_bld_bh2")
 
 [node name="TopDownSimpleSummerPropWindmill" type="Sprite2D" parent="." unique_id=325136376]
@@ -1235,7 +1235,7 @@ texture = ExtResource("3_rah20")
 [node name="StaticBody2D" type="StaticBody2D" parent="TopDownSimpleSummerPropWindmill" unique_id=645188817]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopDownSimpleSummerPropWindmill/StaticBody2D" unique_id=784317033]
-position = Vector2(0.0, 190.0)
+position = Vector2(0.0, 100.0)
 shape = SubResource("RectangleShape2D_bld_windmill")
 
 [node name="TopDownSimpleSummerPropWoodenBridgeHorizontal" type="Sprite2D" parent="." unique_id=2144985900]
@@ -1246,8 +1246,11 @@ texture = ExtResource("16_c4aub")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="TopDownSimpleSummerPropWoodenBridgeHorizontal" unique_id=1992277209]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TopDownSimpleSummerPropWoodenBridgeHorizontal/StaticBody2D" unique_id=994441489]
-polygon = PackedVector2Array(165, -27, 165, -27.699997, 168.79999, -27)
+[node name="CollisionPolygonTop" type="CollisionPolygon2D" parent="TopDownSimpleSummerPropWoodenBridgeHorizontal/StaticBody2D" unique_id=1446344366]
+polygon = PackedVector2Array(-160, -58, -120, -83, -80, -119, -40, -139, 0, -144, 40, -139, 80, -119, 120, -81, 160, -57, 160, -17, 120, -41, 80, -79, 40, -99, 0, -104, -40, -99, -80, -79, -120, -43, -160, -18)
+
+[node name="CollisionPolygonBottom" type="CollisionPolygon2D" parent="TopDownSimpleSummerPropWoodenBridgeHorizontal/StaticBody2D" unique_id=1366625451]
+polygon = PackedVector2Array(-160, 98, -120, 53, -80, 3, -40, -20, 0, -26, 40, -18, 80, 9, 120, 59, 160, 98, 160, 143, 120, 104, 80, 54, 40, 27, 0, 19, -40, 25, -80, 48, -120, 98, -160, 143)
 
 [node name="TopDownSimpleSummerPropTent" type="Sprite2D" parent="." unique_id=1826986115]
 position = Vector2(940.00006, 903.99994)
@@ -1257,7 +1260,7 @@ texture = ExtResource("17_pgdxa")
 [node name="StaticBody2D" type="StaticBody2D" parent="TopDownSimpleSummerPropTent" unique_id=1874928987]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopDownSimpleSummerPropTent/StaticBody2D" unique_id=1504888638]
-position = Vector2(1.5, 55.0)
+position = Vector2(2.0, 0.0)
 shape = SubResource("RectangleShape2D_bld_tent")
 
 [node name="Player" parent="." unique_id=1887675594 instance=ExtResource("18_player")]
