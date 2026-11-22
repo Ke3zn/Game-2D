@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 100.0
+@export var speed: float = 60.0
 
 var direction := Vector2.ZERO
 var last_direction := "front"
@@ -21,7 +21,7 @@ func _physics_process(_delta: float) -> void:
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	if direction != Vector2.ZERO:
-		velocity = direction.normalized() * SPEED
+		velocity = direction.normalized() * speed
 		if abs(direction.x) > abs(direction.y):
 			if direction.x > 0:
 				last_direction = "right"
