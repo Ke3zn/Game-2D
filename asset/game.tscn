@@ -1019,6 +1019,18 @@ terrain_set_0/terrain_0/name = "Hutan Biome"
 terrain_set_0/terrain_0/color = Color(0.16419533, 0.29894313, 0.13037762, 1)
 sources/0 = SubResource("TileSetAtlasSource_54xw8")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh4"]
+size = Vector2(580, 580)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bw1"]
+size = Vector2(255, 330)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh1"]
+size = Vector2(260, 370)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh3"]
+size = Vector2(380, 540)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v48b"]
 size = Vector2(45.81256, 35.595856)
 
@@ -1037,41 +1049,29 @@ size = Vector2(196.6438, 259.2561)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ijpt4"]
 size = Vector2(117.46167, 141.66272)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_skieg"]
-size = Vector2(62.499817, 57.589783)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh4"]
-size = Vector2(580.0, 580.0)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bw1"]
-size = Vector2(255.0, 330.0)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh1"]
-size = Vector2(260.0, 370.0)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh3"]
-size = Vector2(380.0, 540.0)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_ww3"]
-size = Vector2(420.0, 460.0)
+size = Vector2(420, 460)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_ww1"]
-size = Vector2(245.0, 320.0)
+size = Vector2(245, 320)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_wh4"]
-size = Vector2(580.0, 590.0)
+size = Vector2(580, 590)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_fountain"]
-size = Vector2(430.0, 400.0)
+size = Vector2(430, 400)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_bh2"]
-size = Vector2(300.0, 420.0)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_tent"]
-size = Vector2(290.0, 240.0)
+size = Vector2(300, 420)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_windmill"]
-size = Vector2(320.0, 450.0)
+size = Vector2(320, 450)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bld_tent"]
+size = Vector2(290, 240)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_skieg"]
+size = Vector2(62.499817, 57.589783)
 
 [node name="Main Maps" type="Node2D" unique_id=558092317]
 
@@ -1099,7 +1099,7 @@ texture = ExtResource("5_hmqqw")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel4" unique_id=1098694803]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel4/StaticBody2D" unique_id=166364857]
-position = Vector2(-20.0, 20.0)
+position = Vector2(-20, 20)
 shape = SubResource("RectangleShape2D_bld_bh4")
 
 [node name="HousesAndWarehousesBrickWarehouseLevel1" type="Sprite2D" parent="." unique_id=656623418]
@@ -1110,7 +1110,7 @@ texture = ExtResource("6_2v48b")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickWarehouseLevel1" unique_id=104566439]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickWarehouseLevel1/StaticBody2D" unique_id=1066007674]
-position = Vector2(4.5, 21.0)
+position = Vector2(4.5, 21)
 shape = SubResource("RectangleShape2D_bld_bw1")
 
 [node name="HousesAndWarehousesBrickHouseLevel1" type="Sprite2D" parent="." unique_id=609797674]
@@ -1121,7 +1121,7 @@ texture = ExtResource("7_skieg")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel1" unique_id=2135526726]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel1/StaticBody2D" unique_id=495323464]
-position = Vector2(-9.0, 9.0)
+position = Vector2(-9, 9)
 shape = SubResource("RectangleShape2D_bld_bh1")
 
 [node name="HousesAndWarehousesBrickHouseLevel3" type="Sprite2D" parent="." unique_id=2050333543]
@@ -1132,7 +1132,7 @@ texture = ExtResource("8_yf6j1")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel3" unique_id=2136747015]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel3/StaticBody2D" unique_id=1930711450]
-position = Vector2(14.5, 0.0)
+position = Vector2(14.5, 0)
 shape = SubResource("RectangleShape2D_bld_bh3")
 
 [node name="HousesAndWarehousesBrickWarehouseLevel4" type="Sprite2D" parent="." unique_id=1579436526]
@@ -1179,7 +1179,7 @@ texture = ExtResource("10_k8ljt")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenWarehouseLevel3" unique_id=800734536]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenWarehouseLevel3/StaticBody2D" unique_id=474673843]
-position = Vector2(-4.5, 36.0)
+position = Vector2(-4.5, 36)
 shape = SubResource("RectangleShape2D_bld_ww3")
 
 [node name="HousesAndWarehousesWoodenWarehouseLevel1" type="Sprite2D" parent="." unique_id=1157789108]
@@ -1190,7 +1190,7 @@ texture = ExtResource("11_d06w5")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenWarehouseLevel1" unique_id=1594041700]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenWarehouseLevel1/StaticBody2D" unique_id=2127615962]
-position = Vector2(-2.0, 17.0)
+position = Vector2(-2, 17)
 shape = SubResource("RectangleShape2D_bld_ww1")
 
 [node name="HousesAndWarehousesWoodenHouseLevel4" type="Sprite2D" parent="." unique_id=1740416946]
@@ -1201,7 +1201,7 @@ texture = ExtResource("12_ijpt4")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenHouseLevel4" unique_id=1621194781]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenHouseLevel4/StaticBody2D" unique_id=854991834]
-position = Vector2(-20.0, 15.0)
+position = Vector2(-20, 15)
 shape = SubResource("RectangleShape2D_bld_wh4")
 
 [node name="AirMancurRemovebgPreview" type="Sprite2D" parent="." unique_id=1960370579]
@@ -1212,7 +1212,7 @@ texture = ExtResource("13_uj3wa")
 [node name="StaticBody2D" type="StaticBody2D" parent="AirMancurRemovebgPreview" unique_id=658341853]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AirMancurRemovebgPreview/StaticBody2D" unique_id=966240157]
-position = Vector2(4.0, 15.0)
+position = Vector2(4, 15)
 shape = SubResource("RectangleShape2D_bld_fountain")
 
 [node name="HousesAndWarehousesBrickHouseLevel2" type="Sprite2D" parent="." unique_id=1048518509]
@@ -1223,7 +1223,7 @@ texture = ExtResource("14_g32df")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel2" unique_id=1762835308]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel2/StaticBody2D" unique_id=1336340134]
-position = Vector2(11.0, 4.0)
+position = Vector2(11, 4)
 shape = SubResource("RectangleShape2D_bld_bh2")
 
 [node name="TopDownSimpleSummerPropWindmill" type="Sprite2D" parent="." unique_id=325136376]
@@ -1235,7 +1235,7 @@ texture = ExtResource("3_rah20")
 [node name="StaticBody2D" type="StaticBody2D" parent="TopDownSimpleSummerPropWindmill" unique_id=645188817]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopDownSimpleSummerPropWindmill/StaticBody2D" unique_id=784317033]
-position = Vector2(0.0, 100.0)
+position = Vector2(0, 100)
 shape = SubResource("RectangleShape2D_bld_windmill")
 
 [node name="TopDownSimpleSummerPropWoodenBridgeHorizontal" type="Sprite2D" parent="." unique_id=2144985900]
@@ -1260,7 +1260,7 @@ texture = ExtResource("17_pgdxa")
 [node name="StaticBody2D" type="StaticBody2D" parent="TopDownSimpleSummerPropTent" unique_id=1874928987]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopDownSimpleSummerPropTent/StaticBody2D" unique_id=1504888638]
-position = Vector2(2.0, 0.0)
+position = Vector2(2, 0)
 shape = SubResource("RectangleShape2D_bld_tent")
 
 [node name="Player" parent="." unique_id=1887675594 instance=ExtResource("18_player")]
@@ -1418,6 +1418,498 @@ texture = ExtResource("19_2v48b")
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon9" unique_id=54088361]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Poon9/StaticBody2D" unique_id=1797630230]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon9" unique_id=637802113]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon9/Poon9" unique_id=1067362606]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon9/Poon9/StaticBody2D" unique_id=1148369104]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon14" type="Sprite2D" parent="." unique_id=1855766524]
+position = Vector2(1185, 479)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon14" unique_id=526820057]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon14/StaticBody2D" unique_id=66779733]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon14" unique_id=1529240342]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon14/Poon9" unique_id=264388366]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon14/Poon9/StaticBody2D" unique_id=528741591]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon15" type="Sprite2D" parent="." unique_id=1000410015]
+position = Vector2(1214.0001, 477.99997)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon15" unique_id=26070335]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon15/StaticBody2D" unique_id=547298879]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon15" unique_id=1836320345]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon15/Poon9" unique_id=1488681707]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon15/Poon9/StaticBody2D" unique_id=103492339]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon16" type="Sprite2D" parent="." unique_id=721878955]
+position = Vector2(1242.0001, 476)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon16" unique_id=1744554305]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon16/StaticBody2D" unique_id=1713714950]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon16" unique_id=371581504]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon16/Poon9" unique_id=849952456]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon16/Poon9/StaticBody2D" unique_id=1509201708]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon17" type="Sprite2D" parent="." unique_id=177100218]
+position = Vector2(1273.0001, 476)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon17" unique_id=1340953928]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon17/StaticBody2D" unique_id=431410642]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon17" unique_id=43291106]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon17/Poon9" unique_id=904405952]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon17/Poon9/StaticBody2D" unique_id=1454790816]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon18" type="Sprite2D" parent="." unique_id=693533639]
+position = Vector2(1301.25, 478.5)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon18" unique_id=2022015990]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon18/StaticBody2D" unique_id=1781833690]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon18" unique_id=631869642]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon18/Poon9" unique_id=946933412]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon18/Poon9/StaticBody2D" unique_id=1914450152]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon19" type="Sprite2D" parent="." unique_id=367762782]
+position = Vector2(1330.2501, 477.49997)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon19" unique_id=714650207]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon19/StaticBody2D" unique_id=983631620]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon19" unique_id=765935993]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon19/Poon9" unique_id=1532714823]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon19/Poon9/StaticBody2D" unique_id=1115281724]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon20" type="Sprite2D" parent="." unique_id=337321407]
+position = Vector2(1358.2501, 475.5)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon20" unique_id=1568386132]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon20/StaticBody2D" unique_id=345805560]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon20" unique_id=574259244]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon20/Poon9" unique_id=1416639672]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon20/Poon9/StaticBody2D" unique_id=1122056515]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon21" type="Sprite2D" parent="." unique_id=2075734106]
+position = Vector2(1389.2501, 475.5)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon21" unique_id=1114937744]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon21/StaticBody2D" unique_id=202112512]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon21" unique_id=2034974100]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon21/Poon9" unique_id=1231854448]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon21/Poon9/StaticBody2D" unique_id=1783701988]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon22" type="Sprite2D" parent="." unique_id=638181195]
+position = Vector2(1419.0001, 481)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon22" unique_id=868641067]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon22/StaticBody2D" unique_id=1524584954]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon22" unique_id=1170716543]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon22/Poon9" unique_id=1445739884]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon22/Poon9/StaticBody2D" unique_id=88871577]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon23" type="Sprite2D" parent="." unique_id=187696287]
+position = Vector2(1462, 466)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon23" unique_id=815108245]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon23/StaticBody2D" unique_id=1901320750]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon23" unique_id=21454914]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon23/Poon9" unique_id=1792328029]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon23/Poon9/StaticBody2D" unique_id=1445235557]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon24" type="Sprite2D" parent="." unique_id=1975038857]
+position = Vector2(1447, 482.00006)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon24" unique_id=519725019]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon24/StaticBody2D" unique_id=1985749471]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon24" unique_id=516608738]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon24/Poon9" unique_id=1701234853]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon24/Poon9/StaticBody2D" unique_id=1109777757]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon25" type="Sprite2D" parent="." unique_id=1707380942]
+position = Vector2(1492, 467)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon25" unique_id=931492575]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon25/StaticBody2D" unique_id=684528778]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon25" unique_id=863059544]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon25/Poon9" unique_id=1926375455]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon25/Poon9/StaticBody2D" unique_id=973309920]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon26" type="Sprite2D" parent="." unique_id=1600464692]
+position = Vector2(1520.0001, 457)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon26" unique_id=1899252938]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon26/StaticBody2D" unique_id=318223273]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon26" unique_id=168289568]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon26/Poon9" unique_id=345873761]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon26/Poon9/StaticBody2D" unique_id=750709819]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon27" type="Sprite2D" parent="." unique_id=2050738143]
+position = Vector2(1543.0001, 457)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon27" unique_id=1528863976]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon27/StaticBody2D" unique_id=866860466]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon27" unique_id=808576967]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon27/Poon9" unique_id=1723542652]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon27/Poon9/StaticBody2D" unique_id=1861993524]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon28" type="Sprite2D" parent="." unique_id=1542042444]
+position = Vector2(1569, 462)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon28" unique_id=1334407379]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon28/StaticBody2D" unique_id=1346132024]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon28" unique_id=878678287]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon28/Poon9" unique_id=309310841]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon28/Poon9/StaticBody2D" unique_id=463900146]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon29" type="Sprite2D" parent="." unique_id=2090890713]
+position = Vector2(1589, 476.99997)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon29" unique_id=2102630580]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon29/StaticBody2D" unique_id=1872452924]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon29" unique_id=1748219235]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon29/Poon9" unique_id=142652270]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon29/Poon9/StaticBody2D" unique_id=1778231426]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon30" type="Sprite2D" parent="." unique_id=373379897]
+position = Vector2(1612, 485)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon30" unique_id=1447166351]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon30/StaticBody2D" unique_id=43719770]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon30" unique_id=728887951]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon30/Poon9" unique_id=578613401]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon30/Poon9/StaticBody2D" unique_id=1786208447]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon31" type="Sprite2D" parent="." unique_id=721497895]
+position = Vector2(1627.0001, 501)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon31" unique_id=1365446501]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon31/StaticBody2D" unique_id=839371209]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon31" unique_id=1409780733]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon31/Poon9" unique_id=403865730]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon31/Poon9/StaticBody2D" unique_id=2114872933]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon32" type="Sprite2D" parent="." unique_id=1394147437]
+position = Vector2(1650.0001, 512)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon32" unique_id=931477357]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon32/StaticBody2D" unique_id=1185728003]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon32" unique_id=1302499326]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon32/Poon9" unique_id=794317803]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon32/Poon9/StaticBody2D" unique_id=1244337322]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon33" type="Sprite2D" parent="." unique_id=1924419325]
+position = Vector2(1669, 513)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon33" unique_id=1394311491]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon33/StaticBody2D" unique_id=266229205]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon33" unique_id=86314951]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon33/Poon9" unique_id=68646364]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon33/Poon9/StaticBody2D" unique_id=68140507]
 position = Vector2(0.25012207, 5.205078)
 scale = Vector2(0.99999976, 0.99999976)
 shape = SubResource("RectangleShape2D_skieg")

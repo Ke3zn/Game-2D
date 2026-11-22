@@ -810,11 +810,10 @@ script = ExtResource("1_script")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1565353080]
 texture_filter = 1
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_player")
 animation = &"idle_front"
 autoplay = "idle_front"
-speed_scale = 0.6
 
 [node name="Pentungan" type="Sprite2D" parent="." unique_id=1957494266]
 visible = false
@@ -828,7 +827,8 @@ position = Vector2(0, 15)
 shape = SubResource("CapsuleShape2D_player")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1977648216]
-zoom = Vector2(2.5, 2.5)
+position = Vector2(0, 6)
+zoom = Vector2(13, 13)
 position_smoothing_enabled = true
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
