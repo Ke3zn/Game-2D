@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cdoorhouse01"]
+
+[ext_resource type="Script" path="res://sc/door_house.gd" id="1_door"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(28, 24)
+
+[node name="DoorHouse" type="Area2D" groups=["door"]]
+z_index = 2
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_door")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="PromptLabel" type="Label" parent="."]
+offset_left = -48.0
+offset_top = -22.0
+offset_right = 48.0
+offset_bottom = -9.0
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "[E/F] Masuk Rumah"
+horizontal_alignment = 1

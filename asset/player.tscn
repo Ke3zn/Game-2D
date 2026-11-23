@@ -803,7 +803,7 @@ animations = [{
 radius = 5.0
 height = 14.0
 
-[node name="Player" type="CharacterBody2D" unique_id=1307419280]
+[node name="Player" type="CharacterBody2D" groups=["player"] unique_id=1307419280]
 z_index = 2
 y_sort_enabled = true
 script = ExtResource("1_script")
@@ -818,9 +818,9 @@ autoplay = "idle_front"
 [node name="Pentungan" type="Sprite2D" parent="." unique_id=1957494266]
 visible = false
 texture_filter = 1
-scale = Vector2(0.014, 0.014)
+scale = Vector2(0.009, 0.009)
 texture = ExtResource("14_pentungan")
-offset = Vector2(300, -300)
+offset = Vector2(262, -255)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1824026493]
 position = Vector2(0, 15)
