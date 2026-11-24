@@ -27,21 +27,20 @@ var last_direction := "front"
 var is_attacking := false
 var is_hurt := false
 var is_dead := false
+var has_apar := false
 var _energy_recovery_timer: float = 0.0
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var pentungan: Sprite2D = $Pentungan
-@onready var apar_sprite: Sprite2D = get_node_or_null("Apar")
 
 func _ready() -> void:
 	add_to_group("player")
+	has_apar = get_tree().get_meta("has_apar", false)
 	if sprite:
-		sprite.play("idle_front")
+		_play_state_anim("idle")
 	# Pancarkan status awal
 	blood_changed.emit(current_blood, max_blood)
 	energy_changed.emit(current_energy, max_energy)
 	active_slot_changed.emit(active_slot)
-	_update_weapon_transform()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if is_dead:
@@ -90,7 +89,6 @@ func _physics_process(delta: float) -> void:
 			if sprite:
 				sprite.speed_scale = 0.9
 
-		var prev_dir = last_direction
 		if abs(direction.x) > abs(direction.y):
 			if direction.x > 0:
 				last_direction = "right"
@@ -101,15 +99,12 @@ func _physics_process(delta: float) -> void:
 				last_direction = "front"
 			else:
 				last_direction = "back"
-		if sprite:
-			sprite.play("run_" + last_direction)
-		if prev_dir != last_direction and not is_attacking:
-			_update_weapon_transform()
+		_play_state_anim("run")
 	else:
 		velocity = Vector2.ZERO
 		if sprite:
 			sprite.speed_scale = 1.0
-			sprite.play("idle_" + last_direction)
+		_play_state_anim("idle")
 
 	# Pemulihan energi jika tidak sedang sprint dan jeda delay sudah selesai
 	if not is_sprinting:
@@ -128,16 +123,43 @@ func _physics_process(delta: float) -> void:
 				energy_changed.emit(current_energy, max_energy)
 				_start_attack_pentungan()
 			return
-		elif active_slot == 0:
-			# APAR (Slot 0): alat spray api (menyusul), mainkan animasi spray
+		elif active_slot == 0 and has_apar:
+			# APAR (Slot 0): hanya aktif setelah menerima APAR dari Kakek
 			_start_spray_apar()
 			return
 		else:
-			# Slot kosong / selain pentungan: tidak bisa menyerang, tidak mengurangi energi
+			# Slot kosong / belum punya APAR: tidak beraksi & tidak mengurangi energi
 			pass
 		return
 
 	move_and_slide()
+
+func _get_tool_suffix() -> String:
+	if active_slot == 1:
+		return "_pentungan"
+	elif active_slot == 0 and has_apar:
+		return "_apar"
+	return ""
+
+func _play_state_anim(base_state: String) -> void:
+	if not sprite or not sprite.sprite_frames:
+		return
+	var anim_name = base_state + _get_tool_suffix() + "_" + last_direction
+	if sprite.sprite_frames.has_animation(anim_name):
+		if sprite.animation != anim_name or not sprite.is_playing():
+			sprite.play(anim_name)
+	else:
+		var fallback = base_state + "_" + last_direction
+		if sprite.sprite_frames.has_animation(fallback):
+			if sprite.animation != fallback or not sprite.is_playing():
+				sprite.play(fallback)
+
+func grant_apar() -> void:
+	has_apar = true
+	get_tree().set_meta("has_apar", true)
+	set_active_slot(0)
+	if not is_attacking and not is_hurt and not is_dead:
+		_play_state_anim("run" if direction != Vector2.ZERO else "idle")
 
 func _start_attack_pentungan() -> void:
 	is_attacking = true
@@ -148,8 +170,7 @@ func _start_attack_pentungan() -> void:
 		if sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_name):
 			sprite.play(anim_name)
 		else:
-			sprite.play("idle_" + last_direction)
-	_update_weapon_transform()
+			_play_state_anim("idle")
 
 	# Cek musuh di area jangkauan serangan pentungan
 	var attack_damage = 25.0
@@ -180,100 +201,23 @@ func _start_spray_apar() -> void:
 		if sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_name):
 			sprite.play(anim_name)
 		else:
-			sprite.play("idle_" + last_direction)
-	_update_weapon_transform()
+			_play_state_anim("idle")
 
 func set_active_slot(index: int) -> void:
 	if active_slot == index:
 		return
 	active_slot = clampi(index, 0, 2)
 	active_slot_changed.emit(active_slot)
-	_update_weapon_transform()
-
-func _update_weapon_transform() -> void:
-	if not pentungan:
-		pentungan = get_node_or_null("Pentungan")
-	if not apar_sprite:
-		apar_sprite = get_node_or_null("Apar")
-
-	# Sembunyikan overlay senjata saat attack/hurt karena sprite sheet sudah ada senjatanya
-	if is_attacking or is_hurt:
-		if pentungan:
-			pentungan.visible = false
-		if apar_sprite:
-			apar_sprite.visible = false
-		return
-
-	# Slot 1: Pentungan
-	if active_slot == 1:
-		if apar_sprite:
-			apar_sprite.visible = false
-		if pentungan:
-			pentungan.visible = true
-			match last_direction:
-				"front":
-					pentungan.position = Vector2(2.5, 1.5)
-					pentungan.rotation_degrees = 15
-					pentungan.flip_h = false
-					pentungan.z_index = 1
-				"back":
-					pentungan.position = Vector2(-2.2, 1.0)
-					pentungan.rotation_degrees = -30
-					pentungan.flip_h = false
-					pentungan.z_index = -1
-				"left":
-					pentungan.position = Vector2(-2.0, 1.5)
-					pentungan.rotation_degrees = -15
-					pentungan.flip_h = true
-					pentungan.z_index = 1
-				"right":
-					pentungan.position = Vector2(2.0, 1.5)
-					pentungan.rotation_degrees = 15
-					pentungan.flip_h = false
-					pentungan.z_index = 1
-	# Slot 0: APAR (Pemadam Api)
-	elif active_slot == 0:
-		if pentungan:
-			pentungan.visible = false
-		if apar_sprite:
-			apar_sprite.visible = true
-			match last_direction:
-				"front":
-					apar_sprite.position = Vector2(3.0, 3.0)
-					apar_sprite.rotation_degrees = 0
-					apar_sprite.flip_h = false
-					apar_sprite.z_index = 1
-				"back":
-					apar_sprite.position = Vector2(-2.5, 2.0)
-					apar_sprite.rotation_degrees = 0
-					apar_sprite.flip_h = false
-					apar_sprite.z_index = -1
-				"left":
-					apar_sprite.position = Vector2(-3.0, 3.0)
-					apar_sprite.rotation_degrees = 0
-					apar_sprite.flip_h = true
-					apar_sprite.z_index = 1
-				"right":
-					apar_sprite.position = Vector2(3.0, 3.0)
-					apar_sprite.rotation_degrees = 0
-					apar_sprite.flip_h = false
-					apar_sprite.z_index = 1
-	# Slot 2 / Kosong
-	else:
-		if pentungan:
-			pentungan.visible = false
-		if apar_sprite:
-			apar_sprite.visible = false
+	if not is_attacking and not is_hurt and not is_dead:
+		_play_state_anim("run" if direction != Vector2.ZERO else "idle")
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if is_attacking:
 		is_attacking = false
-		sprite.play("idle_" + last_direction)
-		_update_weapon_transform()
+		_play_state_anim("idle")
 	elif is_hurt:
 		is_hurt = false
-		sprite.play("idle_" + last_direction)
-		_update_weapon_transform()
+		_play_state_anim("idle")
 
 func take_damage(amount: float) -> void:
 	if is_dead:
@@ -292,7 +236,6 @@ func take_damage(amount: float) -> void:
 				sprite.play(anim_hurt)
 			elif sprite.sprite_frames and sprite.sprite_frames.has_animation("attack_" + last_direction):
 				sprite.play("attack_" + last_direction)
-		_update_weapon_transform()
 		# Flash merah sebentar
 		var tween = create_tween()
 		tween.tween_property(sprite, "modulate", Color(1.0, 0.4, 0.4, 1.0), 0.1)
@@ -323,8 +266,6 @@ func _die() -> void:
 	is_dead = true
 	velocity = Vector2.ZERO
 	died.emit()
-	if pentungan:
-		pentungan.visible = false
 	if sprite:
 		var tween = create_tween().set_parallel(true)
 		tween.tween_property(sprite, "rotation_degrees", 90.0, 0.35)
@@ -334,6 +275,7 @@ func _die() -> void:
 func respawn(respawn_pos: Vector2 = Vector2.ZERO) -> void:
 	is_dead = false
 	is_attacking = false
+	is_hurt = false
 	current_blood = max_blood
 	current_energy = max_energy
 	blood_changed.emit(current_blood, max_blood)
@@ -344,5 +286,4 @@ func respawn(respawn_pos: Vector2 = Vector2.ZERO) -> void:
 		sprite.rotation_degrees = 0.0
 		sprite.modulate = Color.WHITE
 		sprite.position = Vector2.ZERO
-		sprite.play("idle_" + last_direction)
-	_update_weapon_transform()
+		_play_state_anim("idle")

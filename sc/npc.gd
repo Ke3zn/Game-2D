@@ -4,9 +4,8 @@ class_name NPC
 @export var npc_name: String = "Kakek Warga Desa"
 @export var dialogue_lines: Array[String] = [
 	"Halo anak muda! Selamat datang di desa kami.",
-	"Di hutan seberang jembatan, makhluk Slime liar mulai berkeliaran dan mengganggu warga.",
-	"Gunakan Pentungan kayumu untuk membela diri jika mereka mendekat!",
-	"Jika kamu terluka, cari atau minum Ramuan Merah untuk memulihkan darahmu. Semoga berhasil!"
+	"Kakek sudah terlalu tua untuk memadamkan api di sekitar desa... Maukah kamu menolong Kakek?",
+	"Gunakan APAR pemberian Kakek dengan tombol [1] dan pentunganmu dengan tombol [2]. Semoga berhasil!"
 ]
 
 var _player_in_range: bool = false
@@ -19,15 +18,16 @@ func _ready() -> void:
 	if prompt:
 		prompt.visible = false
 
-	# Efek pernapasan idle halus
+	# Efek pernapasan idle halus mempertahankan skala asli sprite
 	if sprite:
+		var base_scale = sprite.scale
 		var tween = create_tween().set_loops()
-		tween.tween_property(sprite, "scale", Vector2(0.1, 0.096), 1.0).set_trans(Tween.TRANS_SINE)
-		tween.tween_property(sprite, "scale", Vector2(0.1, 0.1), 1.0).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(sprite, "scale", Vector2(base_scale.x, base_scale.y * 0.96), 1.0).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(sprite, "scale", base_scale, 1.0).set_trans(Tween.TRANS_SINE)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _player_in_range:
-		if event is InputEventKey and event.pressed and (event.keycode == KEY_E or event.keycode == KEY_F or event.keycode == KEY_SPACE):
+		if event is InputEventKey and event.pressed and not event.echo and (event.keycode == KEY_E or event.keycode == KEY_F or event.keycode == KEY_SPACE):
 			interact()
 
 func _on_interact_area_body_entered(body: Node2D) -> void:
@@ -50,41 +50,51 @@ func interact() -> void:
 			hud = game.get_node_or_null("HUD")
 	if not hud or not hud.has_method("start_dialogue"):
 		return
+	if "dialogue_modal" in hud and hud.dialogue_modal and hud.dialogue_modal.visible:
+		return
 
 	var q_status = hud.get("quest_status") if "quest_status" in hud else "NOT_STARTED"
+	var has_apar = get_tree().get_meta("has_apar", false)
 	var lines: Array[String] = []
 
-	if q_status == "NOT_STARTED":
+	if q_status == "NOT_STARTED" or not has_apar:
 		lines = [
-			"Halo anak muda! Selamat datang di desa kami.",
-			"Di hutan seberang jembatan, makhluk Slime liar mulai berkeliaran dan mengancam warga desa.",
-			"Maukah kamu membantu kami membasmi 2 Slime liar di sana?",
-			"Gunakan pentunganmu. Jika kamu lelah atau terluka, beristirahatlah di rumah sebelah untuk memulihkan diri!",
-			"Semoga berhasil! Warga desa sangat mengandalkanmu."
+			"Halo anak muda! Syukurlah ada yang datang ke desa kami.",
+			"Kakek ingin meminta tolong... Ada api yang harus segera dipadamkan, tapi Kakek sudah terlalu tua dan lemah untuk melakukannya sendiri.",
+			"Maukah kamu membantu Kakek memadamkan api itu dan menjaga desa dari para Slime liar di hutan seberang jembatan?",
+			"Kakek akan kasih Alat Pemadam Api (APAR) ini untukmu! Selesai bicara ini, kamu bisa pakai APAR dengan [1] dan pentungan dengan [2]."
 		]
+		var on_finish := func() -> void:
+			if hud.has_method("unlock_apar"):
+				hud.unlock_apar()
+			if q_status == "NOT_STARTED" and hud.has_method("start_quest"):
+				hud.start_quest(2)
+		if hud.has_signal("dialogue_finished"):
+			hud.dialogue_finished.connect(on_finish, CONNECT_ONE_SHOT)
 		hud.start_dialogue(npc_name, lines)
-		if hud.has_method("start_quest"):
-			hud.start_quest(2)
 	elif q_status == "IN_PROGRESS":
 		var current_kills = hud.get("quest_current_count") if "quest_current_count" in hud else 0
 		lines = [
-			"Bagaimana perburuanmu di hutan seberang jembatan, anak muda?",
-			"Kamu baru membasmi %d dari 2 Slime liar. Tetap waspada dan berhati-hatilah!" % current_kills
+			"APAR sudah Kakek berikan padamu ya, nak. Tekan [1] untuk memegangnya dan [2] untuk memakai pentungan.",
+			"Untuk para Slime liar di hutan seberang jembatan, kamu baru membasmi %d dari 2 Slime. Tetap berhati-hatilah!" % current_kills
 		]
 		hud.start_dialogue(npc_name, lines)
 	elif q_status == "READY_TO_TURN_IN":
 		lines = [
 			"Luar biasa sekali anak muda! Hutan seberang jembatan kini kembali damai.",
-			"Warga desa sangat berterima kasih atas keberanian dan bantuanmu.",
+			"Warga desa dan Kakek sangat berterima kasih atas keberanian dan bantuanmu.",
 			"Sesuai janji, terimalah 100 Koin Emas ini sebagai hadiah dari kami warga desa!"
 		]
+		var on_turn_in := func() -> void:
+			if hud.has_method("complete_quest"):
+				hud.complete_quest()
+		if hud.has_signal("dialogue_finished"):
+			hud.dialogue_finished.connect(on_turn_in, CONNECT_ONE_SHOT)
 		hud.start_dialogue(npc_name, lines)
-		if hud.has_method("complete_quest"):
-			hud.complete_quest()
 	elif q_status == "COMPLETED":
 		lines = [
-			"Terima kasih banyak atas bantuanmu menjaga desa kami, pahlawan muda!",
-			"Jika kamu lelah setelah berpetualang, masuklah ke rumah sebelah untuk tidur dan memulihkan seluruh darah dan energimu."
+			"Terima kasih banyak atas bantuanmu menjaga desa dan menolong Kakek yang tua ini, anak muda!",
+			"Simpan baik-baik APAR itu ya. Jika lelah, masuklah ke rumah untuk beristirahat memulihkan darah dan energimu."
 		]
 		hud.start_dialogue(npc_name, lines)
 	else:

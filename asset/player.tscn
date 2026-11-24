@@ -13,7 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://dj5irthbokj7u" path="res://asset/char/main-char/attack/attack-back.png" id="11_attack_back"]
 [ext_resource type="Texture2D" uid="uid://dfea1vo8fkjqb" path="res://asset/char/main-char/attack/attack-left.png" id="12_attack_left"]
 [ext_resource type="Texture2D" uid="uid://b6xv4ljco1uku" path="res://asset/char/main-char/attack/attack-right.png" id="13_attack_right"]
-[ext_resource type="Texture2D" uid="uid://cs4kxuckyeyl4" path="res://asset/char/tools/pentungan.png" id="14_pentungan"]
 [ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/attack-front.png" id="15_pent_front"]
 [ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/attack-back.png" id="16_pent_back"]
 [ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/attack-left.png" id="17_pent_left"]
@@ -22,7 +21,6 @@
 [ext_resource type="Texture2D" path="res://asset/char/main-char/apar/spray-back.png" id="20_apar_back"]
 [ext_resource type="Texture2D" path="res://asset/char/main-char/apar/spray-left.png" id="21_apar_left"]
 [ext_resource type="Texture2D" path="res://asset/char/main-char/apar/spray-right.png" id="22_apar_right"]
-[ext_resource type="Texture2D" path="res://asset/char/tools/pemadam.png" id="23_pemadam"]
 
 [sub_resource type="AtlasTexture" id="Atlas_attack_back_0"]
 atlas = ExtResource("11_attack_back")
@@ -1436,6 +1434,251 @@ animations = [{
 "loop": false,
 "name": &"hurt_right",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_front_0")
+}],
+"loop": true,
+"name": &"idle_pentungan_front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_front_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_front_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_front_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_front_1")
+}],
+"loop": true,
+"name": &"run_pentungan_front",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_front_0")
+}],
+"loop": true,
+"name": &"idle_apar_front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_front_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_front_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_front_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_front_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_front_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_front_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_front_7")
+}],
+"loop": true,
+"name": &"run_apar_front",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_back_0")
+}],
+"loop": true,
+"name": &"idle_pentungan_back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_back_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_back_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_back_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_back_1")
+}],
+"loop": true,
+"name": &"run_pentungan_back",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_back_0")
+}],
+"loop": true,
+"name": &"idle_apar_back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_back_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_back_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_back_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_back_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_back_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_back_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_back_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_back_7")
+}],
+"loop": true,
+"name": &"run_apar_back",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_left_0")
+}],
+"loop": true,
+"name": &"idle_pentungan_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_left_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_left_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_left_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_left_1")
+}],
+"loop": true,
+"name": &"run_pentungan_left",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_left_0")
+}],
+"loop": true,
+"name": &"idle_apar_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_left_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_left_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_left_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_left_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_left_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_left_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_left_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_left_7")
+}],
+"loop": true,
+"name": &"run_apar_left",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_right_0")
+}],
+"loop": true,
+"name": &"idle_pentungan_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_right_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_right_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_right_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_right_1")
+}],
+"loop": true,
+"name": &"run_pentungan_right",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_right_0")
+}],
+"loop": true,
+"name": &"idle_apar_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_right_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_right_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_right_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_right_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_right_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_right_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_right_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_apar_right_7")
+}],
+"loop": true,
+"name": &"run_apar_right",
+"speed": 9.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
@@ -1453,19 +1696,6 @@ scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_player")
 animation = &"idle_front"
 autoplay = "idle_front"
-
-[node name="Pentungan" type="Sprite2D" parent="." unique_id=1957494266]
-visible = false
-texture_filter = 1
-scale = Vector2(0.009, 0.009)
-texture = ExtResource("14_pentungan")
-offset = Vector2(262, -255)
-
-[node name="Apar" type="Sprite2D" parent="." unique_id=1957494267]
-visible = false
-texture_filter = 1
-scale = Vector2(0.12, 0.12)
-texture = ExtResource("23_pemadam")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1824026493]
 position = Vector2(0, 15)

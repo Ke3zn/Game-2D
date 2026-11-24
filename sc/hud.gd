@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+signal dialogue_finished
+
 @export var slot_normal_style: StyleBoxFlat
 @export var slot_active_style: StyleBoxFlat
 @export var btn_normal_style: StyleBoxFlat
@@ -69,7 +71,6 @@ var quest_target_count: int = 2
 var current_dialogue_lines: Array[String] = []
 var current_dialogue_idx: int = 0
 var inventory_items: Dictionary = {
-	0: {"id": "pemadam", "name": "Alat Pemadam Api", "desc": "Tabung pemadam semprot portable. (Terpasang di Slot 1 Hotbar)", "icon": null},
 	1: {"id": "pentungan", "name": "Pentungan Kayu", "desc": "Senjata pemukul dasar untuk perlindungan diri. Mengkonsumsi 20 energi saat diayunkan. (Terpasang di Slot 2 Hotbar)", "icon": null}
 }
 
@@ -85,11 +86,18 @@ func _ready() -> void:
 	slots = [slot_0, slot_1, slot_2]
 	item_icons = [item_icon_0, item_icon_1, item_icon_2]
 
-	# Muat ikon pemadam api secara dinamis jika file ada
-	if FileAccess.file_exists("res://asset/char/tools/pemadam.png"):
-		var img = Image.load_from_file("res://asset/char/tools/pemadam.png")
-		if img and item_icon_0:
-			item_icon_0.texture = ImageTexture.create_from_image(img)
+	# Pulihkan status quest & APAR lintas scene (mis. saat keluar/masuk rumah)
+	if get_tree().has_meta("quest_status"):
+		quest_status = str(get_tree().get_meta("quest_status"))
+	if get_tree().has_meta("quest_current_count"):
+		quest_current_count = int(get_tree().get_meta("quest_current_count"))
+	var has_apar: bool = get_tree().get_meta("has_apar", false)
+
+	# APAR hanya muncul di Slot 1 setelah player selesai berbicara dengan Kakek
+	if has_apar:
+		_register_apar_item()
+	elif item_icon_0:
+		item_icon_0.texture = null
 
 	# Muat ikon tas ransel secara dinamis jika file ada
 	if FileAccess.file_exists("res://asset/char/tools/tas.png"):
@@ -390,6 +398,7 @@ func advance_dialogue() -> void:
 			dialogue_next_btn.text = "Selesai [ E ] ✓" if current_dialogue_idx == current_dialogue_lines.size() - 1 else "Lanjut [ E ] ▶"
 	else:
 		close_dialogue()
+		dialogue_finished.emit()
 
 func close_dialogue() -> void:
 	if dialogue_modal:
@@ -397,10 +406,35 @@ func close_dialogue() -> void:
 	current_dialogue_lines.clear()
 	current_dialogue_idx = 0
 
+func _register_apar_item() -> void:
+	var tex: Texture2D = null
+	if FileAccess.file_exists("res://asset/char/tools/pemadam.png"):
+		var img = Image.load_from_file("res://asset/char/tools/pemadam.png")
+		if img:
+			tex = ImageTexture.create_from_image(img)
+	if item_icon_0:
+		item_icon_0.texture = tex
+	inventory_items[0] = {
+		"id": "pemadam",
+		"name": "Alat Pemadam Api (APAR)",
+		"desc": "Pemberian Kakek untuk memadamkan api di sekitar desa dan hutan. (Terpasang di Slot 1 Hotbar)",
+		"icon": tex
+	}
+	_update_inv_slot_display(0)
+
+func unlock_apar() -> void:
+	get_tree().set_meta("has_apar", true)
+	_register_apar_item()
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_method("grant_apar"):
+		player.grant_apar()
+
 func start_quest(target_count: int = 2) -> void:
 	quest_status = "IN_PROGRESS"
 	quest_target_count = target_count
 	quest_current_count = 0
+	get_tree().set_meta("quest_status", quest_status)
+	get_tree().set_meta("quest_current_count", quest_current_count)
 	_update_quest_ui()
 
 func add_quest_progress(target_type: String, amount: int = 1) -> void:
@@ -410,12 +444,15 @@ func add_quest_progress(target_type: String, amount: int = 1) -> void:
 		quest_current_count = min(quest_target_count, quest_current_count + amount)
 		if quest_current_count >= quest_target_count:
 			quest_status = "READY_TO_TURN_IN"
+		get_tree().set_meta("quest_status", quest_status)
+		get_tree().set_meta("quest_current_count", quest_current_count)
 		_update_quest_ui()
 
 func complete_quest() -> void:
 	if quest_status != "READY_TO_TURN_IN":
 		return
 	quest_status = "COMPLETED"
+	get_tree().set_meta("quest_status", quest_status)
 	add_item_to_inventory("coin", "Koin Emas", "Koin mata uang berharga hadiah dari Kakek desa.", "res://asset/char/tools/coin.png", 100)
 	_update_quest_ui()
 
@@ -428,9 +465,9 @@ func _update_quest_ui() -> void:
 
 	quest_tracker.visible = true
 	if quest_status == "IN_PROGRESS":
-		if quest_title_label: quest_title_label.text = "📜 Misi: Basmi Slime Liar"
+		if quest_title_label: quest_title_label.text = "📜 Misi Kakek: Padamkan Api & Basmi Slime"
 		if quest_progress_label:
-			quest_progress_label.text = "• Kalahkan Slime: %d / %d" % [quest_current_count, quest_target_count]
+			quest_progress_label.text = "• APAR [1] Diterima | Kalahkan Slime: %d / %d" % [quest_current_count, quest_target_count]
 			quest_progress_label.add_theme_color_override("font_color", Color(0.3, 0.22, 0.15, 1.0))
 		if quest_reward_label: quest_reward_label.text = "Hadiah: 100 Koin Emas 🪙"
 	elif quest_status == "READY_TO_TURN_IN":
@@ -510,6 +547,9 @@ func _on_respawn_pressed() -> void:
 
 func _on_restart_pressed() -> void:
 	hide_game_over()
+	for k in ["has_apar", "quest_status", "quest_current_count"]:
+		if get_tree().has_meta(k):
+			get_tree().remove_meta(k)
 	get_tree().reload_current_scene()
 
 func _setup_inventory_grid() -> void:

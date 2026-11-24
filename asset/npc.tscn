@@ -23,11 +23,11 @@ script = ExtResource("1_npc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(0.26, 0.26)
+scale = Vector2(0.29, 0.29)
 texture = SubResource("AtlasTexture_kakek")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 9)
+position = Vector2(0, 11)
 shape = SubResource("CapsuleShape2D_npc")
 
 [node name="InteractArea" type="Area2D" parent="."]
@@ -39,9 +39,9 @@ shape = SubResource("CircleShape2D_interact")
 
 [node name="PromptLabel" type="Label" parent="."]
 offset_left = -28.0
-offset_top = -22.0
+offset_top = -28.0
 offset_right = 28.0
-offset_bottom = -11.0
+offset_bottom = -17.0
 theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
