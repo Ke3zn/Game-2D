@@ -16,9 +16,57 @@
 [ext_resource type="Texture2D" uid="uid://bqtls1qttlx4v" path="res://asset/Air_Mancur-removebg-preview.png" id="13_uj3wa"]
 [ext_resource type="Texture2D" uid="uid://clxc7w1raa8vj" path="res://asset/craftpix-net-812442-free-fantasy-medieval-village-buildings-asset-pack/PNG/Houses and Warehouses_Brick House - Level 2.png" id="14_g32df"]
 [ext_resource type="Texture2D" uid="uid://dgbnska5sospt" path="res://asset/Dasar land-top-down-vector-tileset/PNG/Top-Down Simple Summer_Prop - Wooden Bridge Horizontal.png" id="16_c4aub"]
+[ext_resource type="Texture2D" uid="uid://dp3ncidlk0dr" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_3.png" id="17_0oiyf"]
 [ext_resource type="Texture2D" uid="uid://dpychtqxpw6hx" path="res://asset/Dasar land-top-down-vector-tileset/PNG/Top-Down Simple Summer_Prop - Tent.png" id="17_pgdxa"]
 [ext_resource type="PackedScene" uid="uid://dp5xk2m3wq1r8" path="res://asset/player.tscn" id="18_player"]
 [ext_resource type="Texture2D" uid="uid://dmywk8uxx3ws3" path="res://asset/poon/poon1.png" id="19_2v48b"]
+[ext_resource type="Texture2D" uid="uid://c7lksgrvroghy" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_1.png" id="20_6epkn"]
+[ext_resource type="Texture2D" uid="uid://nxw3b8t53bti" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_12.png" id="21_k8ljt"]
+[ext_resource type="Texture2D" uid="uid://4utnxyrosi6l" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_11.png" id="22_d06w5"]
+[ext_resource type="Texture2D" uid="uid://bic2bmhifhsqs" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_9.png" id="23_l4esh"]
+[ext_resource type="Texture2D" uid="uid://cj2initqmtph1" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_6.png" id="24_dl3wx"]
+[ext_resource type="Texture2D" uid="uid://dp83ixrlj0yfm" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_2.png" id="25_x6swx"]
+[ext_resource type="Texture2D" uid="uid://dio0b3sqlmmx6" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_4.png" id="26_malcq"]
+[ext_resource type="Texture2D" uid="uid://5wrlq3kld5im" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_5.png" id="27_cswb5"]
+[ext_resource type="Texture2D" uid="uid://dkkvcg5roiy6o" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/jungle_tree_1.png" id="28_du33m"]
+[ext_resource type="Texture2D" uid="uid://c22tuplgqkuu" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_11.png" id="29_dv67d"]
+[ext_resource type="Texture2D" uid="uid://nsjyj0gpdf2v" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_10.png" id="30_j6dn6"]
+[ext_resource type="Texture2D" uid="uid://bjl1hej4y1g" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_9.png" id="31_so5y3"]
+[ext_resource type="Texture2D" uid="uid://b1hcqny0fiu4f" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_8.png" id="32_oqbjv"]
+[ext_resource type="Texture2D" uid="uid://bg8dwgn0rekyc" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_7.png" id="33_ilh04"]
+[ext_resource type="Texture2D" uid="uid://ddlv4y3y07ks0" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/jungle_tree_3.png" id="34_nh280"]
+[ext_resource type="Texture2D" uid="uid://bj6bpj8cf163w" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/jungle_tree_4.png" id="35_xlevq"]
+[ext_resource type="Texture2D" uid="uid://s8wr4jsbvpdu" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/jungle_tree_9.png" id="36_j4mee"]
+[ext_resource type="Texture2D" uid="uid://bpnwl32homhp2" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree1.png" id="37_vd8de"]
+[ext_resource type="Texture2D" uid="uid://bl3gsqujyyoow" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree4.png" id="38_ri6h7"]
+[ext_resource type="Texture2D" uid="uid://clmy8xmsi7mav" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree3.png" id="39_d5q3b"]
+[ext_resource type="Texture2D" uid="uid://dcl2upivpwgxt" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree8.png" id="40_emgn2"]
+[ext_resource type="Texture2D" uid="uid://baoewet0v83m6" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree9.png" id="41_mtovm"]
+[ext_resource type="Texture2D" uid="uid://dhaw68w065ol5" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree10.png" id="42_2n4pe"]
+[ext_resource type="Texture2D" uid="uid://p31w6weuftd8" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/jungle_tree_14.png" id="43_0oiyf"]
+[ext_resource type="Texture2D" uid="uid://cck0jnlg6kxl" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/jungle_tree_12.png" id="44_wbm50"]
+[ext_resource type="Texture2D" uid="uid://bhx6kd36sdbkl" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/jungle_tree_8.png" id="45_t31x6"]
+[ext_resource type="Texture2D" uid="uid://dxhwyl5uk655n" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree6.png" id="46_ov4cm"]
+[ext_resource type="Texture2D" uid="uid://djlm8ghay2bsr" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree7.png" id="47_54n47"]
+[ext_resource type="Script" uid="uid://etn0ypnrcldh" path="res://sc/fade_tree.gd" id="48_fadetree"]
+[ext_resource type="PackedScene" path="res://asset/hud.tscn" id="49_hud"]
+[ext_resource type="PackedScene" uid="uid://c3q45slime01" path="res://asset/enemy_slime.tscn" id="50_slime"]
+[ext_resource type="PackedScene" uid="uid://cnpckakek01" path="res://asset/npc.tscn" id="51_npc"]
+[ext_resource type="PackedScene" uid="uid://citempickup01" path="res://asset/item_pickup.tscn" id="52_item"]
+[ext_resource type="PackedScene" uid="uid://cdoorhouse01" path="res://asset/door_house.tscn" id="53_door"]
+[ext_resource type="PackedScene" uid="uid://cbosslime01" path="res://asset/boss_slime.tscn" id="54_boss"]
+[ext_resource type="Texture2D" uid="uid://decit845m536d" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_1.png" id="55_emgn2"]
+[ext_resource type="Texture2D" uid="uid://gf2yx0cwalf5" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree2.png" id="56_mtovm"]
+[ext_resource type="Texture2D" uid="uid://qt1l6ml8mxgp" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree5.png" id="57_2n4pe"]
+[ext_resource type="Texture2D" uid="uid://deh5dsvqyln1k" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree11.png" id="58_0oiyf"]
+[ext_resource type="Texture2D" uid="uid://oprlsegpomkf" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_2.png" id="59_wbm50"]
+[ext_resource type="Texture2D" uid="uid://cbtjo1t8javwu" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_8.png" id="60_t31x6"]
+[ext_resource type="Texture2D" uid="uid://c34ttv1rwn0nv" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_10.png" id="61_ov4cm"]
+[ext_resource type="Texture2D" uid="uid://dov6ux24as7sw" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_5.png" id="62_54n47"]
+[ext_resource type="Texture2D" uid="uid://biuh0vndswm2m" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_3.png" id="63_20juf"]
+[ext_resource type="Texture2D" uid="uid://boj5fscven1sa" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_4.png" id="64_ok3tt"]
+[ext_resource type="Texture2D" uid="uid://bh77ix5qiuov7" path="res://asset/craftpix-net-812442-free-fantasy-medieval-village-buildings-asset-pack/PNG/Houses and Warehouses_Wooden House - Level 2.png" id="66_wbm50"]
+[ext_resource type="Texture2D" uid="uid://02d8h6xifmcj" path="res://asset/craftpix-net-812442-free-fantasy-medieval-village-buildings-asset-pack/PNG/Houses and Warehouses_Wooden House - Level 3.png" id="67_t31x6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hm5r7"]
 texture = ExtResource("1_rah20")
@@ -1073,6 +1121,9 @@ size = Vector2(290, 240)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_skieg"]
 size = Vector2(62.499817, 57.589783)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fade_birch1"]
+size = Vector2(178, 206)
+
 [node name="Main Maps" type="Node2D" unique_id=558092317]
 
 [node name="Air" type="TileMapLayer" parent="." unique_id=188924084]
@@ -1238,6 +1289,20 @@ texture = ExtResource("3_rah20")
 position = Vector2(0, 100)
 shape = SubResource("RectangleShape2D_bld_windmill")
 
+[node name="FirTree1" type="Sprite2D" parent="TopDownSimpleSummerPropWindmill/StaticBody2D" unique_id=165509841]
+z_index = 3
+position = Vector2(451.75052, 250.19913)
+scale = Vector2(3.3289752, 2.9662902)
+texture = ExtResource("55_emgn2")
+
+script = ExtResource("48_fadetree")
+[node name="FirTree3" type="Sprite2D" parent="TopDownSimpleSummerPropWindmill/StaticBody2D" unique_id=336361990]
+z_index = 3
+position = Vector2(837.6682, 315.62604)
+scale = Vector2(2.6092148, 2.5475142)
+texture = ExtResource("17_0oiyf")
+
+script = ExtResource("48_fadetree")
 [node name="TopDownSimpleSummerPropWoodenBridgeHorizontal" type="Sprite2D" parent="." unique_id=2144985900]
 position = Vector2(840, 328)
 rotation = -0.082030475
@@ -1913,3 +1978,638 @@ texture = ExtResource("19_2v48b")
 position = Vector2(0.25012207, 5.205078)
 scale = Vector2(0.99999976, 0.99999976)
 shape = SubResource("RectangleShape2D_skieg")
+
+[node name="HousesAndWarehousesBrickHouseLevel5" type="Sprite2D" parent="." unique_id=866351525]
+position = Vector2(760.00006, 547)
+scale = Vector2(0.24705882, 0.20681818)
+texture = ExtResource("14_g32df")
+
+[node name="Birch1" type="Sprite2D" parent="." unique_id=1844923460]
+z_index = 3
+position = Vector2(627, 500)
+scale = Vector2(0.6573034, 0.5825243)
+texture = ExtResource("20_6epkn")
+script = ExtResource("48_fadetree")
+
+[node name="Area2D" type="Area2D" parent="Birch1" unique_id=1844923470]
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Birch1/Area2D" unique_id=1844923471]
+shape = SubResource("RectangleShape2D_fade_birch1")
+
+[node name="Birch12" type="Sprite2D" parent="." unique_id=618489711]
+z_index = 3
+position = Vector2(952, 258)
+texture = ExtResource("21_k8ljt")
+script = ExtResource("48_fadetree")
+
+[node name="Birch11" type="Sprite2D" parent="." unique_id=2010582148]
+z_index = 3
+position = Vector2(876, 240)
+texture = ExtResource("22_d06w5")
+script = ExtResource("48_fadetree")
+
+[node name="Birch9" type="Sprite2D" parent="." unique_id=1944852858]
+z_index = 3
+position = Vector2(1015, 258)
+texture = ExtResource("23_l4esh")
+script = ExtResource("48_fadetree")
+
+[node name="Birch6" type="Sprite2D" parent="." unique_id=1695093293]
+z_index = 3
+position = Vector2(986, 212)
+scale = Vector2(0.7162162, 0.7266667)
+texture = ExtResource("24_dl3wx")
+script = ExtResource("48_fadetree")
+
+[node name="Birch10" type="Sprite2D" parent="." unique_id=1338663579]
+z_index = 3
+position = Vector2(986, 278)
+texture = ExtResource("23_l4esh")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree2" type="Sprite2D" parent="." unique_id=235629463]
+z_index = 3
+position = Vector2(985.00006, 362)
+scale = Vector2(0.4353917, 0.295283)
+texture = ExtResource("25_x6swx")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree3" type="Sprite2D" parent="." unique_id=1947860931]
+z_index = 3
+position = Vector2(944, 344)
+scale = Vector2(0.42415637, 0.30283025)
+texture = ExtResource("25_x6swx")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree4" type="Sprite2D" parent="." unique_id=225939948]
+z_index = 3
+position = Vector2(1020.125, 353.125)
+scale = Vector2(0.37149498, 0.45250896)
+texture = ExtResource("26_malcq")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree5" type="Sprite2D" parent="." unique_id=598681325]
+z_index = 3
+position = Vector2(924.00006, 284)
+scale = Vector2(0.62857145, 0.68292683)
+texture = ExtResource("27_cswb5")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree1" type="Sprite2D" parent="." unique_id=1826881800]
+z_index = 3
+position = Vector2(1183, 186)
+scale = Vector2(0.39954337, 0.3888889)
+texture = ExtResource("28_du33m")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree11" type="Sprite2D" parent="." unique_id=1157314872]
+z_index = 3
+position = Vector2(1229, 164)
+texture = ExtResource("29_dv67d")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree10" type="Sprite2D" parent="." unique_id=1206223052]
+z_index = 3
+position = Vector2(1481, 122)
+texture = ExtResource("30_j6dn6")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree9" type="Sprite2D" parent="." unique_id=693888548]
+z_index = 3
+position = Vector2(1313, 211)
+texture = ExtResource("31_so5y3")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree12" type="Sprite2D" parent="." unique_id=875197063]
+z_index = 3
+position = Vector2(1305, 287)
+texture = ExtResource("29_dv67d")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree13" type="Sprite2D" parent="." unique_id=1575254360]
+z_index = 3
+position = Vector2(1392, 278)
+texture = ExtResource("30_j6dn6")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree14" type="Sprite2D" parent="." unique_id=1796086036]
+z_index = 3
+position = Vector2(1435, 277)
+texture = ExtResource("31_so5y3")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree8" type="Sprite2D" parent="." unique_id=233162575]
+z_index = 3
+position = Vector2(1349, 334)
+scale = Vector2(0.36267605, 0.45412844)
+texture = ExtResource("32_oqbjv")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree7" type="Sprite2D" parent="." unique_id=988208888]
+z_index = 3
+position = Vector2(1228, 242.00003)
+scale = Vector2(1.0416666, 0.74561405)
+texture = ExtResource("33_ilh04")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree15" type="Sprite2D" parent="." unique_id=1092597593]
+z_index = 3
+position = Vector2(1231.0001, 276)
+scale = Vector2(1.0416666, 0.74561405)
+texture = ExtResource("33_ilh04")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree2" type="Sprite2D" parent="." unique_id=1339454086]
+z_index = 3
+position = Vector2(1088.0001, 352)
+scale = Vector2(0.3584475, 0.35777777)
+texture = ExtResource("28_du33m")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree3" type="Sprite2D" parent="." unique_id=1282960708]
+z_index = 3
+position = Vector2(1257, 318)
+scale = Vector2(0.41034484, 0.5396476)
+texture = ExtResource("34_nh280")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree4" type="Sprite2D" parent="." unique_id=445675505]
+z_index = 3
+position = Vector2(1553.5, 245)
+scale = Vector2(0.49489796, 0.5714286)
+texture = ExtResource("35_xlevq")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree5" type="Sprite2D" parent="." unique_id=401626211]
+z_index = 3
+position = Vector2(1354, 135)
+scale = Vector2(0.7876712, 0.66)
+texture = ExtResource("28_du33m")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree9" type="Sprite2D" parent="." unique_id=759171342]
+z_index = 3
+position = Vector2(1460, 311)
+texture = ExtResource("36_j4mee")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree1" type="Sprite2D" parent="." unique_id=2095936716]
+z_index = 3
+position = Vector2(1076.0001, 276.99997)
+scale = Vector2(0.33636358, 0.36718747)
+texture = ExtResource("37_vd8de")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree4" type="Sprite2D" parent="." unique_id=1347633879]
+z_index = 3
+position = Vector2(1474.0001, 221)
+scale = Vector2(0.5448718, 0.4673913)
+texture = ExtResource("38_ri6h7")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree3" type="Sprite2D" parent="." unique_id=521989143]
+z_index = 3
+position = Vector2(1079, 171.00002)
+scale = Vector2(0.54812837, 0.58949417)
+texture = ExtResource("39_d5q3b")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree5" type="Sprite2D" parent="." unique_id=529603858]
+z_index = 3
+position = Vector2(1179.0001, 341.00003)
+scale = Vector2(0.7051282, 0.64492756)
+texture = ExtResource("38_ri6h7")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree8" type="Sprite2D" parent="." unique_id=2093036267]
+z_index = 3
+position = Vector2(1248.5, 208.75)
+scale = Vector2(0.7, 0.67241377)
+texture = ExtResource("40_emgn2")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree9" type="Sprite2D" parent="." unique_id=1819960971]
+z_index = 3
+position = Vector2(1147, 223)
+texture = ExtResource("41_mtovm")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree10" type="Sprite2D" parent="." unique_id=292405486]
+z_index = 3
+position = Vector2(1357, 284)
+texture = ExtResource("40_emgn2")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree11" type="Sprite2D" parent="." unique_id=1404374735]
+z_index = 3
+position = Vector2(1276, 237)
+texture = ExtResource("41_mtovm")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree12" type="Sprite2D" parent="." unique_id=1218793097]
+z_index = 3
+position = Vector2(1329.75, 247)
+scale = Vector2(1.0555556, 0.71428573)
+texture = ExtResource("42_2n4pe")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree14" type="Sprite2D" parent="." unique_id=1961099562]
+z_index = 3
+position = Vector2(1539, 137)
+texture = ExtResource("43_0oiyf")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree12" type="Sprite2D" parent="." unique_id=1741297408]
+z_index = 3
+position = Vector2(1590, 164)
+texture = ExtResource("44_wbm50")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree6" type="Sprite2D" parent="." unique_id=1195382753]
+z_index = 3
+position = Vector2(1548, 332.00003)
+scale = Vector2(0.67346936, 0.70168066)
+texture = ExtResource("35_xlevq")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree8" type="Sprite2D" parent="." unique_id=679629282]
+z_index = 3
+position = Vector2(1697.75, 229.25)
+scale = Vector2(1.2945205, 1.7054795)
+texture = ExtResource("45_t31x6")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree10" type="Sprite2D" parent="." unique_id=844264703]
+z_index = 3
+position = Vector2(1609, 239)
+texture = ExtResource("36_j4mee")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree6" type="Sprite2D" parent="." unique_id=563727174]
+z_index = 3
+position = Vector2(1662, 331)
+scale = Vector2(0.5962567, 0.6595331)
+texture = ExtResource("39_d5q3b")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree7" type="Sprite2D" parent="." unique_id=884063196]
+z_index = 3
+position = Vector2(1752.9999, 323)
+scale = Vector2(1.0679013, 1.1315789)
+texture = ExtResource("46_ov4cm")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree13" type="Sprite2D" parent="." unique_id=148490180]
+z_index = 3
+position = Vector2(1652, 118)
+texture = ExtResource("47_54n47")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree14" type="Sprite2D" parent="." unique_id=1851849733]
+z_index = 3
+position = Vector2(1577, 103)
+texture = ExtResource("46_ov4cm")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree11" type="Sprite2D" parent="." unique_id=1812879319]
+z_index = 3
+position = Vector2(1525, 151)
+texture = ExtResource("45_t31x6")
+script = ExtResource("48_fadetree")
+
+[node name="MiddleLaneTree2" type="Sprite2D" parent="." unique_id=227079260]
+z_index = 3
+position = Vector2(1205, 110)
+scale = Vector2(0.55151516, 0.5859375)
+texture = ExtResource("37_vd8de")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree13" type="Sprite2D" parent="." unique_id=1717511451]
+z_index = 3
+position = Vector2(1361, 232)
+texture = ExtResource("36_j4mee")
+script = ExtResource("48_fadetree")
+
+[node name="JungleTree15" type="Sprite2D" parent="." unique_id=1998283066]
+z_index = 3
+position = Vector2(921, 214)
+texture = ExtResource("43_0oiyf")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree16" type="Sprite2D" parent="." unique_id=2059115920]
+z_index = 3
+position = Vector2(1021, 310)
+scale = Vector2(0.62323946, 0.61009175)
+texture = ExtResource("32_oqbjv")
+script = ExtResource("48_fadetree")
+
+[node name="FirTree17" type="Sprite2D" parent="." unique_id=1509135257]
+z_index = 3
+position = Vector2(1041, 216)
+texture = ExtResource("29_dv67d")
+script = ExtResource("48_fadetree")
+
+[node name="NPC_Kakek" parent="." unique_id=1644674515 instance=ExtResource("51_npc")]
+position = Vector2(665, 345)
+
+[node name="ItemPickup_Potion" parent="." unique_id=1044852418 instance=ExtResource("52_item")]
+position = Vector2(745, 340)
+
+[node name="EnemySlime_1" parent="." unique_id=1209252506 instance=ExtResource("50_slime")]
+position = Vector2(960, 180)
+
+[node name="EnemySlime_2" parent="." unique_id=1565330586 instance=ExtResource("50_slime")]
+position = Vector2(1050, 230)
+
+[node name="Door_VillageHouse" parent="." unique_id=443267989 instance=ExtResource("53_door")]
+position = Vector2(760, 580)
+
+[node name="BossSlime" parent="." unique_id=2057301853 instance=ExtResource("54_boss")]
+position = Vector2(320, 100)
+
+[node name="HUD" parent="." unique_id=1784112505 instance=ExtResource("49_hud")]
+
+[node name="FirTree6" type="Sprite2D" parent="." unique_id=943522120]
+z_index = 3
+position = Vector2(396.125, 436.125)
+scale = Vector2(0.9509346, 0.6675629)
+texture = ExtResource("26_malcq")
+
+script = ExtResource("48_fadetree")
+[node name="FirTree18" type="Sprite2D" parent="." unique_id=376855046]
+z_index = 3
+position = Vector2(365, 331)
+scale = Vector2(1.0428572, 1.0609756)
+texture = ExtResource("27_cswb5")
+
+script = ExtResource("48_fadetree")
+[node name="FirTree1" type="Sprite2D" parent="." unique_id=1581046761]
+z_index = 3
+position = Vector2(498.25, 450.25)
+scale = Vector2(0.81764704, 0.92774564)
+texture = ExtResource("55_emgn2")
+
+script = ExtResource("48_fadetree")
+[node name="FirTree19" type="Sprite2D" parent="." unique_id=1020042442]
+z_index = 3
+position = Vector2(466, 474.99997)
+scale = Vector2(0.85955054, 0.81698114)
+texture = ExtResource("25_x6swx")
+
+script = ExtResource("48_fadetree")
+[node name="FirTree20" type="Sprite2D" parent="." unique_id=33351743]
+z_index = 3
+position = Vector2(509, 454)
+texture = ExtResource("26_malcq")
+
+script = ExtResource("48_fadetree")
+[node name="FirTree21" type="Sprite2D" parent="." unique_id=1145770383]
+z_index = 3
+position = Vector2(464.75, 323.25)
+scale = Vector2(0.9705882, 0.8930636)
+texture = ExtResource("55_emgn2")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree15" type="Sprite2D" parent="." unique_id=1366786978]
+z_index = 3
+position = Vector2(244, 260.5)
+scale = Vector2(0.52121216, 0.5546875)
+texture = ExtResource("37_vd8de")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree16" type="Sprite2D" parent="." unique_id=550577731]
+z_index = 3
+position = Vector2(696, 552)
+scale = Vector2(0.61538464, 0.7416357)
+texture = ExtResource("56_mtovm")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree17" type="Sprite2D" parent="." unique_id=1313806966]
+z_index = 3
+position = Vector2(888, 528)
+scale = Vector2(0.6871658, 0.82684827)
+texture = ExtResource("39_d5q3b")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree18" type="Sprite2D" parent="." unique_id=788117344]
+z_index = 3
+position = Vector2(782, 567.00006)
+scale = Vector2(0.69871795, 0.64492756)
+texture = ExtResource("38_ri6h7")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree19" type="Sprite2D" parent="." unique_id=957254735]
+z_index = 3
+position = Vector2(507, 651)
+scale = Vector2(0.8077888, 0.69736844)
+texture = ExtResource("57_2n4pe")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree20" type="Sprite2D" parent="." unique_id=1189861]
+z_index = 3
+position = Vector2(548, 493)
+scale = Vector2(1.191358, 1.3289474)
+texture = ExtResource("46_ov4cm")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree21" type="Sprite2D" parent="." unique_id=950050127]
+z_index = 3
+position = Vector2(257, 200)
+scale = Vector2(0.84615386, 0.88235295)
+texture = ExtResource("41_mtovm")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree22" type="Sprite2D" parent="." unique_id=466180254]
+z_index = 3
+position = Vector2(338, 200)
+scale = Vector2(0.66, 0.7758621)
+texture = ExtResource("40_emgn2")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree23" type="Sprite2D" parent="." unique_id=522307718]
+z_index = 3
+position = Vector2(406, 202)
+scale = Vector2(0.9230769, 0.88235295)
+texture = ExtResource("41_mtovm")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree24" type="Sprite2D" parent="." unique_id=1306104567]
+z_index = 3
+position = Vector2(503, 149)
+scale = Vector2(0.9230769, 0.88235295)
+texture = ExtResource("41_mtovm")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree25" type="Sprite2D" parent="." unique_id=176831790]
+z_index = 3
+position = Vector2(288, 166)
+scale = Vector2(0.9230769, 0.88235295)
+texture = ExtResource("41_mtovm")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree26" type="Sprite2D" parent="." unique_id=251800976]
+z_index = 3
+position = Vector2(451.75, 186.5)
+scale = Vector2(0.9814815, 0.67142856)
+texture = ExtResource("42_2n4pe")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree27" type="Sprite2D" parent="." unique_id=171489101]
+z_index = 3
+position = Vector2(533, 191.5)
+scale = Vector2(1, 0.70652175)
+texture = ExtResource("58_0oiyf")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree28" type="Sprite2D" parent="." unique_id=936169593]
+z_index = 3
+position = Vector2(416, 234)
+texture = ExtResource("42_2n4pe")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree29" type="Sprite2D" parent="." unique_id=599052312]
+z_index = 3
+position = Vector2(193.5, 228.25)
+scale = Vector2(0.8599999, 0.7068968)
+texture = ExtResource("40_emgn2")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree30" type="Sprite2D" parent="." unique_id=1933644580]
+z_index = 3
+position = Vector2(407, 295)
+scale = Vector2(0.78140706, 0.7591093)
+texture = ExtResource("57_2n4pe")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree31" type="Sprite2D" parent="." unique_id=1309332887]
+z_index = 3
+position = Vector2(295, 228.75)
+scale = Vector2(0.84, 0.8103448)
+texture = ExtResource("40_emgn2")
+
+script = ExtResource("48_fadetree")
+[node name="Birch2" type="Sprite2D" parent="." unique_id=66925656]
+z_index = 3
+position = Vector2(636, 610)
+scale = Vector2(0.8184713, 0.78)
+texture = ExtResource("59_wbm50")
+
+script = ExtResource("48_fadetree")
+[node name="Birch8" type="Sprite2D" parent="." unique_id=1616522121]
+z_index = 3
+position = Vector2(590, 263)
+scale = Vector2(0.5296736, 0.57482994)
+texture = ExtResource("60_t31x6")
+
+script = ExtResource("48_fadetree")
+[node name="Birch13" type="Sprite2D" parent="." unique_id=2077887887]
+z_index = 3
+position = Vector2(338, 222)
+texture = ExtResource("23_l4esh")
+
+script = ExtResource("48_fadetree")
+[node name="Birch14" type="Sprite2D" parent="." unique_id=1092264033]
+z_index = 3
+position = Vector2(503, 206)
+texture = ExtResource("61_ov4cm")
+
+script = ExtResource("48_fadetree")
+[node name="Birch15" type="Sprite2D" parent="." unique_id=1658585678]
+z_index = 3
+position = Vector2(203.75, 184.75)
+scale = Vector2(0.7758621, 0.73880595)
+texture = ExtResource("22_d06w5")
+
+script = ExtResource("48_fadetree")
+[node name="Birch16" type="Sprite2D" parent="." unique_id=1230333205]
+z_index = 3
+position = Vector2(365, 165)
+texture = ExtResource("21_k8ljt")
+
+script = ExtResource("48_fadetree")
+[node name="Birch5" type="Sprite2D" parent="." unique_id=1894416286]
+z_index = 3
+position = Vector2(547.00006, 731.00006)
+scale = Vector2(0.8006536, 0.7153846)
+texture = ExtResource("62_54n47")
+
+script = ExtResource("48_fadetree")
+[node name="Birch7" type="Sprite2D" parent="." unique_id=221361825]
+z_index = 3
+position = Vector2(602, 508)
+texture = ExtResource("24_dl3wx")
+
+script = ExtResource("48_fadetree")
+[node name="Birch3" type="Sprite2D" parent="." unique_id=371758127]
+z_index = 3
+position = Vector2(829, 750.00006)
+scale = Vector2(0.73041475, 0.7661597)
+texture = ExtResource("63_20juf")
+
+script = ExtResource("48_fadetree")
+[node name="Birch4" type="Sprite2D" parent="." unique_id=772810212]
+z_index = 3
+position = Vector2(945.00006, 668)
+scale = Vector2(0.69745225, 0.82217574)
+texture = ExtResource("64_ok3tt")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree32" type="Sprite2D" parent="." unique_id=251006526]
+z_index = 3
+position = Vector2(678, 743)
+scale = Vector2(0.78846157, 0.7713755)
+texture = ExtResource("56_mtovm")
+
+script = ExtResource("48_fadetree")
+[node name="MiddleLaneTree33" type="Sprite2D" parent="." unique_id=1611125233]
+z_index = 3
+position = Vector2(868.75, 607)
+scale = Vector2(1.0925926, 1.6052631)
+texture = ExtResource("46_ov4cm")
+
+script = ExtResource("48_fadetree")
+[node name="FirTree22" type="Sprite2D" parent="." unique_id=6964576]
+z_index = 3
+position = Vector2(1022.625, 559.25)
+scale = Vector2(0.614, 0.59883726)
+texture = ExtResource("17_0oiyf")
+
+script = ExtResource("48_fadetree")
+[node name="FirTree23" type="Sprite2D" parent="." unique_id=1487423104]
+z_index = 3
+position = Vector2(1129, 603.00006)
+scale = Vector2(0.7921348, 0.6471698)
+texture = ExtResource("25_x6swx")
+
+script = ExtResource("48_fadetree")
+[node name="HousesAndWarehousesBrickWarehouseLevel5" type="Sprite2D" parent="." unique_id=1812685711]
+position = Vector2(1183.625, 675.125)
+scale = Vector2(0.16679691, 0.15976557)
+texture = ExtResource("9_6epkn")
+
+[node name="HousesAndWarehousesBrickWarehouseLevel2" type="Sprite2D" parent="." unique_id=937617563]
+position = Vector2(1107, 684)
+scale = Vector2(0.20937489, 0.21249995)
+texture = ExtResource("6_2v48b")
+
+[node name="HousesAndWarehousesWoodenHouseLevel2" type="Sprite2D" parent="." unique_id=962602504]
+position = Vector2(1358, 653)
+scale = Vector2(0.3, 0.25454545)
+texture = ExtResource("66_wbm50")
+
+[node name="HousesAndWarehousesWoodenHouseLevel3" type="Sprite2D" parent="." unique_id=1066071378]
+position = Vector2(954, 530)
+scale = Vector2(0.23863636, 0.17413794)
+texture = ExtResource("67_t31x6")
+
+[node name="HousesAndWarehousesWoodenWarehouseLevel2" type="Sprite2D" parent="." unique_id=287505228]
+position = Vector2(606, 803)
+scale = Vector2(0.234375, 0.2375)
+texture = ExtResource("11_d06w5")
+
+[node name="HousesAndWarehousesBrickHouseLevel6" type="Sprite2D" parent="." unique_id=615544076]
+position = Vector2(435, 525.99994)
+scale = Vector2(0.16363622, 0.12672429)
+texture = ExtResource("8_yf6j1")

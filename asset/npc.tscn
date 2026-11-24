@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://cnpckakek01"]
+
+[ext_resource type="Script" path="res://sc/npc.gd" id="1_npc"]
+[ext_resource type="Texture2D" uid="uid://cw6ke74ucwlwy" path="res://asset/char/npc-char/npc-kakek.webp" id="2_kakek_tex"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kakek"]
+atlas = ExtResource("2_kakek_tex")
+region = Rect2(0, 0, 128, 123)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_npc"]
+radius = 5.0
+height = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
+radius = 24.0
+
+[node name="NPC_Kakek" type="CharacterBody2D" groups=["npc"]]
+z_index = 2
+y_sort_enabled = true
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_npc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.1, 0.1)
+texture = SubResource("AtlasTexture_kakek")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_npc")
+
+[node name="InteractArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+shape = SubResource("CircleShape2D_interact")
+
+[node name="PromptLabel" type="Label" parent="."]
+offset_left = -28.0
+offset_top = -20.0
+offset_right = 28.0
+offset_bottom = -9.0
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 7
+text = "[E/F] Bicara"
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
