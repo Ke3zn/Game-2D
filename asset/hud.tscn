@@ -35,10 +35,10 @@ border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 65
-corner_radius_top_right = 65
-corner_radius_bottom_right = 65
-corner_radius_bottom_left = 65
+corner_radius_top_left = 90
+corner_radius_top_right = 90
+corner_radius_bottom_right = 90
+corner_radius_bottom_left = 90
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blood_bg"]
 bg_color = Color(0.18, 0.05, 0.05, 0.85)
@@ -278,19 +278,19 @@ mouse_filter = 2
 layout_mode = 0
 offset_left = 30.0
 offset_top = 30.0
-offset_right = 470.0
-offset_bottom = 160.0
+offset_right = 520.0
+offset_bottom = 210.0
 theme_override_constants/separation = 18
 
 [node name="MinimapSlot" type="PanelContainer" parent="Control/TopLeftContainer"]
-custom_minimum_size = Vector2(130, 130)
+custom_minimum_size = Vector2(180, 180)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_map_bg")
 
 [node name="Minimap" type="Control" parent="Control/TopLeftContainer/MinimapSlot"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(130, 130)
+custom_minimum_size = Vector2(180, 180)
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("3_minimap")
@@ -605,7 +605,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
 theme_override_font_sizes/font_size = 11
-text = "⚔️ Serang / Pukul"
+text = "⚔️ Serang (Pentungan)"
 
 [node name="AttackKey" type="Label" parent="Control/ControlsGuide/Margin/VBox/GuideContent/RowAttack"]
 layout_mode = 2
@@ -675,7 +675,7 @@ text = "🎒 Buka Tas"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.12, 0.12, 0.12, 1)
 theme_override_font_sizes/font_size = 11
-text = "[ B ] / Tombol Tas 🎒"
+text = "[ TAB / B ] / Tas 🎒"
 
 [node name="RowSlot" type="HBoxContainer" parent="Control/ControlsGuide/Margin/VBox/GuideContent"]
 layout_mode = 2
@@ -881,7 +881,7 @@ grow_vertical = 0
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.25, 0.18, 0.1, 0.9)
 theme_override_font_sizes/font_size = 12
-text = "🎒 TAS [B]"
+text = "🎒 TAS [TAB/B]"
 horizontal_alignment = 1
 vertical_alignment = 1
 

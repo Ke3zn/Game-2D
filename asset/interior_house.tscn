@@ -19,6 +19,9 @@ size = Vector2(120, 24)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_bot_right"]
 size = Vector2(120, 24)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_door_stop"]
+size = Vector2(80, 20)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_table"]
 radius = 12.0
 
@@ -101,6 +104,10 @@ shape = SubResource("RectangleShape2D_wall_bot_left")
 [node name="CollisionBottomRight" type="CollisionShape2D" parent="StaticWalls"]
 position = Vector2(260, 232)
 shape = SubResource("RectangleShape2D_wall_bot_right")
+
+[node name="CollisionBottomDoorStop" type="CollisionShape2D" parent="StaticWalls"]
+position = Vector2(160, 242)
+shape = SubResource("RectangleShape2D_wall_door_stop")
 
 [node name="Rug" type="Sprite2D" parent="."]
 position = Vector2(160, 130)

@@ -1984,6 +1984,12 @@ position = Vector2(760.00006, 547)
 scale = Vector2(0.24705882, 0.20681818)
 texture = ExtResource("14_g32df")
 
+[node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel5" unique_id=841509262]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel5/StaticBody2D" unique_id=188223945]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_bld_bh2")
+
 [node name="Birch1" type="Sprite2D" parent="." unique_id=1844923460]
 z_index = 3
 position = Vector2(627, 500)
@@ -2312,7 +2318,7 @@ texture = ExtResource("29_dv67d")
 script = ExtResource("48_fadetree")
 
 [node name="NPC_Kakek" parent="." unique_id=1644674515 instance=ExtResource("51_npc")]
-position = Vector2(665, 345)
+position = Vector2(775, 715)
 
 [node name="ItemPickup_Potion" parent="." unique_id=1044852418 instance=ExtResource("52_item")]
 position = Vector2(745, 340)
@@ -2589,27 +2595,63 @@ position = Vector2(1183.625, 675.125)
 scale = Vector2(0.16679691, 0.15976557)
 texture = ExtResource("9_6epkn")
 
+[node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickWarehouseLevel5" unique_id=1155092638]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickWarehouseLevel5/StaticBody2D" unique_id=124726983]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_bld_bh4")
+
 [node name="HousesAndWarehousesBrickWarehouseLevel2" type="Sprite2D" parent="." unique_id=937617563]
 position = Vector2(1107, 684)
 scale = Vector2(0.20937489, 0.21249995)
 texture = ExtResource("6_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickWarehouseLevel2" unique_id=451331529]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickWarehouseLevel2/StaticBody2D" unique_id=893177234]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_bld_bw1")
 
 [node name="HousesAndWarehousesWoodenHouseLevel2" type="Sprite2D" parent="." unique_id=962602504]
 position = Vector2(1358, 653)
 scale = Vector2(0.3, 0.25454545)
 texture = ExtResource("66_wbm50")
 
+[node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenHouseLevel2" unique_id=728829026]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenHouseLevel2/StaticBody2D" unique_id=1586174124]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_bld_bh2")
+
 [node name="HousesAndWarehousesWoodenHouseLevel3" type="Sprite2D" parent="." unique_id=1066071378]
 position = Vector2(954, 530)
 scale = Vector2(0.23863636, 0.17413794)
 texture = ExtResource("67_t31x6")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenHouseLevel3" unique_id=361720171]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenHouseLevel3/StaticBody2D" unique_id=334242672]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_bld_bh3")
 
 [node name="HousesAndWarehousesWoodenWarehouseLevel2" type="Sprite2D" parent="." unique_id=287505228]
 position = Vector2(606, 803)
 scale = Vector2(0.234375, 0.2375)
 texture = ExtResource("11_d06w5")
 
+[node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenWarehouseLevel2" unique_id=1399971333]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenWarehouseLevel2/StaticBody2D" unique_id=386579568]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_bld_ww1")
+
 [node name="HousesAndWarehousesBrickHouseLevel6" type="Sprite2D" parent="." unique_id=615544076]
 position = Vector2(435, 525.99994)
 scale = Vector2(0.16363622, 0.12672429)
 texture = ExtResource("8_yf6j1")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel6" unique_id=1417087018]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel6/StaticBody2D" unique_id=380944435]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_bld_bh3")

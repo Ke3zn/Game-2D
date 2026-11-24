@@ -360,7 +360,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				return
 
 		# Kontrol tas inventory
-		if event.keycode == KEY_B or event.keycode == KEY_I:
+		if event.keycode == KEY_B or event.keycode == KEY_I or event.keycode == KEY_TAB:
 			toggle_inventory()
 			get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_ESCAPE and inventory_modal and inventory_modal.visible:

@@ -98,7 +98,7 @@ func _draw() -> void:
 
 	# 7. Teks Label "Boss" dan "Forest"
 	var font = ThemeDB.fallback_font
-	var font_size = 9
+	var font_size = 11
 	if font:
 		draw_string(font, center + Vector2(-r * 0.60, -r * 0.32), "Boss", HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, Color.WHITE)
 		draw_string(font, center + Vector2(r * 0.22, -r * 0.40), "Forest", HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, Color.WHITE)
