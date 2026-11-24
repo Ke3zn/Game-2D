@@ -1062,8 +1062,7 @@ animations = [{
 "loop": true,
 "name": &"run_right",
 "speed": 10.0
-,
-{
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("Atlas_pent_front_0")
@@ -1437,7 +1436,6 @@ animations = [{
 "loop": false,
 "name": &"hurt_right",
 "speed": 10.0
-}
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
