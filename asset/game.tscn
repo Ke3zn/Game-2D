@@ -1294,15 +1294,15 @@ z_index = 3
 position = Vector2(451.75052, 250.19913)
 scale = Vector2(3.3289752, 2.9662902)
 texture = ExtResource("55_emgn2")
-
 script = ExtResource("48_fadetree")
+
 [node name="FirTree3" type="Sprite2D" parent="TopDownSimpleSummerPropWindmill/StaticBody2D" unique_id=336361990]
 z_index = 3
 position = Vector2(837.6682, 315.62604)
 scale = Vector2(2.6092148, 2.5475142)
 texture = ExtResource("17_0oiyf")
-
 script = ExtResource("48_fadetree")
+
 [node name="TopDownSimpleSummerPropWoodenBridgeHorizontal" type="Sprite2D" parent="." unique_id=2144985900]
 position = Vector2(840, 328)
 rotation = -0.082030475
@@ -1987,7 +1987,6 @@ texture = ExtResource("14_g32df")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel5" unique_id=841509262]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel5/StaticBody2D" unique_id=188223945]
-position = Vector2(0, 0)
 shape = SubResource("RectangleShape2D_bld_bh2")
 
 [node name="Birch1" type="Sprite2D" parent="." unique_id=1844923460]
@@ -2342,254 +2341,254 @@ z_index = 3
 position = Vector2(396.125, 436.125)
 scale = Vector2(0.9509346, 0.6675629)
 texture = ExtResource("26_malcq")
-
 script = ExtResource("48_fadetree")
+
 [node name="FirTree18" type="Sprite2D" parent="." unique_id=376855046]
 z_index = 3
 position = Vector2(365, 331)
 scale = Vector2(1.0428572, 1.0609756)
 texture = ExtResource("27_cswb5")
-
 script = ExtResource("48_fadetree")
+
 [node name="FirTree1" type="Sprite2D" parent="." unique_id=1581046761]
 z_index = 3
 position = Vector2(498.25, 450.25)
 scale = Vector2(0.81764704, 0.92774564)
 texture = ExtResource("55_emgn2")
-
 script = ExtResource("48_fadetree")
+
 [node name="FirTree19" type="Sprite2D" parent="." unique_id=1020042442]
 z_index = 3
 position = Vector2(466, 474.99997)
 scale = Vector2(0.85955054, 0.81698114)
 texture = ExtResource("25_x6swx")
-
 script = ExtResource("48_fadetree")
+
 [node name="FirTree20" type="Sprite2D" parent="." unique_id=33351743]
 z_index = 3
 position = Vector2(509, 454)
 texture = ExtResource("26_malcq")
-
 script = ExtResource("48_fadetree")
+
 [node name="FirTree21" type="Sprite2D" parent="." unique_id=1145770383]
 z_index = 3
 position = Vector2(464.75, 323.25)
 scale = Vector2(0.9705882, 0.8930636)
 texture = ExtResource("55_emgn2")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree15" type="Sprite2D" parent="." unique_id=1366786978]
 z_index = 3
 position = Vector2(244, 260.5)
 scale = Vector2(0.52121216, 0.5546875)
 texture = ExtResource("37_vd8de")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree16" type="Sprite2D" parent="." unique_id=550577731]
 z_index = 3
 position = Vector2(696, 552)
 scale = Vector2(0.61538464, 0.7416357)
 texture = ExtResource("56_mtovm")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree17" type="Sprite2D" parent="." unique_id=1313806966]
 z_index = 3
 position = Vector2(888, 528)
 scale = Vector2(0.6871658, 0.82684827)
 texture = ExtResource("39_d5q3b")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree18" type="Sprite2D" parent="." unique_id=788117344]
 z_index = 3
 position = Vector2(782, 567.00006)
 scale = Vector2(0.69871795, 0.64492756)
 texture = ExtResource("38_ri6h7")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree19" type="Sprite2D" parent="." unique_id=957254735]
 z_index = 3
 position = Vector2(507, 651)
 scale = Vector2(0.8077888, 0.69736844)
 texture = ExtResource("57_2n4pe")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree20" type="Sprite2D" parent="." unique_id=1189861]
 z_index = 3
 position = Vector2(548, 493)
 scale = Vector2(1.191358, 1.3289474)
 texture = ExtResource("46_ov4cm")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree21" type="Sprite2D" parent="." unique_id=950050127]
 z_index = 3
 position = Vector2(257, 200)
 scale = Vector2(0.84615386, 0.88235295)
 texture = ExtResource("41_mtovm")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree22" type="Sprite2D" parent="." unique_id=466180254]
 z_index = 3
 position = Vector2(338, 200)
 scale = Vector2(0.66, 0.7758621)
 texture = ExtResource("40_emgn2")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree23" type="Sprite2D" parent="." unique_id=522307718]
 z_index = 3
 position = Vector2(406, 202)
 scale = Vector2(0.9230769, 0.88235295)
 texture = ExtResource("41_mtovm")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree24" type="Sprite2D" parent="." unique_id=1306104567]
 z_index = 3
 position = Vector2(503, 149)
 scale = Vector2(0.9230769, 0.88235295)
 texture = ExtResource("41_mtovm")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree25" type="Sprite2D" parent="." unique_id=176831790]
 z_index = 3
 position = Vector2(288, 166)
 scale = Vector2(0.9230769, 0.88235295)
 texture = ExtResource("41_mtovm")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree26" type="Sprite2D" parent="." unique_id=251800976]
 z_index = 3
 position = Vector2(451.75, 186.5)
 scale = Vector2(0.9814815, 0.67142856)
 texture = ExtResource("42_2n4pe")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree27" type="Sprite2D" parent="." unique_id=171489101]
 z_index = 3
 position = Vector2(533, 191.5)
 scale = Vector2(1, 0.70652175)
 texture = ExtResource("58_0oiyf")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree28" type="Sprite2D" parent="." unique_id=936169593]
 z_index = 3
 position = Vector2(416, 234)
 texture = ExtResource("42_2n4pe")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree29" type="Sprite2D" parent="." unique_id=599052312]
 z_index = 3
 position = Vector2(193.5, 228.25)
 scale = Vector2(0.8599999, 0.7068968)
 texture = ExtResource("40_emgn2")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree30" type="Sprite2D" parent="." unique_id=1933644580]
 z_index = 3
 position = Vector2(407, 295)
 scale = Vector2(0.78140706, 0.7591093)
 texture = ExtResource("57_2n4pe")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree31" type="Sprite2D" parent="." unique_id=1309332887]
 z_index = 3
 position = Vector2(295, 228.75)
 scale = Vector2(0.84, 0.8103448)
 texture = ExtResource("40_emgn2")
-
 script = ExtResource("48_fadetree")
+
 [node name="Birch2" type="Sprite2D" parent="." unique_id=66925656]
 z_index = 3
 position = Vector2(636, 610)
 scale = Vector2(0.8184713, 0.78)
 texture = ExtResource("59_wbm50")
-
 script = ExtResource("48_fadetree")
+
 [node name="Birch8" type="Sprite2D" parent="." unique_id=1616522121]
 z_index = 3
 position = Vector2(590, 263)
 scale = Vector2(0.5296736, 0.57482994)
 texture = ExtResource("60_t31x6")
-
 script = ExtResource("48_fadetree")
+
 [node name="Birch13" type="Sprite2D" parent="." unique_id=2077887887]
 z_index = 3
 position = Vector2(338, 222)
 texture = ExtResource("23_l4esh")
-
 script = ExtResource("48_fadetree")
+
 [node name="Birch14" type="Sprite2D" parent="." unique_id=1092264033]
 z_index = 3
 position = Vector2(503, 206)
 texture = ExtResource("61_ov4cm")
-
 script = ExtResource("48_fadetree")
+
 [node name="Birch15" type="Sprite2D" parent="." unique_id=1658585678]
 z_index = 3
 position = Vector2(203.75, 184.75)
 scale = Vector2(0.7758621, 0.73880595)
 texture = ExtResource("22_d06w5")
-
 script = ExtResource("48_fadetree")
+
 [node name="Birch16" type="Sprite2D" parent="." unique_id=1230333205]
 z_index = 3
 position = Vector2(365, 165)
 texture = ExtResource("21_k8ljt")
-
 script = ExtResource("48_fadetree")
+
 [node name="Birch5" type="Sprite2D" parent="." unique_id=1894416286]
 z_index = 3
 position = Vector2(547.00006, 731.00006)
 scale = Vector2(0.8006536, 0.7153846)
 texture = ExtResource("62_54n47")
-
 script = ExtResource("48_fadetree")
+
 [node name="Birch7" type="Sprite2D" parent="." unique_id=221361825]
 z_index = 3
 position = Vector2(602, 508)
 texture = ExtResource("24_dl3wx")
-
 script = ExtResource("48_fadetree")
+
 [node name="Birch3" type="Sprite2D" parent="." unique_id=371758127]
 z_index = 3
 position = Vector2(829, 750.00006)
 scale = Vector2(0.73041475, 0.7661597)
 texture = ExtResource("63_20juf")
-
 script = ExtResource("48_fadetree")
+
 [node name="Birch4" type="Sprite2D" parent="." unique_id=772810212]
 z_index = 3
 position = Vector2(945.00006, 668)
 scale = Vector2(0.69745225, 0.82217574)
 texture = ExtResource("64_ok3tt")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree32" type="Sprite2D" parent="." unique_id=251006526]
 z_index = 3
-position = Vector2(678, 743)
+position = Vector2(339, 640)
 scale = Vector2(0.78846157, 0.7713755)
 texture = ExtResource("56_mtovm")
-
 script = ExtResource("48_fadetree")
+
 [node name="MiddleLaneTree33" type="Sprite2D" parent="." unique_id=1611125233]
 z_index = 3
 position = Vector2(868.75, 607)
 scale = Vector2(1.0925926, 1.6052631)
 texture = ExtResource("46_ov4cm")
-
 script = ExtResource("48_fadetree")
+
 [node name="FirTree22" type="Sprite2D" parent="." unique_id=6964576]
 z_index = 3
 position = Vector2(1022.625, 559.25)
 scale = Vector2(0.614, 0.59883726)
 texture = ExtResource("17_0oiyf")
-
 script = ExtResource("48_fadetree")
+
 [node name="FirTree23" type="Sprite2D" parent="." unique_id=1487423104]
 z_index = 3
 position = Vector2(1129, 603.00006)
 scale = Vector2(0.7921348, 0.6471698)
 texture = ExtResource("25_x6swx")
-
 script = ExtResource("48_fadetree")
+
 [node name="HousesAndWarehousesBrickWarehouseLevel5" type="Sprite2D" parent="." unique_id=1812685711]
 position = Vector2(1183.625, 675.125)
 scale = Vector2(0.16679691, 0.15976557)
@@ -2598,7 +2597,6 @@ texture = ExtResource("9_6epkn")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickWarehouseLevel5" unique_id=1155092638]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickWarehouseLevel5/StaticBody2D" unique_id=124726983]
-position = Vector2(0, 0)
 shape = SubResource("RectangleShape2D_bld_bh4")
 
 [node name="HousesAndWarehousesBrickWarehouseLevel2" type="Sprite2D" parent="." unique_id=937617563]
@@ -2609,7 +2607,6 @@ texture = ExtResource("6_2v48b")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickWarehouseLevel2" unique_id=451331529]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickWarehouseLevel2/StaticBody2D" unique_id=893177234]
-position = Vector2(0, 0)
 shape = SubResource("RectangleShape2D_bld_bw1")
 
 [node name="HousesAndWarehousesWoodenHouseLevel2" type="Sprite2D" parent="." unique_id=962602504]
@@ -2620,7 +2617,6 @@ texture = ExtResource("66_wbm50")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenHouseLevel2" unique_id=728829026]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenHouseLevel2/StaticBody2D" unique_id=1586174124]
-position = Vector2(0, 0)
 shape = SubResource("RectangleShape2D_bld_bh2")
 
 [node name="HousesAndWarehousesWoodenHouseLevel3" type="Sprite2D" parent="." unique_id=1066071378]
@@ -2631,7 +2627,6 @@ texture = ExtResource("67_t31x6")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenHouseLevel3" unique_id=361720171]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenHouseLevel3/StaticBody2D" unique_id=334242672]
-position = Vector2(0, 0)
 shape = SubResource("RectangleShape2D_bld_bh3")
 
 [node name="HousesAndWarehousesWoodenWarehouseLevel2" type="Sprite2D" parent="." unique_id=287505228]
@@ -2642,7 +2637,6 @@ texture = ExtResource("11_d06w5")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesWoodenWarehouseLevel2" unique_id=1399971333]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesWoodenWarehouseLevel2/StaticBody2D" unique_id=386579568]
-position = Vector2(0, 0)
 shape = SubResource("RectangleShape2D_bld_ww1")
 
 [node name="HousesAndWarehousesBrickHouseLevel6" type="Sprite2D" parent="." unique_id=615544076]
@@ -2653,5 +2647,4 @@ texture = ExtResource("8_yf6j1")
 [node name="StaticBody2D" type="StaticBody2D" parent="HousesAndWarehousesBrickHouseLevel6" unique_id=1417087018]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HousesAndWarehousesBrickHouseLevel6/StaticBody2D" unique_id=380944435]
-position = Vector2(0, 0)
 shape = SubResource("RectangleShape2D_bld_bh3")
