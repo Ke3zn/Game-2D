@@ -13,14 +13,18 @@
 [ext_resource type="Texture2D" uid="uid://dj5irthbokj7u" path="res://asset/char/main-char/attack/attack-back.png" id="11_attack_back"]
 [ext_resource type="Texture2D" uid="uid://dfea1vo8fkjqb" path="res://asset/char/main-char/attack/attack-left.png" id="12_attack_left"]
 [ext_resource type="Texture2D" uid="uid://b6xv4ljco1uku" path="res://asset/char/main-char/attack/attack-right.png" id="13_attack_right"]
-[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/attack-front.png" id="15_pent_front"]
-[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/attack-back.png" id="16_pent_back"]
-[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/attack-left.png" id="17_pent_left"]
-[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/attack-right.png" id="18_pent_right"]
+[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/swing-front.png" id="15_pent_front"]
+[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/swing-back.png" id="16_pent_back"]
+[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/swing-left.png" id="17_pent_left"]
+[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/swing-right.png" id="18_pent_right"]
 [ext_resource type="Texture2D" path="res://asset/char/main-char/apar/spray-front.png" id="19_apar_front"]
 [ext_resource type="Texture2D" path="res://asset/char/main-char/apar/spray-back.png" id="20_apar_back"]
 [ext_resource type="Texture2D" path="res://asset/char/main-char/apar/spray-left.png" id="21_apar_left"]
 [ext_resource type="Texture2D" path="res://asset/char/main-char/apar/spray-right.png" id="22_apar_right"]
+[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/walk-front.png" id="24_pent_walk_front"]
+[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/walk-back.png" id="25_pent_walk_back"]
+[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/walk-left.png" id="26_pent_walk_left"]
+[ext_resource type="Texture2D" path="res://asset/char/main-char/pentungan/walk-right.png" id="27_pent_walk_right"]
 
 [sub_resource type="AtlasTexture" id="Atlas_attack_back_0"]
 atlas = ExtResource("11_attack_back")
@@ -688,6 +692,134 @@ region = Rect2(768, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="Atlas_apar_right_7"]
 atlas = ExtResource("22_apar_right")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_front_0"]
+atlas = ExtResource("24_pent_walk_front")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_front_1"]
+atlas = ExtResource("24_pent_walk_front")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_front_2"]
+atlas = ExtResource("24_pent_walk_front")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_front_3"]
+atlas = ExtResource("24_pent_walk_front")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_front_4"]
+atlas = ExtResource("24_pent_walk_front")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_front_5"]
+atlas = ExtResource("24_pent_walk_front")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_front_6"]
+atlas = ExtResource("24_pent_walk_front")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_front_7"]
+atlas = ExtResource("24_pent_walk_front")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_back_0"]
+atlas = ExtResource("25_pent_walk_back")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_back_1"]
+atlas = ExtResource("25_pent_walk_back")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_back_2"]
+atlas = ExtResource("25_pent_walk_back")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_back_3"]
+atlas = ExtResource("25_pent_walk_back")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_back_4"]
+atlas = ExtResource("25_pent_walk_back")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_back_5"]
+atlas = ExtResource("25_pent_walk_back")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_back_6"]
+atlas = ExtResource("25_pent_walk_back")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_back_7"]
+atlas = ExtResource("25_pent_walk_back")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_left_0"]
+atlas = ExtResource("26_pent_walk_left")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_left_1"]
+atlas = ExtResource("26_pent_walk_left")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_left_2"]
+atlas = ExtResource("26_pent_walk_left")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_left_3"]
+atlas = ExtResource("26_pent_walk_left")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_left_4"]
+atlas = ExtResource("26_pent_walk_left")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_left_5"]
+atlas = ExtResource("26_pent_walk_left")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_left_6"]
+atlas = ExtResource("26_pent_walk_left")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_left_7"]
+atlas = ExtResource("26_pent_walk_left")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_right_0"]
+atlas = ExtResource("27_pent_walk_right")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_right_1"]
+atlas = ExtResource("27_pent_walk_right")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_right_2"]
+atlas = ExtResource("27_pent_walk_right")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_right_3"]
+atlas = ExtResource("27_pent_walk_right")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_right_4"]
+atlas = ExtResource("27_pent_walk_right")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_right_5"]
+atlas = ExtResource("27_pent_walk_right")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_right_6"]
+atlas = ExtResource("27_pent_walk_right")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_pent_walk_right_7"]
+atlas = ExtResource("27_pent_walk_right")
 region = Rect2(896, 0, 128, 128)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_player"]
@@ -1437,7 +1569,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_front_0")
+"texture": SubResource("Atlas_pent_walk_front_0")
 }],
 "loop": true,
 "name": &"idle_pentungan_front",
@@ -1445,20 +1577,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_front_0")
+"texture": SubResource("Atlas_pent_walk_front_0")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_front_1")
+"texture": SubResource("Atlas_pent_walk_front_1")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_front_2")
+"texture": SubResource("Atlas_pent_walk_front_2")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_front_1")
+"texture": SubResource("Atlas_pent_walk_front_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_front_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_front_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_front_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_front_7")
 }],
 "loop": true,
 "name": &"run_pentungan_front",
-"speed": 8.0
+"speed": 9.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1496,7 +1640,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_back_0")
+"texture": SubResource("Atlas_pent_walk_back_0")
 }],
 "loop": true,
 "name": &"idle_pentungan_back",
@@ -1504,20 +1648,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_back_0")
+"texture": SubResource("Atlas_pent_walk_back_0")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_back_1")
+"texture": SubResource("Atlas_pent_walk_back_1")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_back_2")
+"texture": SubResource("Atlas_pent_walk_back_2")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_back_1")
+"texture": SubResource("Atlas_pent_walk_back_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_back_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_back_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_back_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_back_7")
 }],
 "loop": true,
 "name": &"run_pentungan_back",
-"speed": 8.0
+"speed": 9.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1558,7 +1714,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_left_0")
+"texture": SubResource("Atlas_pent_walk_left_0")
 }],
 "loop": true,
 "name": &"idle_pentungan_left",
@@ -1566,20 +1722,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_left_0")
+"texture": SubResource("Atlas_pent_walk_left_0")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_left_1")
+"texture": SubResource("Atlas_pent_walk_left_1")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_left_2")
+"texture": SubResource("Atlas_pent_walk_left_2")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_left_1")
+"texture": SubResource("Atlas_pent_walk_left_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_left_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_left_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_left_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_left_7")
 }],
 "loop": true,
 "name": &"run_pentungan_left",
-"speed": 8.0
+"speed": 9.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1620,7 +1788,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_right_0")
+"texture": SubResource("Atlas_pent_walk_right_0")
 }],
 "loop": true,
 "name": &"idle_pentungan_right",
@@ -1628,20 +1796,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_right_0")
+"texture": SubResource("Atlas_pent_walk_right_0")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_right_1")
+"texture": SubResource("Atlas_pent_walk_right_1")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_right_2")
+"texture": SubResource("Atlas_pent_walk_right_2")
 }, {
 "duration": 1.0,
-"texture": SubResource("Atlas_pent_right_1")
+"texture": SubResource("Atlas_pent_walk_right_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_right_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_right_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_right_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_pent_walk_right_7")
 }],
 "loop": true,
 "name": &"run_pentungan_right",
-"speed": 8.0
+"speed": 9.0
 }, {
 "frames": [{
 "duration": 1.0,

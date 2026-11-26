@@ -54,7 +54,7 @@
 [ext_resource type="PackedScene" uid="uid://cnpckakek01" path="res://asset/npc.tscn" id="51_npc"]
 [ext_resource type="PackedScene" uid="uid://citempickup01" path="res://asset/item_pickup.tscn" id="52_item"]
 [ext_resource type="PackedScene" uid="uid://cdoorhouse01" path="res://asset/door_house.tscn" id="53_door"]
-[ext_resource type="PackedScene" uid="uid://cbosslime01" path="res://asset/boss_slime.tscn" id="54_boss"]
+[ext_resource type="PackedScene" uid="uid://cbossnormal01" path="res://asset/boss_normal.tscn" id="54_boss"]
 [ext_resource type="Texture2D" uid="uid://decit845m536d" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_1.png" id="55_emgn2"]
 [ext_resource type="Texture2D" uid="uid://gf2yx0cwalf5" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree2.png" id="56_mtovm"]
 [ext_resource type="Texture2D" uid="uid://qt1l6ml8mxgp" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree5.png" id="57_2n4pe"]
@@ -2331,7 +2331,7 @@ position = Vector2(1050, 230)
 [node name="Door_VillageHouse" parent="." unique_id=443267989 instance=ExtResource("53_door")]
 position = Vector2(760, 580)
 
-[node name="BossSlime" parent="." unique_id=2057301853 instance=ExtResource("54_boss")]
+[node name="BossNormal" parent="." unique_id=2057301853 instance=ExtResource("54_boss")]
 position = Vector2(320, 100)
 
 [node name="HUD" parent="." unique_id=1784112505 instance=ExtResource("49_hud")]
