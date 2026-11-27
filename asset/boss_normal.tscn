@@ -1,0 +1,318 @@
+[gd_scene format=3 uid="uid://cbossnormal01"]
+
+[ext_resource type="Script" path="res://sc/boss_normal.gd" id="1_boss_normal"]
+[ext_resource type="Texture2D" path="res://asset/char/boss-normal/idle-front.png" id="2_idle_front"]
+[ext_resource type="Texture2D" path="res://asset/char/boss-normal/walk-left.png" id="3_walk_left"]
+[ext_resource type="Texture2D" path="res://asset/char/boss-normal/walk-right.png" id="4_walk_right"]
+[ext_resource type="Texture2D" path="res://asset/char/boss-normal/throw-molotov.png" id="5_throw_molotov"]
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_0"]
+atlas = ExtResource("2_idle_front")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_1"]
+atlas = ExtResource("2_idle_front")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_2"]
+atlas = ExtResource("2_idle_front")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_3"]
+atlas = ExtResource("2_idle_front")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_4"]
+atlas = ExtResource("2_idle_front")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_5"]
+atlas = ExtResource("2_idle_front")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_6"]
+atlas = ExtResource("2_idle_front")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_7"]
+atlas = ExtResource("2_idle_front")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_8"]
+atlas = ExtResource("2_idle_front")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_left_0"]
+atlas = ExtResource("3_walk_left")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_left_1"]
+atlas = ExtResource("3_walk_left")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_left_2"]
+atlas = ExtResource("3_walk_left")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_left_3"]
+atlas = ExtResource("3_walk_left")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_left_4"]
+atlas = ExtResource("3_walk_left")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_left_5"]
+atlas = ExtResource("3_walk_left")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_left_6"]
+atlas = ExtResource("3_walk_left")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_left_7"]
+atlas = ExtResource("3_walk_left")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_left_8"]
+atlas = ExtResource("3_walk_left")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_right_0"]
+atlas = ExtResource("4_walk_right")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_right_1"]
+atlas = ExtResource("4_walk_right")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_right_2"]
+atlas = ExtResource("4_walk_right")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_right_3"]
+atlas = ExtResource("4_walk_right")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_right_4"]
+atlas = ExtResource("4_walk_right")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_right_5"]
+atlas = ExtResource("4_walk_right")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_right_6"]
+atlas = ExtResource("4_walk_right")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_right_7"]
+atlas = ExtResource("4_walk_right")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_right_8"]
+atlas = ExtResource("4_walk_right")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_0"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_1"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_2"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_3"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_4"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_5"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_6"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_7"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_8"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_9"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="Atlas_molotov_10"]
+atlas = ExtResource("5_throw_molotov")
+region = Rect2(1600, 0, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_boss_normal"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_8")
+}],
+"loop": true,
+"name": &"idle_front",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_left_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_left_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_left_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_left_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_left_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_left_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_left_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_left_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_left_8")
+}],
+"loop": true,
+"name": &"walk_left",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_right_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_right_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_right_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_right_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_right_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_right_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_right_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_right_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_right_8")
+}],
+"loop": true,
+"name": &"walk_right",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_molotov_10")
+}],
+"loop": false,
+"name": &"throw_molotov",
+"speed": 11.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_boss"]
+radius = 7.0
+height = 18.0
+
+[node name="BossNormal" type="CharacterBody2D" groups=["boss", "enemy"]]
+z_index = 2
+y_sort_enabled = true
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_boss_normal")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.36, 0.36)
+sprite_frames = SubResource("SpriteFrames_boss_normal")
+animation = &"idle_front"
+autoplay = "idle_front"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 15)
+shape = SubResource("CapsuleShape2D_boss")
