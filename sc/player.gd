@@ -34,13 +34,6 @@ var _knockback_velocity: Vector2 = Vector2.ZERO
 var _attack_lunge_velocity: Vector2 = Vector2.ZERO
 var _hit_dealt_this_swing: bool = false
 
-const PENTUNGAN_HIT_FRAME := {
-	"attack_pentungan_front": 2,
-	"attack_pentungan_right": 2,
-	"attack_pentungan_left": 2,
-	"attack_pentungan_back": 3
-}
-
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
@@ -48,8 +41,6 @@ func _ready() -> void:
 	has_apar = get_tree().get_meta("has_apar", false)
 	if sprite:
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		if not sprite.frame_changed.is_connected(_on_sprite_frame_changed):
-			sprite.frame_changed.connect(_on_sprite_frame_changed)
 		_play_state_anim("idle")
 	# Pancarkan status awal
 	blood_changed.emit(current_blood, max_blood)
@@ -102,14 +93,14 @@ func _physics_process(delta: float) -> void:
 		if is_sprinting:
 			velocity = direction.normalized() * sprint_speed
 			if sprite:
-				sprite.speed_scale = 1.3
+				sprite.speed_scale = 1.0
 			current_energy = max(0.0, current_energy - sprint_energy_cost * delta)
 			_energy_recovery_timer = energy_recovery_delay
 			energy_changed.emit(current_energy, max_energy)
 		else:
 			velocity = direction.normalized() * speed
 			if sprite:
-				sprite.speed_scale = 0.9
+				sprite.speed_scale = 0.95
 		velocity += _knockback_velocity
 
 		if abs(direction.x) > abs(direction.y):
@@ -122,7 +113,7 @@ func _physics_process(delta: float) -> void:
 				last_direction = "front"
 			else:
 				last_direction = "back"
-		_play_state_anim("run")
+		_play_state_anim("run" if is_sprinting else "walk")
 	else:
 		velocity = Vector2.ZERO
 		if sprite:
@@ -173,12 +164,19 @@ func _play_state_anim(base_state: String) -> void:
 			if sprite.animation != fallback or not sprite.is_playing():
 				sprite.play(fallback)
 
+func _get_move_state() -> String:
+	if direction == Vector2.ZERO:
+		return "idle"
+	if Input.is_key_pressed(KEY_SHIFT) and current_energy > 0.0:
+		return "run"
+	return "walk"
+
 func grant_apar() -> void:
 	has_apar = true
 	get_tree().set_meta("has_apar", true)
 	set_active_slot(0)
 	if not is_attacking and not is_hurt and not is_dead:
-		_play_state_anim("run" if direction != Vector2.ZERO else "idle")
+		_play_state_anim(_get_move_state())
 
 func _get_facing_vector() -> Vector2:
 	match last_direction:
@@ -192,32 +190,33 @@ func _start_attack_pentungan() -> void:
 	is_attacking = true
 	_hit_dealt_this_swing = false
 	var attack_dir = _get_facing_vector()
-	# Langkah dorongan halus ke depan agar ayunan terasa bertenaga dan tidak kaku
 	_attack_lunge_velocity = attack_dir * 70.0
 	velocity = _attack_lunge_velocity
+
+	_spawn_swing_arc(attack_dir)
 
 	if sprite:
 		sprite.speed_scale = 1.0
 		sprite.scale = Vector2(0.3, 0.3)
-		var anim_name = "attack_pentungan_" + last_direction
-		if sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_name):
-			sprite.play(anim_name)
-		else:
-			_play_state_anim("idle")
+		_play_state_anim("idle")
 
-		# Efek squash & stretch dinamis mengikuti ayunan pentungan
 		var t = create_tween()
 		t.tween_property(sprite, "scale", Vector2(0.27, 0.33), 0.05)
+		t.tween_callback(func():
+			if not is_dead and not _hit_dealt_this_swing:
+				_execute_pentungan_hit()
+		)
 		t.tween_property(sprite, "scale", Vector2(0.34, 0.27), 0.09).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		t.tween_property(sprite, "scale", Vector2(0.3, 0.3), 0.16).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-
-	_spawn_swing_arc(attack_dir)
-
-func _on_sprite_frame_changed() -> void:
-	if is_attacking and not _hit_dealt_this_swing and sprite:
-		var hit_frame: int = PENTUNGAN_HIT_FRAME.get(sprite.animation, -1)
-		if hit_frame != -1 and sprite.frame == hit_frame:
-			_execute_pentungan_hit()
+		t.tween_property(sprite, "scale", Vector2(0.3, 0.3), 0.14).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+		t.tween_callback(func():
+			is_attacking = false
+			_attack_lunge_velocity = Vector2.ZERO
+			if not is_dead:
+				_play_state_anim(_get_move_state())
+		)
+	else:
+		_execute_pentungan_hit()
+		is_attacking = false
 
 func _execute_pentungan_hit() -> void:
 	_hit_dealt_this_swing = true
@@ -264,24 +263,28 @@ func _spawn_swing_arc(attack_dir: Vector2) -> void:
 func _start_spray_apar() -> void:
 	is_attacking = true
 	var attack_dir = _get_facing_vector()
-	_attack_lunge_velocity = -attack_dir * 20.0
+	_attack_lunge_velocity = -attack_dir * 18.0
 	velocity = _attack_lunge_velocity
-	if sprite:
-		sprite.speed_scale = 1.0
-		var anim_name = "spray_apar_" + last_direction
-		if sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_name):
-			sprite.play(anim_name)
-		else:
-			_play_state_anim("idle")
-
-		var t = create_tween()
-		t.tween_property(sprite, "scale", Vector2(0.32, 0.28), 0.08)
-		t.tween_property(sprite, "scale", Vector2(0.29, 0.31), 0.12)
-		t.tween_property(sprite, "scale", Vector2(0.3, 0.3), 0.15)
 
 	_spawn_apar_foam(attack_dir)
 
-	# Semprotan APAR juga bisa mendorong & memberi damage pada musuh (efektif ke Boss Pembakar)
+	if sprite:
+		sprite.speed_scale = 1.0
+		_play_state_anim("idle")
+		var t = create_tween()
+		t.tween_property(sprite, "scale", Vector2(0.32, 0.28), 0.08)
+		t.tween_property(sprite, "scale", Vector2(0.29, 0.31), 0.1)
+		t.tween_property(sprite, "scale", Vector2(0.3, 0.3), 0.1)
+		t.tween_callback(func():
+			is_attacking = false
+			_attack_lunge_velocity = Vector2.ZERO
+			if not is_dead:
+				_play_state_anim(_get_move_state())
+		)
+	else:
+		is_attacking = false
+
+	# Semprotan APAR juga mendorong & memberi damage ke musuh di depan (termasuk Boss)
 	var spray_center = global_position + attack_dir * 18.0
 	for e in get_tree().get_nodes_in_group("enemy"):
 		if is_instance_valid(e) and not e.get("is_dead"):
@@ -298,22 +301,22 @@ func _spawn_apar_foam(attack_dir: Vector2) -> void:
 	if not parent_node:
 		return
 	var base_angle = attack_dir.angle()
-	var origin = global_position + attack_dir * 8.0 + Vector2(0, 3)
-	for i in range(10):
+	var origin = global_position + attack_dir * 9.0 + Vector2(0, 3)
+	for i in range(14):
 		var puff = Polygon2D.new()
 		puff.z_index = 4
 		puff.global_position = origin
-		puff.polygon = PackedVector2Array([Vector2(-2, -2), Vector2(2, -2), Vector2(2, 2), Vector2(-2, 2)])
-		puff.color = Color(0.92, 0.98, 1.0, 0.85) if i % 2 == 0 else Color(0.75, 0.92, 1.0, 0.75)
+		puff.polygon = PackedVector2Array([Vector2(-2.2, -2.2), Vector2(2.2, -2.2), Vector2(2.2, 2.2), Vector2(-2.2, 2.2)])
+		puff.color = Color(1.0, 1.0, 1.0, 0.92) if i % 2 == 0 else Color(0.90, 0.96, 1.0, 0.82)
 		parent_node.add_child(puff)
 
-		var a = base_angle + randf_range(-0.45, 0.45)
-		var dist_out = randf_range(16.0, 34.0)
+		var a = base_angle + randf_range(-0.48, 0.48)
+		var dist_out = randf_range(16.0, 38.0)
 		var target_p = origin + Vector2(cos(a) * dist_out, sin(a) * dist_out)
 		var t = puff.create_tween().set_parallel(true)
-		t.tween_property(puff, "global_position", target_p, 0.28).set_ease(Tween.EASE_OUT)
-		t.tween_property(puff, "scale", Vector2(1.8, 1.8), 0.28)
-		t.tween_property(puff, "modulate:a", 0.0, 0.3)
+		t.tween_property(puff, "global_position", target_p, 0.32).set_ease(Tween.EASE_OUT)
+		t.tween_property(puff, "scale", Vector2(2.1, 2.1), 0.32)
+		t.tween_property(puff, "modulate:a", 0.0, 0.34)
 		t.chain().tween_callback(puff.queue_free)
 
 func set_active_slot(index: int) -> void:
@@ -322,16 +325,16 @@ func set_active_slot(index: int) -> void:
 	active_slot = clampi(index, 0, 2)
 	active_slot_changed.emit(active_slot)
 	if not is_attacking and not is_hurt and not is_dead:
-		_play_state_anim("run" if direction != Vector2.ZERO else "idle")
+		_play_state_anim(_get_move_state())
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if is_attacking:
 		is_attacking = false
 		_attack_lunge_velocity = Vector2.ZERO
-		_play_state_anim("run" if direction != Vector2.ZERO else "idle")
+		_play_state_anim(_get_move_state())
 	elif is_hurt:
 		is_hurt = false
-		_play_state_anim("run" if direction != Vector2.ZERO else "idle")
+		_play_state_anim(_get_move_state())
 
 func take_damage(amount: float, knockback: Vector2 = Vector2.ZERO) -> void:
 	if is_dead or _invuln_timer > 0.0:

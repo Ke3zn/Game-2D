@@ -4,7 +4,7 @@ class_name ItemPickup
 @export var item_id: String = "potion_red"
 @export var item_name: String = "Ramuan Pemulih Darah"
 @export var item_desc: String = "Memulihkan 40 Darah saat diminum dari tas."
-@export var item_icon_path: String = "res://asset/char/tools/potion_red.png"
+@export var item_icon_path: String = "res://asset/tools/potion_red.png"
 @export var heal_amount: float = 40.0
 @export var count: int = 1
 
@@ -30,17 +30,17 @@ func set_item(id: String) -> void:
 		"potion_red":
 			item_name = "Ramuan Pemulih Darah"
 			item_desc = "Memulihkan 40 Darah saat diminum dari tas."
-			item_icon_path = "res://asset/char/tools/potion_red.png"
+			item_icon_path = "res://asset/tools/potion_red.png"
 			heal_amount = 40.0
 		"coin":
 			item_name = "Koin Emas"
 			item_desc = "Koin mata uang berharga yang dijatuhkan monster."
-			item_icon_path = "res://asset/char/tools/coin.png"
+			item_icon_path = "res://asset/tools/coin.png"
 			heal_amount = 0.0
 		"wood":
 			item_name = "Ranting Kayu"
 			item_desc = "Kayu bahan kerajinan dari pepohonan hutan."
-			item_icon_path = "res://asset/char/tools/wood.png"
+			item_icon_path = "res://asset/tools/wood.png"
 			heal_amount = 0.0
 
 	if FileAccess.file_exists(item_icon_path) and sprite:
