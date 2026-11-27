@@ -9,8 +9,8 @@ signal dialogue_finished
 @export var action_normal_style: StyleBoxFlat
 @export var action_pressed_style: StyleBoxFlat
 
-@onready var blood_bar: ProgressBar = %BloodBar
-@onready var energy_bar: ProgressBar = %EnergyBar
+@onready var blood_bar: TextureProgressBar = %BloodBar
+@onready var energy_bar: TextureProgressBar = %EnergyBar
 @onready var blood_val_label: Label = %BloodValLabel
 @onready var energy_val_label: Label = %EnergyValLabel
 
@@ -287,18 +287,18 @@ func _on_joystick_gui_input(event: InputEvent) -> void:
 		_update_joystick(event.position)
 
 func _update_joystick(touch_pos: Vector2) -> void:
-	var offset = touch_pos - _joystick_center
-	var dist = offset.length()
+	var joy_offset = touch_pos - _joystick_center
+	var dist = joy_offset.length()
 	if dist > _max_joystick_radius:
-		offset = offset.normalized() * _max_joystick_radius
+		joy_offset = joy_offset.normalized() * _max_joystick_radius
 		dist = _max_joystick_radius
 
 	if joystick_knob:
-		joystick_knob.position = (_joystick_center + offset) - _knob_half_size
+		joystick_knob.position = (_joystick_center + joy_offset) - _knob_half_size
 
 	var deadzone = 8.0
 	if dist > deadzone:
-		_active_joystick_dir = offset.normalized()
+		_active_joystick_dir = joy_offset.normalized()
 		_set_action_state("move_right", _active_joystick_dir.x > 0.35)
 		_set_action_state("move_left", _active_joystick_dir.x < -0.35)
 		_set_action_state("move_down", _active_joystick_dir.y > 0.35)
@@ -509,7 +509,7 @@ func hide_boss_bar() -> void:
 	if boss_bar_container:
 		boss_bar_container.visible = false
 
-func on_boss_defeated(title: String) -> void:
+func on_boss_defeated(_title: String) -> void:
 	hide_boss_bar()
 	trigger_screen_shake(12.0, 0.5)
 	if victory_banner:

@@ -14,6 +14,13 @@
 [ext_resource type="Texture2D" path="res://asset/ui/gameover_btn_normal.png" id="12_go_btn_norm"]
 [ext_resource type="Texture2D" path="res://asset/ui/gameover_btn_hover.png" id="13_go_btn_hov"]
 [ext_resource type="FontFile" path="res://asset/ui/PixelifySans.ttf" id="14_pixelify"]
+[ext_resource type="Texture2D" path="res://asset/ui/stat_bar_frame.png" id="15_stat_frame"]
+[ext_resource type="Texture2D" path="res://asset/ui/blood_bar_bg.png" id="16_blood_bg"]
+[ext_resource type="Texture2D" path="res://asset/ui/blood_bar_fill.png" id="17_blood_fill"]
+[ext_resource type="Texture2D" path="res://asset/ui/energy_bar_bg.png" id="18_energy_bg"]
+[ext_resource type="Texture2D" path="res://asset/ui/energy_bar_fill.png" id="19_energy_fill"]
+[ext_resource type="Texture2D" path="res://asset/ui/icon_heart.png" id="20_icon_heart"]
+[ext_resource type="Texture2D" path="res://asset/ui/icon_bolt.png" id="21_icon_bolt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot_normal"]
 bg_color = Color(0.968627, 0.92549, 0.835294, 1)
@@ -46,10 +53,10 @@ border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 90
-corner_radius_top_right = 90
-corner_radius_bottom_right = 90
-corner_radius_bottom_left = 90
+corner_radius_top_left = 110
+corner_radius_top_right = 110
+corner_radius_bottom_right = 110
+corner_radius_bottom_left = 110
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blood_bg"]
 bg_color = Color(0.18, 0.05, 0.05, 0.85)
@@ -329,21 +336,21 @@ theme = SubResource("Theme_pixelify")
 
 [node name="TopLeftContainer" type="HBoxContainer" parent="Control"]
 layout_mode = 0
-offset_left = 30.0
-offset_top = 30.0
-offset_right = 520.0
-offset_bottom = 210.0
+offset_left = 26.0
+offset_top = 26.0
+offset_right = 560.0
+offset_bottom = 246.0
 theme_override_constants/separation = 18
 
 [node name="MinimapSlot" type="PanelContainer" parent="Control/TopLeftContainer"]
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(220, 220)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_map_bg")
 
 [node name="Minimap" type="Control" parent="Control/TopLeftContainer/MinimapSlot"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(220, 220)
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("3_minimap")
@@ -352,73 +359,137 @@ script = ExtResource("3_minimap")
 custom_minimum_size = Vector2(280, 130)
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_constants/separation = 4
+theme_override_constants/separation = 5
 
 [node name="BloodHeader" type="HBoxContainer" parent="Control/TopLeftContainer/StatsContainer"]
 layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HeartIcon" type="TextureRect" parent="Control/TopLeftContainer/StatsContainer/BloodHeader"]
+texture_filter = 1
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("20_icon_heart")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="BloodTitle" type="Label" parent="Control/TopLeftContainer/StatsContainer/BloodHeader"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(1, 0.92, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.04, 0.04, 1)
 theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 15
 text = "BLOOD"
 
 [node name="BloodValLabel" type="Label" parent="Control/TopLeftContainer/StatsContainer/BloodHeader"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 0.9)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.96, 0.94, 0.9, 0.95)
+theme_override_colors/font_outline_color = Color(0.08, 0.04, 0.04, 1)
 theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 14
 text = "100 / 100"
 horizontal_alignment = 2
 
-[node name="BloodBar" type="ProgressBar" parent="Control/TopLeftContainer/StatsContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(280, 24)
+[node name="BloodBarWrap" type="Control" parent="Control/TopLeftContainer/StatsContainer"]
+custom_minimum_size = Vector2(280, 26)
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_blood_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_blood_fill")
+mouse_filter = 2
+
+[node name="BloodBar" type="TextureProgressBar" parent="Control/TopLeftContainer/StatsContainer/BloodBarWrap"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 276.0
+offset_bottom = 22.0
 value = 100.0
-show_percentage = false
+nine_patch_stretch = true
+texture_under = ExtResource("16_blood_bg")
+texture_progress = ExtResource("17_blood_fill")
+
+[node name="BloodBarFrame" type="TextureRect" parent="Control/TopLeftContainer/StatsContainer/BloodBarWrap"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("15_stat_frame")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Spacer" type="Control" parent="Control/TopLeftContainer/StatsContainer"]
-custom_minimum_size = Vector2(0, 6)
+custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
 [node name="EnergyHeader" type="HBoxContainer" parent="Control/TopLeftContainer/StatsContainer"]
 layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BoltIcon" type="TextureRect" parent="Control/TopLeftContainer/StatsContainer/EnergyHeader"]
+texture_filter = 1
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("21_icon_bolt")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="EnergyTitle" type="Label" parent="Control/TopLeftContainer/StatsContainer/EnergyHeader"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(1, 0.95, 0.82, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.06, 0.02, 1)
 theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 15
 text = "ENERGY"
 
 [node name="EnergyValLabel" type="Label" parent="Control/TopLeftContainer/StatsContainer/EnergyHeader"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 0.9)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.96, 0.94, 0.9, 0.95)
+theme_override_colors/font_outline_color = Color(0.08, 0.06, 0.02, 1)
 theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 14
 text = "100 / 100"
 horizontal_alignment = 2
 
-[node name="EnergyBar" type="ProgressBar" parent="Control/TopLeftContainer/StatsContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(280, 24)
+[node name="EnergyBarWrap" type="Control" parent="Control/TopLeftContainer/StatsContainer"]
+custom_minimum_size = Vector2(280, 26)
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_energy_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_energy_fill")
+mouse_filter = 2
+
+[node name="EnergyBar" type="TextureProgressBar" parent="Control/TopLeftContainer/StatsContainer/EnergyBarWrap"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 276.0
+offset_bottom = 22.0
 value = 100.0
-show_percentage = false
+nine_patch_stretch = true
+texture_under = ExtResource("18_energy_bg")
+texture_progress = ExtResource("19_energy_fill")
+
+[node name="EnergyBarFrame" type="TextureRect" parent="Control/TopLeftContainer/StatsContainer/EnergyBarWrap"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("15_stat_frame")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="HotbarContainer" type="HBoxContainer" parent="Control"]
 layout_mode = 1

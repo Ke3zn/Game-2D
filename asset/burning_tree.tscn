@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cburningtree01"]
+[gd_scene format=3 uid="uid://bfyvmwblqnea"]
 
 [ext_resource type="Script" path="res://sc/burning_tree.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://asset/pohon 2/1. sprite sheet pohon saat kebakaran/1.png" id="2_s1_1"]

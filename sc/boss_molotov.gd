@@ -18,7 +18,7 @@ var is_dead: bool = false
 
 const THROW_RELEASE_FRAME := 7
 const MELEE_HIT_FRAME := 4
-const MOLOTOV_TEX := preload("res://asset/char/boss-normal-lengkap/molotov_projectile.png")
+const MOLOTOV_TEX := preload("res://asset/tools/molotov_projectile.png")
 
 var _attack_timer: float = 0.0
 var _throw_timer: float = 1.5
