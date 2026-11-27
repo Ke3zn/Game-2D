@@ -71,7 +71,7 @@ var quest_target_count: int = 2
 var current_dialogue_lines: Array[String] = []
 var current_dialogue_idx: int = 0
 var inventory_items: Dictionary = {
-	1: {"id": "pentungan", "name": "Pentungan Kayu", "desc": "Senjata pemukul dasar untuk perlindungan diri. Mengkonsumsi 20 energi saat diayunkan. (Terpasang di Slot 2 Hotbar)", "icon": null}
+	1: {"id": "pentungan", "name": "Pentungan Kayu", "desc": "Senjata pemukul dasar untuk perlindungan diri. Mengkonsumsi 8 energi saat diayunkan. (Terpasang di Slot 2 Hotbar)", "icon": null}
 }
 
 var slots: Array[PanelContainer] = []
@@ -239,6 +239,13 @@ func set_energy(current: float, max_val: float, animate: bool = true) -> void:
 		energy_tween.tween_property(energy_bar, "value", current, 0.15)
 	else:
 		energy_bar.value = current
+
+func flash_energy_bar() -> void:
+	if not energy_bar:
+		return
+	var t = energy_bar.create_tween()
+	t.tween_property(energy_bar, "modulate", Color(1.0, 0.35, 0.35, 1.0), 0.08)
+	t.tween_property(energy_bar, "modulate", Color.WHITE, 0.14)
 
 func _process(delta: float) -> void:
 	# Jika tidak sedang di-drag manual, sinkronkan posisi knob joystick dengan tombol keyboard (WASD / Panah)
