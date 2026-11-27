@@ -57,7 +57,7 @@ var _active_joystick_dir: Vector2 = Vector2.ZERO
 @onready var boss_bar_container: Control = %BossBarContainer
 @onready var boss_name_label: Label = %BossNameLabel
 @onready var boss_hp_val_label: Label = %BossHpValLabel
-@onready var boss_progress_bar: ProgressBar = %BossProgressBar
+@onready var boss_progress_bar: TextureProgressBar = %BossProgressBar
 @onready var victory_banner: Control = %VictoryBanner
 
 @onready var game_over_modal: Control = %GameOverModal
