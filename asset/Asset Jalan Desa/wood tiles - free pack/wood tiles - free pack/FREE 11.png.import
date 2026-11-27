@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnqb3ygiiwg1l"
-path="res://.godot/imported/attack-front.png-61492c4d1e6a9c69809cfee92d9f3c91.ctex"
+uid="uid://b0y1glh6cr0xi"
+path="res://.godot/imported/FREE 11.png-92920c897c80998e96acafb2d2090448.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/char/main-char/pentungan/attack-front.png"
-dest_files=["res://.godot/imported/attack-front.png-61492c4d1e6a9c69809cfee92d9f3c91.ctex"]
+source_file="res://asset/Asset Jalan Desa/wood tiles - free pack/wood tiles - free pack/FREE 11.png"
+dest_files=["res://.godot/imported/FREE 11.png-92920c897c80998e96acafb2d2090448.ctex"]
 
 [params]
 

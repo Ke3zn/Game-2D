@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djftb7rc2vsot"
-path="res://.godot/imported/front.jpg-caf4298c7ca37a97924cbb470ad802aa.ctex"
+uid="uid://xsfw7j8dbnds"
+path="res://.godot/imported/FREE 14.png-3a25de34b161584e34ac0d199610e114.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/char/main-char/pentungan/front.jpg"
-dest_files=["res://.godot/imported/front.jpg-caf4298c7ca37a97924cbb470ad802aa.ctex"]
+source_file="res://asset/Asset Jalan Desa/wood tiles - free pack/wood tiles - free pack/FREE 14.png"
+dest_files=["res://.godot/imported/FREE 14.png-3a25de34b161584e34ac0d199610e114.ctex"]
 
 [params]
 
