@@ -151,7 +151,7 @@ func exit_to_village() -> void:
 	var font_res: FontFile = load("res://asset/ui/PixelifySans.ttf")
 
 	var title_lbl := Label.new()
-	title_lbl.text = "Menuju Desa..."
+	title_lbl.text = "Keluar Rumah..."
 	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if font_res:
 		title_lbl.add_theme_font_override("font", font_res)

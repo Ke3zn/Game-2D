@@ -21,6 +21,8 @@
 [ext_resource type="Texture2D" path="res://asset/ui/energy_bar_fill.png" id="19_energy_fill"]
 [ext_resource type="Texture2D" path="res://asset/ui/icon_heart.png" id="20_icon_heart"]
 [ext_resource type="Texture2D" path="res://asset/ui/icon_bolt.png" id="21_icon_bolt"]
+[ext_resource type="Texture2D" path="res://asset/ui/icon_hand.png" id="22_icon_hand"]
+[ext_resource type="Texture2D" path="res://asset/tools/coin.png" id="23_icon_coin"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot_normal"]
 bg_color = Color(0.968627, 0.92549, 0.835294, 1)
@@ -312,6 +314,17 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_coin_bar"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+
 [sub_resource type="Theme" id="Theme_pixelify"]
 default_font = ExtResource("14_pixelify")
 
@@ -356,7 +369,7 @@ mouse_filter = 2
 script = ExtResource("3_minimap")
 
 [node name="StatsContainer" type="VBoxContainer" parent="Control/TopLeftContainer"]
-custom_minimum_size = Vector2(280, 130)
+custom_minimum_size = Vector2(280, 170)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 5
@@ -491,6 +504,42 @@ texture = ExtResource("15_stat_frame")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Spacer2" type="Control" parent="Control/TopLeftContainer/StatsContainer"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="CoinBarPanel" type="PanelContainer" parent="Control/TopLeftContainer/StatsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_coin_bar")
+
+[node name="CoinHBox" type="HBoxContainer" parent="Control/TopLeftContainer/StatsContainer/CoinBarPanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CoinIcon" type="TextureRect" parent="Control/TopLeftContainer/StatsContainer/CoinBarPanel/CoinHBox"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("23_icon_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoinValLabel" type="Label" parent="Control/TopLeftContainer/StatsContainer/CoinBarPanel/CoinHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.92, 0.52, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
+text = "0"
+
 [node name="HotbarContainer" type="HBoxContainer" parent="Control"]
 layout_mode = 1
 anchors_preset = 1
@@ -518,7 +567,9 @@ theme_override_constants/margin_bottom = 10
 
 [node name="ItemIcon0" type="TextureRect" parent="Control/HotbarContainer/Slot0/Margin"]
 unique_name_in_owner = true
+texture_filter = 1
 layout_mode = 2
+texture = ExtResource("22_icon_hand")
 expand_mode = 1
 stretch_mode = 5
 
@@ -1005,7 +1056,6 @@ grow_vertical = 0
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.25, 0.18, 0.1, 0.9)
 theme_override_font_sizes/font_size = 12
-text = "🎒 TAS [TAB/B]"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1063,7 +1113,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.18, 0.12, 0.08, 1)
 theme_override_font_sizes/font_size = 20
-text = "🎒 TAS PENYIMPANAN / INVENTORY"
+text = "TAS PENYIMPANAN / INVENTORY"
 
 [node name="InvCloseBtn" type="Button" parent="Control/InventoryModal/InvPanel/Margin/VBox/Header"]
 unique_name_in_owner = true
@@ -1137,7 +1187,6 @@ autowrap_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.45, 0.38, 0.3, 0.8)
 theme_override_font_sizes/font_size = 12
-text = "Klik item untuk memilih / pasang di Hotbar • Tekan [ B ] atau [ ESC ] untuk menutup tas"
 horizontal_alignment = 1
 
 [node name="DialogueModal" type="Control" parent="Control"]

@@ -1,0 +1,378 @@
+[gd_scene format=3 uid="uid://di4dkyosn7fmi"]
+
+[ext_resource type="Script" path="res://sc/interior_store.gd" id="1_store"]
+[ext_resource type="PackedScene" path="res://asset/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://asset/hud.tscn" id="3_hud"]
+[ext_resource type="FontFile" path="res://asset/ui/PixelifySans.ttf" id="4_font"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_top"]
+size = Vector2(320, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_left"]
+size = Vector2(24, 240)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_right"]
+size = Vector2(24, 240)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_bot_left"]
+size = Vector2(120, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_bot_right"]
+size = Vector2(120, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_door_stop"]
+size = Vector2(80, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_counter"]
+size = Vector2(96, 22)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shop_area"]
+size = Vector2(110, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_exit"]
+size = Vector2(32, 20)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_store_panel"]
+bg_color = Color(0.96, 0.92, 0.80, 0.98)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 5
+border_color = Color(0.32, 0.21, 0.11, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_portrait_bg"]
+bg_color = Color(0.24, 0.16, 0.12, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.82, 0.58, 0.18, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Theme" id="Theme_store"]
+default_font = ExtResource("4_font")
+
+[node name="InteriorStore" type="Node2D"]
+script = ExtResource("1_store")
+
+[node name="Floor" type="TextureRect" parent="."]
+offset_right = 320.0
+offset_bottom = 240.0
+stretch_mode = 1
+
+[node name="WallTop" type="TextureRect" parent="."]
+offset_right = 320.0
+offset_bottom = 48.0
+stretch_mode = 1
+
+[node name="WallLeft" type="TextureRect" parent="."]
+offset_right = 24.0
+offset_bottom = 240.0
+stretch_mode = 1
+
+[node name="WallRight" type="TextureRect" parent="."]
+offset_left = 296.0
+offset_right = 320.0
+offset_bottom = 240.0
+stretch_mode = 1
+
+[node name="WallBottomLeft" type="TextureRect" parent="."]
+offset_top = 224.0
+offset_right = 140.0
+offset_bottom = 240.0
+stretch_mode = 1
+
+[node name="WallBottomRight" type="TextureRect" parent="."]
+offset_left = 180.0
+offset_top = 224.0
+offset_right = 320.0
+offset_bottom = 240.0
+stretch_mode = 1
+
+[node name="StaticWalls" type="StaticBody2D" parent="."]
+
+[node name="CollisionTop" type="CollisionShape2D" parent="StaticWalls"]
+position = Vector2(160, 24)
+shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="CollisionLeft" type="CollisionShape2D" parent="StaticWalls"]
+position = Vector2(12, 120)
+shape = SubResource("RectangleShape2D_wall_left")
+
+[node name="CollisionRight" type="CollisionShape2D" parent="StaticWalls"]
+position = Vector2(308, 120)
+shape = SubResource("RectangleShape2D_wall_right")
+
+[node name="CollisionBottomLeft" type="CollisionShape2D" parent="StaticWalls"]
+position = Vector2(60, 232)
+shape = SubResource("RectangleShape2D_wall_bot_left")
+
+[node name="CollisionBottomRight" type="CollisionShape2D" parent="StaticWalls"]
+position = Vector2(260, 232)
+shape = SubResource("RectangleShape2D_wall_bot_right")
+
+[node name="CollisionBottomDoorStop" type="CollisionShape2D" parent="StaticWalls"]
+position = Vector2(160, 242)
+shape = SubResource("RectangleShape2D_wall_door_stop")
+
+[node name="Rug" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(160, 156)
+scale = Vector2(1.1, 1.0)
+
+[node name="DoorMat" type="Sprite2D" parent="."]
+position = Vector2(160, 218)
+
+[node name="PotionShelf" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(160, 30)
+scale = Vector2(1.8, 1.8)
+
+[node name="WeaponRackLeft" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(74, 46)
+scale = Vector2(1.5, 1.5)
+
+[node name="WeaponRackRight" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(246, 46)
+scale = Vector2(1.5, 1.5)
+
+[node name="StoreKeeper" type="Node2D" parent="."]
+position = Vector2(160, 78)
+z_index = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="StoreKeeper"]
+texture_filter = 1
+scale = Vector2(0.85, 0.85)
+
+[node name="GreetingBubble" type="Label" parent="StoreKeeper"]
+visible = false
+z_index = 6
+offset_left = -52.0
+offset_top = -34.0
+offset_right = 52.0
+offset_bottom = -20.0
+theme_override_colors/font_color = Color(0.22, 0.14, 0.06, 1)
+theme_override_colors/font_outline_color = Color(1, 0.96, 0.85, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 7
+text = "Selamat datang!"
+horizontal_alignment = 1
+
+[node name="CounterCollision" type="StaticBody2D" parent="."]
+position = Vector2(160, 96)
+z_index = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CounterCollision"]
+texture_filter = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CounterCollision"]
+shape = SubResource("RectangleShape2D_counter")
+
+[node name="SideTableLeft" type="StaticBody2D" parent="."]
+position = Vector2(48, 86)
+
+[node name="Sprite2D" type="Sprite2D" parent="SideTableLeft"]
+texture_filter = 1
+scale = Vector2(0.85, 0.85)
+
+[node name="DisplayAxe" type="Sprite2D" parent="SideTableLeft"]
+texture_filter = 1
+position = Vector2(0, -4)
+scale = Vector2(0.85, 0.85)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SideTableLeft"]
+shape = SubResource("RectangleShape2D_door_exit")
+
+[node name="SideTableRight" type="StaticBody2D" parent="."]
+position = Vector2(272, 86)
+
+[node name="Sprite2D" type="Sprite2D" parent="SideTableRight"]
+texture_filter = 1
+scale = Vector2(0.85, 0.85)
+
+[node name="DisplayShield" type="Sprite2D" parent="SideTableRight"]
+texture_filter = 1
+position = Vector2(0, -4)
+scale = Vector2(0.85, 0.85)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SideTableRight"]
+shape = SubResource("RectangleShape2D_door_exit")
+
+[node name="ShopArea" type="Area2D" parent="."]
+position = Vector2(160, 114)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShopArea"]
+shape = SubResource("RectangleShape2D_shop_area")
+
+[node name="ShopPrompt" type="Label" parent="ShopArea"]
+visible = false
+z_index = 5
+offset_left = -64.0
+offset_top = -36.0
+offset_right = 64.0
+offset_bottom = -20.0
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "[E/F] Beli Peralatan"
+horizontal_alignment = 1
+
+[node name="DoorArea" type="Area2D" parent="."]
+position = Vector2(160, 224)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorArea"]
+shape = SubResource("RectangleShape2D_door_exit")
+
+[node name="DoorPrompt" type="Label" parent="DoorArea"]
+visible = false
+z_index = 5
+offset_left = -45.0
+offset_top = -24.0
+offset_right = 45.0
+offset_bottom = -10.0
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "[E/F] Keluar"
+horizontal_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(160, 192)
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]
+
+[node name="FadeCanvas" type="CanvasLayer" parent="."]
+layer = 50
+
+[node name="StoreModal" type="Control" parent="FadeCanvas"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_store")
+
+[node name="Dimmer" type="ColorRect" parent="FadeCanvas/StoreModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.04, 0.03, 0.72)
+
+[node name="Panel" type="PanelContainer" parent="FadeCanvas/StoreModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -240.0
+offset_right = 310.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_store_panel")
+
+[node name="Margin" type="MarginContainer" parent="FadeCanvas/StoreModal/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="FadeCanvas/StoreModal/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="FadeCanvas/StoreModal/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="PortraitFrame" type="PanelContainer" parent="FadeCanvas/StoreModal/Panel/Margin/VBox/Header"]
+custom_minimum_size = Vector2(84, 84)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_portrait_bg")
+
+[node name="Portrait" type="TextureRect" parent="FadeCanvas/StoreModal/Panel/Margin/VBox/Header/PortraitFrame"]
+texture_filter = 1
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HeaderInfo" type="VBoxContainer" parent="FadeCanvas/StoreModal/Panel/Margin/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="TitleLabel" type="Label" parent="FadeCanvas/StoreModal/Panel/Margin/VBox/Header/HeaderInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.32, 0.18, 0.08, 1)
+theme_override_font_sizes/font_size = 18
+text = "Elena — Toko Peralatan Senjata"
+
+[node name="GreetingLabel" type="Label" parent="FadeCanvas/StoreModal/Panel/Margin/VBox/Header/HeaderInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.28, 0.14, 1)
+theme_override_font_sizes/font_size = 13
+text = "Selamat datang! Pilih senjata atau pelindung terbaik untuk bertarung."
+autowrap_mode = 2
+
+[node name="CoinsLabel" type="Label" parent="FadeCanvas/StoreModal/Panel/Margin/VBox/Header/HeaderInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.45, 0.04, 1)
+theme_override_font_sizes/font_size = 15
+text = "Koin Anda: 0"
+
+[node name="ItemsScroll" type="ScrollContainer" parent="FadeCanvas/StoreModal/Panel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemsList" type="VBoxContainer" parent="FadeCanvas/StoreModal/Panel/Margin/VBox/ItemsScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Footer" type="HBoxContainer" parent="FadeCanvas/StoreModal/Panel/Margin/VBox"]
+layout_mode = 2
+alignment = 2
+
+[node name="CloseBtn" type="Button" parent="FadeCanvas/StoreModal/Panel/Margin/VBox/Footer"]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 14
+text = "Tutup [ESC]"
+
+[node name="FadeRect" type="ColorRect" parent="FadeCanvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[connection signal="body_entered" from="ShopArea" to="." method="_on_shop_area_body_entered"]
+[connection signal="body_exited" from="ShopArea" to="." method="_on_shop_area_body_exited"]
+[connection signal="body_entered" from="DoorArea" to="." method="_on_door_area_body_entered"]
+[connection signal="body_exited" from="DoorArea" to="." method="_on_door_area_body_exited"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cj67sja6unesg"
-path="res://.godot/imported/pentungan.jpg-5f19d0dfec1bddc0189382a3a4efd915.ctex"
+uid="uid://b8a1unidc58na"
+path="res://.godot/imported/Sadness.png-803c98af56725b784221b57eee8dd04c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/tools/pentungan.jpg"
-dest_files=["res://.godot/imported/pentungan.jpg-5f19d0dfec1bddc0189382a3a4efd915.ctex"]
+source_file="res://asset/craftpix-net-934138-free-medieval-npc-avatars-pixel-pack-for-dialogue/NPC_1/Sadness.png"
+dest_files=["res://.godot/imported/Sadness.png-803c98af56725b784221b57eee8dd04c.ctex"]
 
 [params]
 

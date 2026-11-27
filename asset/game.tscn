@@ -5173,7 +5173,7 @@ position = Vector2(2, 0)
 shape = SubResource("RectangleShape2D_bld_tent")
 
 [node name="Player" parent="." unique_id=1887675594 instance=ExtResource("18_player")]
-position = Vector2(564, 195)
+position = Vector2(761, 660)
 
 [node name="Poon1" type="Sprite2D" parent="." unique_id=83497818]
 position = Vector2(828, 376)
@@ -6650,6 +6650,38 @@ position = Vector2(1050, 230)
 
 [node name="Door_VillageHouse" parent="." unique_id=443267989 instance=ExtResource("53_door")]
 position = Vector2(760, 580)
+
+[node name="HouseSignLabel" type="Label" parent="."]
+z_index = 4
+offset_left = 715.0
+offset_top = 516.0
+offset_right = 805.0
+offset_bottom = 530.0
+theme_override_colors/font_color = Color(1, 0.92, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.06, 0.02, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 9
+text = "Rumahmu"
+horizontal_alignment = 1
+
+[node name="Door_WeaponStore" parent="." unique_id=1976150421 instance=ExtResource("53_door")]
+position = Vector2(839, 738)
+target_scene = "res://asset/interior_store.tscn"
+prompt_text = "[E/F] Masuk Toko Senjata"
+spawn_meta_key = "spawn_outside_store"
+
+[node name="StoreSignLabel" type="Label" parent="." unique_id=346131373]
+z_index = 4
+offset_left = 794.0
+offset_top = 674.0
+offset_right = 884.0
+offset_bottom = 688.0
+theme_override_colors/font_color = Color(1, 0.92, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.06, 0.02, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 9
+text = "TOKO SENJATA"
+horizontal_alignment = 1
 
 [node name="BossNormal" parent="." unique_id=2057301853 instance=ExtResource("54_boss")]
 position = Vector2(370, 128)

@@ -13,6 +13,8 @@ signal dialogue_finished
 @onready var energy_bar: TextureProgressBar = %EnergyBar
 @onready var blood_val_label: Label = %BloodValLabel
 @onready var energy_val_label: Label = %EnergyValLabel
+@onready var coin_bar_panel: PanelContainer = %CoinBarPanel
+@onready var coin_val_label: Label = %CoinValLabel
 
 @onready var slot_0: PanelContainer = %Slot0
 @onready var slot_1: PanelContainer = %Slot1
@@ -80,24 +82,46 @@ var item_icons: Array[TextureRect] = []
 var blood_tween: Tween
 var energy_tween: Tween
 var current_active_slot: int = 1
+var hotbar_equips: Array[String] = ["hand", "pentungan", ""]
+var _selected_inv_slot: int = -1
+var _equip_btn_row: HBoxContainer = null
+var coin_count: int = 0
 
 func _ready() -> void:
 	add_to_group("hud")
 	slots = [slot_0, slot_1, slot_2]
 	item_icons = [item_icon_0, item_icon_1, item_icon_2]
 
-	# Pulihkan status quest & APAR lintas scene (mis. saat keluar/masuk rumah)
+	# Pulihkan status quest, tas, hotbar, koin & APAR lintas scene (mis. saat keluar/masuk rumah/toko)
+	if get_tree().has_meta("saved_coins"):
+		coin_count = int(get_tree().get_meta("saved_coins", 0))
+	if get_tree().has_meta("saved_inventory_items"):
+		var saved = get_tree().get_meta("saved_inventory_items")
+		if saved is Dictionary:
+			inventory_items = saved.duplicate(true)
+			for k in inventory_items.keys().duplicate():
+				var it = inventory_items[k]
+				if it is Dictionary and it.get("id") == "coin":
+					if not get_tree().has_meta("saved_coins"):
+						coin_count += int(it.get("count", 1))
+					inventory_items.erase(k)
+			get_tree().set_meta("saved_inventory_items", inventory_items.duplicate(true))
+	get_tree().set_meta("saved_coins", coin_count)
+	if get_tree().has_meta("hotbar_equips"):
+		var eq = get_tree().get_meta("hotbar_equips")
+		if eq is Array and eq.size() >= 3:
+			hotbar_equips = ["hand", str(eq[1]), str(eq[2])]
+	else:
+		get_tree().set_meta("hotbar_equips", hotbar_equips.duplicate())
 	if get_tree().has_meta("quest_status"):
 		quest_status = str(get_tree().get_meta("quest_status"))
 	if get_tree().has_meta("quest_current_count"):
 		quest_current_count = int(get_tree().get_meta("quest_current_count"))
 	var has_apar: bool = get_tree().get_meta("has_apar", false)
 
-	# APAR hanya muncul di Slot 1 setelah player selesai berbicara dengan Kakek
+	# Slot 1 (index 0) selalu Tangan Kosong; APAR masuk ke Slot 3 jika sudah didapat dari Kakek
 	if has_apar:
 		_register_apar_item()
-	elif item_icon_0:
-		item_icon_0.texture = null
 
 	# Muat ikon tas ransel secara dinamis jika file ada
 	if FileAccess.file_exists("res://asset/tools/tas.png"):
@@ -142,8 +166,10 @@ func _ready() -> void:
 		restart_btn.pressed.connect(_on_restart_pressed)
 
 	# Update visual awal
+	_refresh_hotbar_icons()
 	set_active_slot(current_active_slot)
 	_update_quest_ui()
+	_update_coin_ui()
 
 	# Cari player di dalam scene secara otomatis
 	var player = get_tree().get_first_node_in_group("player")
@@ -415,19 +441,73 @@ func close_dialogue() -> void:
 
 func _register_apar_item() -> void:
 	var tex: Texture2D = null
-	if FileAccess.file_exists("res://asset/tools/pemadam.png"):
+	if ResourceLoader.exists("res://asset/tools/pemadam.png"):
+		tex = load("res://asset/tools/pemadam.png")
+	elif FileAccess.file_exists("res://asset/tools/pemadam.png"):
 		var img = Image.load_from_file("res://asset/tools/pemadam.png")
 		if img:
 			tex = ImageTexture.create_from_image(img)
-	if item_icon_0:
-		item_icon_0.texture = tex
 	inventory_items[0] = {
 		"id": "pemadam",
 		"name": "Alat Pemadam Api (APAR)",
-		"desc": "Pemberian Kakek untuk memadamkan api di sekitar desa dan hutan. (Terpasang di Slot 1 Hotbar)",
+		"desc": "Pemberian Kakek untuk memadamkan api di sekitar desa dan hutan.",
 		"icon": tex
 	}
+	if hotbar_equips[1] != "pemadam" and hotbar_equips[2] != "pemadam":
+		if hotbar_equips[2] == "":
+			hotbar_equips[2] = "pemadam"
+		elif hotbar_equips[1] == "":
+			hotbar_equips[1] = "pemadam"
+		else:
+			hotbar_equips[2] = "pemadam"
+		get_tree().set_meta("hotbar_equips", hotbar_equips.duplicate())
 	_update_inv_slot_display(0)
+	_refresh_hotbar_icons()
+
+func _find_item_icon(item_id: String) -> Texture2D:
+	if item_id == "hand":
+		return load("res://asset/ui/icon_hand.png") if ResourceLoader.exists("res://asset/ui/icon_hand.png") else null
+	if item_id == "":
+		return null
+	for k in inventory_items.keys():
+		var it = inventory_items[k]
+		if it.get("id") == item_id:
+			var t: Texture2D = it.get("icon")
+			if t:
+				return t
+	if item_id == "pentungan" and ResourceLoader.exists("res://asset/tools/pentungan.png"):
+		return load("res://asset/tools/pentungan.png")
+	if item_id == "pemadam" and ResourceLoader.exists("res://asset/tools/pemadam.png"):
+		return load("res://asset/tools/pemadam.png")
+	if item_id == "potion_red" and ResourceLoader.exists("res://asset/tools/potion_red.png"):
+		return load("res://asset/tools/potion_red.png")
+	return null
+
+func _refresh_hotbar_icons() -> void:
+	hotbar_equips[0] = "hand"
+	if item_icon_0:
+		item_icon_0.texture = _find_item_icon("hand")
+	if item_icon_1:
+		item_icon_1.texture = _find_item_icon(hotbar_equips[1])
+	if item_icon_2:
+		item_icon_2.texture = _find_item_icon(hotbar_equips[2])
+
+func equip_item_to_hotbar(target_slot: int, item_id: String) -> void:
+	if target_slot != 1 and target_slot != 2:
+		return
+	var other_slot := 2 if target_slot == 1 else 1
+	if hotbar_equips[other_slot] == item_id:
+		# Tukar posisi antara Slot 2 dan Slot 3
+		var prev := hotbar_equips[target_slot]
+		hotbar_equips[target_slot] = item_id
+		hotbar_equips[other_slot] = prev
+	else:
+		hotbar_equips[target_slot] = item_id
+	get_tree().set_meta("hotbar_equips", hotbar_equips.duplicate())
+	_refresh_hotbar_icons()
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_method("set_active_slot"):
+		player.set_active_slot(target_slot)
 
 func unlock_apar() -> void:
 	get_tree().set_meta("has_apar", true)
@@ -460,7 +540,7 @@ func complete_quest() -> void:
 		return
 	quest_status = "COMPLETED"
 	get_tree().set_meta("quest_status", quest_status)
-	add_item_to_inventory("coin", "Koin Emas", "Koin mata uang berharga hadiah dari Kakek desa.", "res://asset/tools/coin.png", 100)
+	add_coins(100)
 	_update_quest_ui()
 
 func _update_quest_ui() -> void:
@@ -549,12 +629,13 @@ func hide_game_over() -> void:
 
 func _on_respawn_pressed() -> void:
 	hide_game_over()
+	get_tree().set_meta("minimap_interior_pos", Vector2(760.0, 580.0))
 	# Pindah dan bangkit di kasur rumah desa
 	get_tree().change_scene_to_file("res://asset/interior_house.tscn")
 
 func _on_restart_pressed() -> void:
 	hide_game_over()
-	for k in ["has_apar", "quest_status", "quest_current_count"]:
+	for k in ["has_apar", "quest_status", "quest_current_count", "saved_coins", "saved_inventory_items"]:
 		if get_tree().has_meta(k):
 			get_tree().remove_meta(k)
 	get_tree().reload_current_scene()
@@ -638,6 +719,10 @@ func _update_inv_slot_display(slot_idx: int) -> void:
 			count_label.visible = false
 
 func add_item_to_inventory(item_id: String, item_name: String, item_desc: String, icon_path: String, count: int = 1) -> bool:
+	if item_id == "coin":
+		add_coins(count)
+		return true
+
 	var tex: Texture2D = null
 	if FileAccess.file_exists(icon_path):
 		var img = Image.load_from_file(icon_path)
@@ -669,42 +754,83 @@ func add_item_to_inventory(item_id: String, item_name: String, item_desc: String
 			if slot_idx == 2 and item_icon_2 and tex:
 				item_icon_2.texture = tex
 			_update_inv_slot_display(slot_idx)
+			get_tree().set_meta("saved_inventory_items", inventory_items.duplicate(true))
 			return true
 
 	return false
+
+func _update_coin_ui() -> void:
+	if coin_val_label:
+		coin_val_label.text = str(coin_count)
+
+func add_coins(amount: int) -> void:
+	if amount <= 0:
+		return
+	coin_count += amount
+	get_tree().set_meta("saved_coins", coin_count)
+	_update_coin_ui()
+	if coin_bar_panel:
+		var t = coin_bar_panel.create_tween()
+		t.tween_property(coin_bar_panel, "modulate", Color(1.25, 1.15, 0.75, 1.0), 0.1)
+		t.tween_property(coin_bar_panel, "modulate", Color.WHITE, 0.18)
+
+func get_coin_count() -> int:
+	return coin_count
+
+func spend_coins(amount: int) -> bool:
+	if coin_count < amount:
+		return false
+	coin_count -= amount
+	get_tree().set_meta("saved_coins", coin_count)
+	_update_coin_ui()
+	return true
 
 func _on_inv_slot_gui_input(event: InputEvent, slot_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		_select_inv_item(slot_idx)
 
+func _ensure_equip_buttons() -> void:
+	if _equip_btn_row or not inv_detail_desc:
+		return
+	var parent_vbox := inv_detail_desc.get_parent()
+	if not parent_vbox:
+		return
+	_equip_btn_row = HBoxContainer.new()
+	_equip_btn_row.add_theme_constant_override("separation", 8)
+	parent_vbox.add_child(_equip_btn_row)
+	for s_idx in [1, 2]:
+		var btn := Button.new()
+		btn.text = "Pasang Slot %d" % (s_idx + 1)
+		btn.focus_mode = Control.FOCUS_NONE
+		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		btn.add_theme_font_size_override("font_size", 12)
+		btn.pressed.connect(func():
+			if inventory_items.has(_selected_inv_slot):
+				equip_item_to_hotbar(s_idx, str(inventory_items[_selected_inv_slot].get("id", "")))
+		)
+		_equip_btn_row.add_child(btn)
+
 func _select_inv_item(slot_idx: int) -> void:
+	_selected_inv_slot = slot_idx
+	_ensure_equip_buttons()
 	if not inventory_items.has(slot_idx):
+		if _equip_btn_row: _equip_btn_row.visible = false
 		if inv_detail_title: inv_detail_title.text = "Slot Kosong (%d)" % (slot_idx + 1)
-		if inv_detail_desc: inv_detail_desc.text = "Ruang penyimpanan tas belum terisi. Item yang Anda temukan saat menjelajah akan disimpan di sini."
+		if inv_detail_desc: inv_detail_desc.text = "Ruang penyimpanan tas belum terisi."
 		if inv_detail_icon: inv_detail_icon.texture = null
 		return
 
 	var it = inventory_items[slot_idx]
+	var item_id: String = str(it.get("id", ""))
+	if _equip_btn_row:
+		_equip_btn_row.visible = (item_id != "coin")
 	if inv_detail_title: inv_detail_title.text = it.get("name", "")
 	if inv_detail_icon:
-		var tex: Texture2D = it.get("icon")
-		if not tex and slot_idx == 0 and item_icon_0:
-			tex = item_icon_0.texture
-		elif not tex and slot_idx == 1 and item_icon_1:
-			tex = item_icon_1.texture
-		inv_detail_icon.texture = tex
+		inv_detail_icon.texture = _find_item_icon(item_id)
 
-	if it.get("id") == "pemadam":
-		if inv_detail_desc: inv_detail_desc.text = it.get("desc", "")
-		var player = get_tree().get_first_node_in_group("player")
-		if player and player.has_method("set_active_slot"):
-			player.set_active_slot(0)
-	elif it.get("id") == "pentungan":
-		if inv_detail_desc: inv_detail_desc.text = it.get("desc", "")
-		var player = get_tree().get_first_node_in_group("player")
-		if player and player.has_method("set_active_slot"):
-			player.set_active_slot(1)
-	elif it.get("id") == "potion_red":
+	if item_id == "pemadam" or item_id == "pentungan":
+		if inv_detail_desc: inv_detail_desc.text = it.get("desc", "") + "\n(Pilih 'Pasang Slot 2' atau 'Pasang Slot 3' untuk menukar slot)"
+	elif item_id == "potion_red":
 		var player = get_tree().get_first_node_in_group("player")
 		if player and player.has_method("heal") and player.current_blood < player.max_blood:
 			player.heal(40.0)

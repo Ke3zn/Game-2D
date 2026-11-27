@@ -24,6 +24,8 @@ var _map_tex: ImageTexture = null
 var _houses: Array[Vector2] = []
 var _fountains: Array[Vector2] = []
 var _bridges: Array[Vector2] = []
+var _house_door_pos: Vector2 = Vector2(760.0, 580.0)
+var _store_door_pos: Vector2 = Vector2(839.0, 738.0)
 var _baked: bool = false
 
 func _ready() -> void:
@@ -66,6 +68,20 @@ func _bake_real_map() -> void:
 	var rumput := root_scene.get_node_or_null("Rumput + Grass") as TileMapLayer
 	var lampu := root_scene.get_node_or_null("Lampu Jalan DLL") as TileMapLayer
 
+	# Jika sedang di dalam ruangan (rumah/toko) tanpa TileMapLayer desa, gunakan cache peta luar
+	if not tanah and get_tree().has_meta("minimap_cache"):
+		var cache: Dictionary = get_tree().get_meta("minimap_cache")
+		_world_center = cache.get("center", _world_center)
+		_world_half_span = cache.get("half_span", _world_half_span)
+		_map_tex = cache.get("tex", null)
+		_houses.assign(cache.get("houses", []))
+		_fountains.assign(cache.get("fountains", []))
+		_bridges.assign(cache.get("bridges", []))
+		_house_door_pos = cache.get("house_door", _house_door_pos)
+		_store_door_pos = cache.get("store_door", _store_door_pos)
+		_baked = true
+		return
+
 	# Hitung pusat dunia otomatis dari tilemap yang ada
 	var min_b := Vector2(INF, INF)
 	var max_b := Vector2(-INF, -INF)
@@ -91,6 +107,13 @@ func _bake_real_map() -> void:
 	_fountains.clear()
 	_bridges.clear()
 	var tree_positions: Array[Vector2] = []
+
+	var d_house := root_scene.get_node_or_null("Door_VillageHouse") as Node2D
+	if d_house:
+		_house_door_pos = d_house.global_position
+	var d_store := root_scene.get_node_or_null("Door_WeaponStore") as Node2D
+	if d_store:
+		_store_door_pos = d_store.global_position
 
 	for ch in root_scene.get_children():
 		if not (ch is Node2D):
@@ -153,6 +176,17 @@ func _bake_real_map() -> void:
 
 	_map_tex = ImageTexture.create_from_image(img)
 	_baked = true
+	if tanah:
+		get_tree().set_meta("minimap_cache", {
+			"center": _world_center,
+			"half_span": _world_half_span,
+			"tex": _map_tex,
+			"houses": _houses.duplicate(),
+			"fountains": _fountains.duplicate(),
+			"bridges": _bridges.duplicate(),
+			"house_door": _house_door_pos,
+			"store_door": _store_door_pos
+		})
 
 func _draw_mini_house(pos: Vector2) -> void:
 	draw_rect(Rect2(pos + Vector2(-3.5, -1.5), Vector2(7, 5)), Color(0.14, 0.10, 0.07, 0.9))
@@ -196,6 +230,25 @@ func _draw() -> void:
 	for h_wpos in _houses:
 		_draw_mini_house(_world_to_minimap(h_wpos, center, r))
 
+	# Penanda khusus Rumahmu (biru muda) & Toko Senjata (emas)
+	var my_house_m := _world_to_minimap(_house_door_pos + Vector2(0, -24), center, r)
+	draw_rect(Rect2(my_house_m + Vector2(-4.5, -2), Vector2(9, 6)), Color(0.08, 0.06, 0.04, 0.95))
+	draw_rect(Rect2(my_house_m + Vector2(-3.5, -1), Vector2(7, 4)), Color(0.95, 0.92, 0.82, 1.0))
+	draw_colored_polygon(PackedVector2Array([
+		my_house_m + Vector2(-5.2, -1),
+		my_house_m + Vector2(0.0, -5.2),
+		my_house_m + Vector2(5.2, -1)
+	]), Color(0.28, 0.72, 0.98, 1.0))
+
+	var store_m := _world_to_minimap(_store_door_pos + Vector2(0, -24), center, r)
+	draw_rect(Rect2(store_m + Vector2(-4.5, -2), Vector2(9, 6)), Color(0.08, 0.06, 0.04, 0.95))
+	draw_rect(Rect2(store_m + Vector2(-3.5, -1), Vector2(7, 4)), Color(0.96, 0.90, 0.74, 1.0))
+	draw_colored_polygon(PackedVector2Array([
+		store_m + Vector2(-5.2, -1),
+		store_m + Vector2(0.0, -5.2),
+		store_m + Vector2(5.2, -1)
+	]), Color(0.98, 0.76, 0.16, 1.0))
+
 	# 4. Penanda Boss aktif di map
 	var bosses := get_tree().get_nodes_in_group("boss")
 	for b in bosses:
@@ -211,11 +264,16 @@ func _draw() -> void:
 	if font:
 		_draw_outlined_text(font, _world_to_minimap(Vector2(370, 90), center, r), "Boss", 10, Color(1.0, 0.84, 0.78, 1.0))
 		_draw_outlined_text(font, _world_to_minimap(Vector2(1287, 140), center, r), "Forest", 10, Color(0.95, 1.0, 0.90, 1.0))
-		_draw_outlined_text(font, _world_to_minimap(Vector2(760, 860), center, r), "Desa", 10, Color(0.98, 0.94, 0.80, 1.0))
+		_draw_outlined_text(font, my_house_m + Vector2(0, -8), "Rumah", 8, Color(0.70, 0.92, 1.0, 1.0))
+		_draw_outlined_text(font, store_m + Vector2(0, 11), "Toko", 8, Color(1.0, 0.90, 0.45, 1.0))
 
-	# 6. Posisi Player Realtime
+	# 6. Posisi Player Realtime (jika di dalam rumah/toko, tampilkan titik di bangunan yang dimasuki)
 	if player and is_instance_valid(player):
-		var map_pos := _world_to_minimap(player.global_position, center, r)
+		var tracked_pos := player.global_position
+		var cur_sc := get_tree().current_scene
+		if cur_sc and not cur_sc.has_node("Tanah") and get_tree().has_meta("minimap_interior_pos"):
+			tracked_pos = get_tree().get_meta("minimap_interior_pos")
+		var map_pos := _world_to_minimap(tracked_pos, center, r)
 		var pulse := 0.88 + 0.14 * sin(Time.get_ticks_msec() * 0.008)
 		draw_circle(map_pos, 5.2 * pulse, Color(0.08, 0.06, 0.04, 0.95))
 		draw_circle(map_pos, 3.8 * pulse, Color.WHITE)

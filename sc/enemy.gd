@@ -10,7 +10,8 @@ signal died()
 @export var damage: float = 12.0
 @export var attack_cooldown: float = 1.0
 @export var detection_radius: float = 90.0
-@export var drop_item_id: String = "potion_red"
+@export var drop_item_id: String = "coin"
+@export var coin_reward: int = 10
 
 var player: Node2D = null
 var spawn_position: Vector2 = Vector2.ZERO
@@ -148,5 +149,7 @@ func _spawn_drop_item() -> void:
 	if item_scene:
 		var item = item_scene.instantiate()
 		item.global_position = global_position
+		if drop_item_id == "coin":
+			item.count = coin_reward
 		item.set_item(drop_item_id)
 		get_parent().add_child(item)

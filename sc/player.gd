@@ -45,6 +45,10 @@ var _hit_dealt_this_swing: bool = false
 func _ready() -> void:
 	add_to_group("player")
 	has_apar = get_tree().get_meta("has_apar", false)
+	var bonus_hp: float = float(get_tree().get_meta("bonus_max_blood", 0.0))
+	if bonus_hp > 0.0:
+		max_blood += bonus_hp
+		current_blood = minf(max_blood, current_blood + bonus_hp)
 	if sprite:
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		_play_state_anim("idle")
@@ -53,14 +57,18 @@ func _ready() -> void:
 	energy_changed.emit(current_energy, max_energy)
 	active_slot_changed.emit(active_slot)
 	if get_tree().get_meta("spawn_outside_house", false):
-		call_deferred("_apply_house_exit_spawn")
+		call_deferred("_apply_house_exit_spawn", "spawn_outside_house", "Door_VillageHouse")
+	elif get_tree().get_meta("spawn_outside_store", false):
+		call_deferred("_apply_house_exit_spawn", "spawn_outside_store", "Door_WeaponStore")
 
-func _apply_house_exit_spawn() -> void:
-	if not get_tree() or not get_tree().get_meta("spawn_outside_house", false):
+func _apply_house_exit_spawn(meta_key: String = "spawn_outside_house", door_name: String = "Door_VillageHouse") -> void:
+	if not get_tree() or not get_tree().get_meta(meta_key, false):
 		return
-	var door := get_tree().get_first_node_in_group("door") as Node2D
+	var door := get_parent().get_node_or_null(door_name) as Node2D
+	if not door:
+		door = get_tree().get_first_node_in_group("door") as Node2D
 	if door:
-		get_tree().remove_meta("spawn_outside_house")
+		get_tree().remove_meta(meta_key)
 		global_position = door.global_position + Vector2(0, 26)
 		var cam := get_node_or_null("Camera2D") as Camera2D
 		if cam:
@@ -98,7 +106,7 @@ func _physics_process(delta: float) -> void:
 	if _invuln_timer > 0.0:
 		_invuln_timer = max(0.0, _invuln_timer - delta)
 
-	if Input.is_action_just_pressed("attack") and active_slot == 1:
+	if Input.is_action_just_pressed("attack") and _get_active_item_id() == "pentungan":
 		_attack_buffer_timer = 0.18
 	elif _attack_buffer_timer > 0.0:
 		_attack_buffer_timer = max(0.0, _attack_buffer_timer - delta)
@@ -121,7 +129,7 @@ func _physics_process(delta: float) -> void:
 			move_and_slide()
 			return
 
-	var wants_spray := active_slot == 0 and has_apar and Input.is_action_pressed("attack") and not _is_dialogue_open()
+	var wants_spray := _get_active_item_id() == "pemadam" and has_apar and Input.is_action_pressed("attack") and not _is_dialogue_open()
 	is_spraying_apar = wants_spray
 
 	var is_sprinting := false
@@ -174,8 +182,8 @@ func _physics_process(delta: float) -> void:
 
 	if _attack_buffer_timer > 0.0:
 		_attack_buffer_timer = 0.0
-		if active_slot == 1:
-			# Hanya bisa attack jika sedang memegang pentungan (Slot 1)
+		if _get_active_item_id() == "pentungan":
+			# Bisa attack jika slot aktif sedang memegang pentungan
 			if current_energy >= attack_energy_cost:
 				current_energy -= attack_energy_cost
 				_energy_recovery_timer = energy_recovery_delay
@@ -190,10 +198,19 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+func _get_active_item_id() -> String:
+	if active_slot == 0:
+		return "hand"
+	var eq = get_tree().get_meta("hotbar_equips", ["hand", "pentungan", ""])
+	if eq is Array and active_slot >= 0 and active_slot < eq.size():
+		return str(eq[active_slot])
+	return "pentungan" if active_slot == 1 else ""
+
 func _get_tool_suffix() -> String:
-	if active_slot == 1:
+	var item_id := _get_active_item_id()
+	if item_id == "pentungan":
 		return "_pentungan"
-	elif active_slot == 0 and has_apar:
+	elif item_id == "pemadam" and has_apar:
 		return "_apar"
 	return ""
 
@@ -220,7 +237,14 @@ func _get_move_state() -> String:
 func grant_apar() -> void:
 	has_apar = true
 	get_tree().set_meta("has_apar", true)
-	set_active_slot(0)
+	var target := 2
+	var eq = get_tree().get_meta("hotbar_equips", ["hand", "pentungan", "pemadam"])
+	if eq is Array and eq.size() >= 3:
+		if str(eq[1]) == "pemadam":
+			target = 1
+		elif str(eq[2]) == "pemadam":
+			target = 2
+	set_active_slot(target)
 	if not is_attacking and not is_hurt and not is_dead:
 		_play_state_anim(_get_move_state())
 
@@ -261,12 +285,13 @@ func _start_attack_pentungan() -> void:
 func _execute_pentungan_hit() -> void:
 	_hit_dealt_this_swing = true
 	var attack_dir = _get_facing_vector()
-	var attack_damage = 25.0
+	var attack_damage = 25.0 + float(get_tree().get_meta("bonus_attack_damage", 0.0))
+	var attack_range = 24.0 + float(get_tree().get_meta("bonus_attack_range", 0.0))
 	var attack_center = global_position + attack_dir * 12.0
 	var hit_any = false
 	for e in get_tree().get_nodes_in_group("enemy"):
 		if is_instance_valid(e) and not e.get("is_dead"):
-			if e.global_position.distance_to(attack_center) <= 24.0:
+			if e.global_position.distance_to(attack_center) <= attack_range:
 				var kb = (e.global_position - global_position).normalized()
 				if kb == Vector2.ZERO:
 					kb = attack_dir
@@ -354,7 +379,9 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 func take_damage(amount: float, knockback: Vector2 = Vector2.ZERO) -> void:
 	if is_dead or _invuln_timer > 0.0:
 		return
-	current_blood = max(0.0, current_blood - amount)
+	var dmg_mult: float = clampf(1.0 - float(get_tree().get_meta("damage_reduction", 0.0)), 0.25, 1.0)
+	var final_amount: float = amount * dmg_mult
+	current_blood = max(0.0, current_blood - final_amount)
 	blood_changed.emit(current_blood, max_blood)
 
 	if current_blood > 0.0 and amount > 0.0:

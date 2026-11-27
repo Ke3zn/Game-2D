@@ -78,13 +78,16 @@ func collect() -> void:
 	if prompt:
 		prompt.visible = false
 
-	# Tambahkan ke inventory di HUD
+	# Tambahkan koin langsung ke Coin Bar atau item ke inventory/tas di HUD
 	var hud = get_tree().get_first_node_in_group("hud")
 	if not hud:
 		var game = get_tree().current_scene
 		if game:
 			hud = game.get_node_or_null("HUD")
-	if hud and hud.has_method("add_item_to_inventory"):
+	if item_id == "coin":
+		if hud and hud.has_method("add_coins"):
+			hud.add_coins(count)
+	elif hud and hud.has_method("add_item_to_inventory"):
 		hud.add_item_to_inventory(item_id, item_name, item_desc, item_icon_path, count)
 
 	# Animasi ambil (naik ke atas & shrink)

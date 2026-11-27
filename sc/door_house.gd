@@ -3,6 +3,8 @@ class_name DoorHouse
 
 @export var target_scene: String = "res://asset/interior_house.tscn"
 @export var prompt_text: String = "[E/F] Masuk Rumah"
+@export var spawn_meta_key: String = ""
+@export var loading_title: String = ""
 
 var _player_in_range: bool = false
 var _is_transitioning: bool = false
@@ -42,6 +44,7 @@ func enter_door() -> void:
 		prompt.visible = false
 
 	var tree := get_tree()
+	tree.set_meta("minimap_interior_pos", global_position)
 	var canvas := CanvasLayer.new()
 	canvas.layer = 100
 	tree.root.add_child(canvas)
@@ -66,7 +69,12 @@ func enter_door() -> void:
 	var font_res: FontFile = load("res://asset/ui/PixelifySans.ttf")
 
 	var title_lbl := Label.new()
-	title_lbl.text = "Memasuki Rumah..."
+	if loading_title != "":
+		title_lbl.text = loading_title
+	elif target_scene.contains("store"):
+		title_lbl.text = "Memasuki Toko..."
+	else:
+		title_lbl.text = "Memasuki Rumah..."
 	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if font_res:
 		title_lbl.add_theme_font_override("font", font_res)
@@ -148,6 +156,10 @@ func enter_door() -> void:
 	fade_out.tween_callback(canvas.queue_free)
 
 	if packed_scene:
+		if spawn_meta_key != "":
+			tree.set_meta(spawn_meta_key, true)
 		tree.change_scene_to_packed(packed_scene)
 	else:
+		if spawn_meta_key != "":
+			tree.set_meta(spawn_meta_key, true)
 		tree.change_scene_to_file(target_scene)
