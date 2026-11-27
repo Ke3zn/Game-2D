@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Learn Make Game 2D"
-run/main_scene="uid://r3eecbfvyhmj"
+config/name="Penjaga Hutan"
+run/main_scene="res://asset/main_menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 

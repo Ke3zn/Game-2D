@@ -5170,7 +5170,7 @@ position = Vector2(2, 0)
 shape = SubResource("RectangleShape2D_bld_tent")
 
 [node name="Player" parent="." unique_id=1887675594 instance=ExtResource("18_player")]
-position = Vector2(709, 764)
+position = Vector2(564, 195)
 
 [node name="Poon1" type="Sprite2D" parent="." unique_id=83497818]
 position = Vector2(828, 376)

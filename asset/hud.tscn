@@ -3,6 +3,17 @@
 [ext_resource type="Script" path="res://sc/hud.gd" id="1_hud"]
 [ext_resource type="Texture2D" path="res://asset/tools/pentungan.png" id="2_pentungan"]
 [ext_resource type="Script" path="res://sc/minimap.gd" id="3_minimap"]
+[ext_resource type="Texture2D" path="res://asset/ui/dialogue_box.png" id="4_dlg_box"]
+[ext_resource type="Texture2D" path="res://asset/ui/dialogue_nameplate.png" id="5_dlg_name"]
+[ext_resource type="Texture2D" path="res://asset/ui/boss_bar_frame.png" id="6_boss_frame"]
+[ext_resource type="Texture2D" path="res://asset/ui/boss_bar_fill.png" id="7_boss_fill"]
+[ext_resource type="Texture2D" path="res://asset/ui/boss_bar_bg.png" id="8_boss_bg"]
+[ext_resource type="Texture2D" path="res://asset/ui/gameover_title.png" id="9_go_title"]
+[ext_resource type="Texture2D" path="res://asset/ui/icon_house.png" id="10_go_house"]
+[ext_resource type="Texture2D" path="res://asset/ui/icon_restart.png" id="11_go_restart"]
+[ext_resource type="Texture2D" path="res://asset/ui/gameover_btn_normal.png" id="12_go_btn_norm"]
+[ext_resource type="Texture2D" path="res://asset/ui/gameover_btn_hover.png" id="13_go_btn_hov"]
+[ext_resource type="FontFile" path="res://asset/ui/PixelifySans.ttf" id="14_pixelify"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot_normal"]
 bg_color = Color(0.968627, 0.92549, 0.835294, 1)
@@ -111,6 +122,44 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_go_btn_normal"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+texture = ExtResource("12_go_btn_norm")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_go_btn_hover"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+texture = ExtResource("13_go_btn_hov")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_go_btn_pressed"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+bg_color = Color(0.76, 0.66, 0.44, 1)
+border_width_left = 3
+border_width_top = 4
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.12, 0.09, 0.06, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_normal"]
 bg_color = Color(0.968627, 0.92549, 0.835294, 1)
@@ -256,6 +305,9 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
+[sub_resource type="Theme" id="Theme_pixelify"]
+default_font = ExtResource("14_pixelify")
+
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
 slot_normal_style = SubResource("StyleBoxFlat_slot_normal")
@@ -273,6 +325,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = SubResource("Theme_pixelify")
 
 [node name="TopLeftContainer" type="HBoxContainer" parent="Control"]
 layout_mode = 0
@@ -1029,7 +1082,7 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="DialoguePanel" type="PanelContainer" parent="Control/DialogueModal"]
+[node name="DialoguePanel" type="Control" parent="Control/DialogueModal"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -1037,113 +1090,153 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -450.0
-offset_top = -190.0
+offset_top = -210.0
 offset_right = 450.0
-offset_bottom = -25.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue_bg")
+mouse_filter = 2
 
-[node name="Margin" type="MarginContainer" parent="Control/DialogueModal/DialoguePanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 16
+[node name="DialogueBg" type="TextureRect" parent="Control/DialogueModal/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_dlg_box")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="VBox" type="VBoxContainer" parent="Control/DialogueModal/DialoguePanel/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 8
+[node name="NameplateBg" type="TextureRect" parent="Control/DialogueModal/DialoguePanel"]
+layout_mode = 0
+offset_left = 510.0
+offset_top = -2.0
+offset_right = 790.0
+offset_bottom = 42.0
+mouse_filter = 2
+texture = ExtResource("5_dlg_name")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="SpeakerLabel" type="Label" parent="Control/DialogueModal/DialoguePanel/Margin/VBox"]
+[node name="SpeakerLabel" type="Label" parent="Control/DialogueModal/DialoguePanel/NameplateBg"]
 unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.25, 0.15, 0.08, 1)
-theme_override_font_sizes/font_size = 17
-text = "👴 Kakek Warga Desa"
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_right = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.99, 0.97, 0.92, 1)
+theme_override_colors/font_shadow_color = Color(0.15, 0.08, 0.09, 0.85)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 16
+text = "Kakek Warga Desa"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
 
-[node name="DialogueText" type="Label" parent="Control/DialogueModal/DialoguePanel/Margin/VBox"]
+[node name="DialogueText" type="Label" parent="Control/DialogueModal/DialoguePanel"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 56)
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_color = Color(0.3, 0.22, 0.15, 1)
-theme_override_font_sizes/font_size = 15
+layout_mode = 0
+offset_left = 40.0
+offset_top = 48.0
+offset_right = 860.0
+offset_bottom = 138.0
+theme_override_colors/font_color = Color(0.55, 0.35, 0.02, 1)
+theme_override_font_sizes/font_size = 19
 text = "Halo anak muda! Selamat datang di desa kami."
+vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="HBox" type="HBoxContainer" parent="Control/DialogueModal/DialoguePanel/Margin/VBox"]
-layout_mode = 2
-alignment = 2
-
-[node name="DialogueNextBtn" type="Button" parent="Control/DialogueModal/DialoguePanel/Margin/VBox/HBox"]
+[node name="DialogueNextBtn" type="Button" parent="Control/DialogueModal/DialoguePanel"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 36)
-layout_mode = 2
+layout_mode = 0
+offset_left = 708.0
+offset_top = 138.0
+offset_right = 862.0
+offset_bottom = 172.0
 focus_mode = 0
-theme_override_colors/font_color = Color(0.18, 0.12, 0.08, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.45, 0.27, 0.02, 1)
+theme_override_colors/font_hover_color = Color(0.32, 0.18, 0.01, 1)
+theme_override_colors/font_pressed_color = Color(0.32, 0.18, 0.01, 1)
+theme_override_font_sizes/font_size = 13
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_normal")
 text = "Lanjut [ E ] ▶"
 
-[node name="BossBarContainer" type="PanelContainer" parent="Control"]
+[node name="BossBarContainer" type="VBoxContainer" parent="Control"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -220.0
-offset_top = 25.0
-offset_right = 220.0
-offset_bottom = 85.0
+offset_left = -246.5
+offset_top = 18.0
+offset_right = 246.5
+offset_bottom = 104.0
 grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_boss_bg")
+theme_override_constants/separation = 3
 
-[node name="Margin" type="MarginContainer" parent="Control/BossBarContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 6
-
-[node name="VBox" type="VBoxContainer" parent="Control/BossBarContainer/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="HBox" type="HBoxContainer" parent="Control/BossBarContainer/Margin/VBox"]
+[node name="HBox" type="HBoxContainer" parent="Control/BossBarContainer"]
 layout_mode = 2
 
-[node name="BossNameLabel" type="Label" parent="Control/BossBarContainer/Margin/VBox/HBox"]
+[node name="BossNameLabel" type="Label" parent="Control/BossBarContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.5, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 15
 text = "👑 SLIME KING"
 
-[node name="BossHpValLabel" type="Label" parent="Control/BossBarContainer/Margin/VBox/HBox"]
+[node name="BossHpValLabel" type="Label" parent="Control/BossBarContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 13
 text = "100 / 100"
 horizontal_alignment = 2
 
-[node name="BossProgressBar" type="ProgressBar" parent="Control/BossBarContainer/Margin/VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 18)
+[node name="BarWrap" type="Control" parent="Control/BossBarContainer"]
+custom_minimum_size = Vector2(493, 60)
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_blood_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_boss_fill")
+mouse_filter = 2
+
+[node name="BossProgressBar" type="TextureProgressBar" parent="Control/BossBarContainer/BarWrap"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 0
+offset_left = 19.0
+offset_top = 20.0
+offset_right = 480.0
+offset_bottom = 40.0
 value = 100.0
-show_percentage = false
+nine_patch_stretch = true
+texture_under = ExtResource("8_boss_bg")
+texture_progress = ExtResource("7_boss_fill")
+
+[node name="BossBarFrame" type="TextureRect" parent="Control/BossBarContainer/BarWrap"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_boss_frame")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="VictoryBanner" type="PanelContainer" parent="Control"]
 unique_name_in_owner = true
@@ -1209,77 +1302,82 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.22, 0.03, 0.03, 0.9)
+color = Color(0.06, 0.05, 0.04, 0.84)
 
-[node name="GameOverPanel" type="PanelContainer" parent="Control/GameOverModal"]
+[node name="GameOverPanel" type="CenterContainer" parent="Control/GameOverModal"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -140.0
-offset_right = 240.0
-offset_bottom = 140.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_boss_bg")
 
-[node name="Margin" type="MarginContainer" parent="Control/GameOverModal/GameOverPanel"]
+[node name="VBox" type="VBoxContainer" parent="Control/GameOverModal/GameOverPanel"]
+custom_minimum_size = Vector2(560, 0)
 layout_mode = 2
-theme_override_constants/margin_left = 28
-theme_override_constants/margin_top = 22
-theme_override_constants/margin_right = 28
-theme_override_constants/margin_bottom = 22
-
-[node name="VBox" type="VBoxContainer" parent="Control/GameOverModal/GameOverPanel/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 18
 alignment = 1
 
-[node name="Skull" type="Label" parent="Control/GameOverModal/GameOverPanel/Margin/VBox"]
+[node name="GameOverTitle" type="TextureRect" parent="Control/GameOverModal/GameOverPanel/VBox"]
+texture_filter = 1
+custom_minimum_size = Vector2(480, 62)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.22, 0.22, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 28
-text = "💀 ANDA TELAH GUGUR"
-horizontal_alignment = 1
+size_flags_horizontal = 4
+texture = ExtResource("9_go_title")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Sub" type="Label" parent="Control/GameOverModal/GameOverPanel/Margin/VBox"]
+[node name="Sub" type="Label" parent="Control/GameOverModal/GameOverPanel/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.92, 0.88, 0.82, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.98, 0.96, 0.92, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
 text = "Darah Anda telah habis dalam pertarungan.
 Jangan menyerah, pulihkan diri dan coba lagi!"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="BtnBox" type="VBoxContainer" parent="Control/GameOverModal/GameOverPanel/Margin/VBox"]
+[node name="BtnBox" type="VBoxContainer" parent="Control/GameOverModal/GameOverPanel/VBox"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
-theme_override_constants/separation = 10
+size_flags_horizontal = 4
+theme_override_constants/separation = 12
 
-[node name="RespawnBtn" type="Button" parent="Control/GameOverModal/GameOverPanel/Margin/VBox/BtnBox"]
+[node name="RespawnBtn" type="Button" parent="Control/GameOverModal/GameOverPanel/VBox/BtnBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 44)
+texture_filter = 1
+custom_minimum_size = Vector2(400, 48)
 layout_mode = 2
 focus_mode = 0
-theme_override_colors/font_color = Color(0.18, 0.12, 0.08, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_normal")
-text = "🏠 Bangkit di Kasur Rumah Desa"
+theme_override_colors/font_color = Color(0.08, 0.06, 0.04, 1)
+theme_override_colors/font_hover_color = Color(0.08, 0.06, 0.04, 1)
+theme_override_colors/font_pressed_color = Color(0.08, 0.06, 0.04, 1)
+theme_override_constants/icon_max_width = 26
+theme_override_constants/h_separation = 12
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StyleBoxTexture_go_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_go_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_go_btn_hover")
+text = "Bangkit di Kasur Rumah Desa"
+icon = ExtResource("10_go_house")
+expand_icon = true
 
-[node name="RestartBtn" type="Button" parent="Control/GameOverModal/GameOverPanel/Margin/VBox/BtnBox"]
+[node name="RestartBtn" type="Button" parent="Control/GameOverModal/GameOverPanel/VBox/BtnBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 44)
+texture_filter = 1
+custom_minimum_size = Vector2(400, 48)
 layout_mode = 2
 focus_mode = 0
-theme_override_colors/font_color = Color(0.18, 0.12, 0.08, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_normal")
-text = "🔁 Ulangi Pertarungan (Restart)"
+theme_override_colors/font_color = Color(0.08, 0.06, 0.04, 1)
+theme_override_colors/font_hover_color = Color(0.08, 0.06, 0.04, 1)
+theme_override_colors/font_pressed_color = Color(0.08, 0.06, 0.04, 1)
+theme_override_constants/icon_max_width = 26
+theme_override_constants/h_separation = 12
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StyleBoxTexture_go_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_go_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_go_btn_hover")
+text = "Ulangi Pertarungan (Restart)"
+icon = ExtResource("11_go_restart")
+expand_icon = true
