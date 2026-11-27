@@ -17,19 +17,25 @@ signal died()
 @export var current_blood: float = 100.0
 @export var max_energy: float = 100.0
 @export var current_energy: float = 100.0
-@export var energy_recovery_rate: float = 15.0 # Pemulihan energi per detik saat istirahat
-@export var energy_recovery_delay: float = 0.6 # Jeda (detik) sebelum energi mulai pulih setelah dipakai
-@export var attack_energy_cost: float = 20.0   # Pengurangan energi setiap serangan
+@export var energy_recovery_rate: float = 22.0 # Pemulihan energi per detik saat istirahat
+@export var energy_recovery_delay: float = 0.4 # Jeda (detik) sebelum energi mulai pulih setelah dipakai
+@export var attack_energy_cost: float = 8.0    # Pengurangan energi setiap serangan
 @export var sprint_energy_cost: float = 25.0   # Pengurangan energi per detik saat sprint
 
 var direction := Vector2.ZERO
 var last_direction := "front"
 var is_attacking := false
+var is_spraying_apar := false
 var is_hurt := false
 var is_dead := false
 var has_apar := false
 var _energy_recovery_timer: float = 0.0
 var _invuln_timer: float = 0.0
+var _attack_buffer_timer: float = 0.0
+var _attack_failsafe_timer: float = 0.0
+var _attack_seq: int = 0
+var _apar_foam_timer: float = 0.0
+var _apar_hit_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
 var _attack_lunge_velocity: Vector2 = Vector2.ZERO
 var _hit_dealt_this_swing: bool = false
@@ -76,20 +82,35 @@ func _physics_process(delta: float) -> void:
 	if _invuln_timer > 0.0:
 		_invuln_timer = max(0.0, _invuln_timer - delta)
 
+	if Input.is_action_just_pressed("attack") and active_slot == 1:
+		_attack_buffer_timer = 0.18
+	elif _attack_buffer_timer > 0.0:
+		_attack_buffer_timer = max(0.0, _attack_buffer_timer - delta)
+
 	_knockback_velocity = _knockback_velocity.move_toward(Vector2.ZERO, delta * 280.0)
 	_attack_lunge_velocity = _attack_lunge_velocity.move_toward(Vector2.ZERO, delta * 320.0)
 
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	if is_attacking:
-		# Tetap izinkan sedikit kendali arah + momentum lunge agar serangan terasa luwes, bukan membeku
-		velocity = direction * (speed * 0.35) + _attack_lunge_velocity + _knockback_velocity
-		move_and_slide()
-		return
+		is_spraying_apar = false
+		_attack_failsafe_timer = max(0.0, _attack_failsafe_timer - delta)
+		if _attack_failsafe_timer <= 0.0:
+			is_attacking = false
+			_attack_lunge_velocity = Vector2.ZERO
+			_play_state_anim(_get_move_state())
+		else:
+			# Tetap izinkan sedikit kendali arah + momentum lunge agar serangan terasa luwes, bukan membeku
+			velocity = direction * (speed * 0.35) + _attack_lunge_velocity + _knockback_velocity
+			move_and_slide()
+			return
+
+	var wants_spray := active_slot == 0 and has_apar and Input.is_action_pressed("attack") and not _is_dialogue_open()
+	is_spraying_apar = wants_spray
 
 	var is_sprinting := false
 	if direction != Vector2.ZERO:
-		is_sprinting = Input.is_key_pressed(KEY_SHIFT) and current_energy > 0.0
+		is_sprinting = not is_spraying_apar and Input.is_key_pressed(KEY_SHIFT) and current_energy > 0.0
 		if is_sprinting:
 			velocity = direction.normalized() * sprint_speed
 			if sprite:
@@ -98,7 +119,8 @@ func _physics_process(delta: float) -> void:
 			_energy_recovery_timer = energy_recovery_delay
 			energy_changed.emit(current_energy, max_energy)
 		else:
-			velocity = direction.normalized() * speed
+			var move_spd := speed * 0.85 if is_spraying_apar else speed
+			velocity = direction.normalized() * move_spd
 			if sprite:
 				sprite.speed_scale = 0.95
 		velocity += _knockback_velocity
@@ -115,7 +137,7 @@ func _physics_process(delta: float) -> void:
 				last_direction = "back"
 		_play_state_anim("run" if is_sprinting else "walk")
 	else:
-		velocity = Vector2.ZERO
+		velocity = _knockback_velocity
 		if sprite:
 			sprite.speed_scale = 1.0
 		_play_state_anim("idle")
@@ -128,7 +150,14 @@ func _physics_process(delta: float) -> void:
 			current_energy = min(max_energy, current_energy + energy_recovery_rate * delta)
 			energy_changed.emit(current_energy, max_energy)
 
-	if Input.is_action_just_pressed("attack"):
+	if is_spraying_apar:
+		_process_continuous_apar_spray(delta)
+	else:
+		_apar_foam_timer = 0.0
+		_apar_hit_timer = 0.0
+
+	if _attack_buffer_timer > 0.0:
+		_attack_buffer_timer = 0.0
 		if active_slot == 1:
 			# Hanya bisa attack jika sedang memegang pentungan (Slot 1)
 			if current_energy >= attack_energy_cost:
@@ -136,9 +165,10 @@ func _physics_process(delta: float) -> void:
 				_energy_recovery_timer = energy_recovery_delay
 				energy_changed.emit(current_energy, max_energy)
 				_start_attack_pentungan()
-		elif active_slot == 0 and has_apar:
-			# APAR (Slot 0): hanya aktif setelah menerima APAR dari Kakek
-			_start_spray_apar()
+			else:
+				var hud = get_tree().get_first_node_in_group("hud")
+				if hud and hud.has_method("flash_energy_bar"):
+					hud.flash_energy_bar()
 		move_and_slide()
 		return
 
@@ -189,30 +219,24 @@ func _get_facing_vector() -> Vector2:
 func _start_attack_pentungan() -> void:
 	is_attacking = true
 	_hit_dealt_this_swing = false
+	_attack_failsafe_timer = 0.75
+	_attack_seq += 1
+	var seq := _attack_seq
 	var attack_dir = _get_facing_vector()
-	_attack_lunge_velocity = attack_dir * 70.0
+	_attack_lunge_velocity = attack_dir * 24.0
 	velocity = _attack_lunge_velocity
 
-	_spawn_swing_arc(attack_dir)
-
-	if sprite:
+	var anim_name = "attack_pentungan_" + last_direction
+	if sprite and sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_name):
 		sprite.speed_scale = 1.0
 		sprite.scale = Vector2(0.3, 0.3)
-		_play_state_anim("idle")
+		sprite.play(anim_name)
+		sprite.frame = 0
 
-		var t = create_tween()
-		t.tween_property(sprite, "scale", Vector2(0.27, 0.33), 0.05)
-		t.tween_callback(func():
-			if not is_dead and not _hit_dealt_this_swing:
+		# Eksekusi hit tepat saat ayunan pentungan mencapai frame impact (~frame 2 @ 10fps)
+		get_tree().create_timer(0.20).timeout.connect(func():
+			if not is_dead and is_attacking and _attack_seq == seq and not _hit_dealt_this_swing:
 				_execute_pentungan_hit()
-		)
-		t.tween_property(sprite, "scale", Vector2(0.34, 0.27), 0.09).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		t.tween_property(sprite, "scale", Vector2(0.3, 0.3), 0.14).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-		t.tween_callback(func():
-			is_attacking = false
-			_attack_lunge_velocity = Vector2.ZERO
-			if not is_dead:
-				_play_state_anim(_get_move_state())
 		)
 	else:
 		_execute_pentungan_hit()
@@ -238,71 +262,46 @@ func _execute_pentungan_hit() -> void:
 		await get_tree().create_timer(0.04, true, false, true).timeout
 		Engine.time_scale = 1.0
 
-func _spawn_swing_arc(attack_dir: Vector2) -> void:
-	var parent_node = get_parent()
-	if not parent_node:
-		return
-	var arc = Line2D.new()
-	arc.z_index = 3
-	arc.global_position = global_position + Vector2(0, 4)
-	arc.width = 2.5
-	arc.default_color = Color(1.0, 0.96, 0.78, 0.85)
-	var base_angle = attack_dir.angle()
-	var pts = PackedVector2Array()
-	for i in range(9):
-		var a = base_angle + lerp(-1.1, 1.1, float(i) / 8.0)
-		pts.append(Vector2(cos(a) * 16.0, sin(a) * 16.0))
-	arc.points = pts
-	parent_node.add_child(arc)
+func _is_dialogue_open() -> bool:
+	var hud = get_tree().get_first_node_in_group("hud")
+	if hud and "dialogue_modal" in hud and hud.dialogue_modal:
+		return hud.dialogue_modal.visible
+	return false
 
-	var t = arc.create_tween().set_parallel(true)
-	t.tween_property(arc, "scale", Vector2(1.2, 1.2), 0.14).set_ease(Tween.EASE_OUT)
-	t.tween_property(arc, "modulate:a", 0.0, 0.16)
-	t.chain().tween_callback(arc.queue_free)
+func _process_continuous_apar_spray(delta: float) -> void:
+	var attack_dir := _get_facing_vector()
+	_apar_foam_timer -= delta
+	_apar_hit_timer -= delta
 
-func _start_spray_apar() -> void:
-	is_attacking = true
-	var attack_dir = _get_facing_vector()
-	_attack_lunge_velocity = -attack_dir * 18.0
-	velocity = _attack_lunge_velocity
+	if _apar_foam_timer <= 0.0:
+		_apar_foam_timer = 0.065
+		_spawn_apar_foam(attack_dir, 5)
+		var tree_spray_center := global_position + attack_dir * 22.0
+		for tree in get_tree().get_nodes_in_group("burning_tree"):
+			if is_instance_valid(tree) and tree.has_method("apply_apar_spray"):
+				if tree.global_position.distance_to(tree_spray_center) <= 34.0 or global_position.distance_to(tree.global_position) <= 28.0:
+					tree.apply_apar_spray(0.065)
 
-	_spawn_apar_foam(attack_dir)
+	if _apar_hit_timer <= 0.0:
+		_apar_hit_timer = 0.24
+		var spray_center := global_position + attack_dir * 18.0
+		for e in get_tree().get_nodes_in_group("enemy"):
+			if is_instance_valid(e) and not e.get("is_dead"):
+				if e.global_position.distance_to(spray_center) <= 28.0:
+					var kb: Vector2 = (e.global_position - global_position).normalized()
+					if kb == Vector2.ZERO:
+						kb = attack_dir
+					if e.has_method("take_damage"):
+						var dmg: float = 14.0 if e.is_in_group("boss") else 7.0
+						e.take_damage(dmg, kb * 0.9)
 
-	if sprite:
-		sprite.speed_scale = 1.0
-		_play_state_anim("idle")
-		var t = create_tween()
-		t.tween_property(sprite, "scale", Vector2(0.32, 0.28), 0.08)
-		t.tween_property(sprite, "scale", Vector2(0.29, 0.31), 0.1)
-		t.tween_property(sprite, "scale", Vector2(0.3, 0.3), 0.1)
-		t.tween_callback(func():
-			is_attacking = false
-			_attack_lunge_velocity = Vector2.ZERO
-			if not is_dead:
-				_play_state_anim(_get_move_state())
-		)
-	else:
-		is_attacking = false
-
-	# Semprotan APAR juga mendorong & memberi damage ke musuh di depan (termasuk Boss)
-	var spray_center = global_position + attack_dir * 18.0
-	for e in get_tree().get_nodes_in_group("enemy"):
-		if is_instance_valid(e) and not e.get("is_dead"):
-			if e.global_position.distance_to(spray_center) <= 28.0:
-				var kb = (e.global_position - global_position).normalized()
-				if kb == Vector2.ZERO:
-					kb = attack_dir
-				if e.has_method("take_damage"):
-					var dmg = 20.0 if e.is_in_group("boss") else 10.0
-					e.take_damage(dmg, kb * 1.4)
-
-func _spawn_apar_foam(attack_dir: Vector2) -> void:
+func _spawn_apar_foam(attack_dir: Vector2, puff_count: int = 5) -> void:
 	var parent_node = get_parent()
 	if not parent_node:
 		return
 	var base_angle = attack_dir.angle()
 	var origin = global_position + attack_dir * 9.0 + Vector2(0, 3)
-	for i in range(14):
+	for i in range(puff_count):
 		var puff = Polygon2D.new()
 		puff.z_index = 4
 		puff.global_position = origin
@@ -376,7 +375,10 @@ func restore_energy(amount: float) -> void:
 func _die() -> void:
 	if is_dead:
 		return
+	Engine.time_scale = 1.0
 	is_dead = true
+	is_attacking = false
+	_attack_buffer_timer = 0.0
 	velocity = Vector2.ZERO
 	died.emit()
 	if sprite:
@@ -386,8 +388,11 @@ func _die() -> void:
 		tween.tween_property(sprite, "position:y", sprite.position.y + 6.0, 0.35)
 
 func respawn(respawn_pos: Vector2 = Vector2.ZERO) -> void:
+	Engine.time_scale = 1.0
 	is_dead = false
 	is_attacking = false
+	_attack_buffer_timer = 0.0
+	_attack_failsafe_timer = 0.0
 	is_hurt = false
 	current_blood = max_blood
 	current_energy = max_energy

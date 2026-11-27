@@ -37,6 +37,10 @@
 [ext_resource type="Texture2D" path="res://asset/char-fix/rojali (main char)/with tools (pentungan)/idle_left.png" id="35_idle_pentungan_left"]
 [ext_resource type="Texture2D" path="res://asset/char-fix/rojali (main char)/with tools (pentungan)/walk_left.png" id="36_walk_pentungan_left"]
 [ext_resource type="Texture2D" path="res://asset/char-fix/rojali (main char)/with tools (pentungan)/run_left.png" id="37_run_pentungan_left"]
+[ext_resource type="Texture2D" path="res://asset/char-fix/rojali (main char)/with tools (pentungan)/attack/pentungan-attack-front.png" id="38_attack_pentungan_front"]
+[ext_resource type="Texture2D" path="res://asset/char-fix/rojali (main char)/with tools (pentungan)/attack/pentungan-attack-back.png" id="39_attack_pentungan_back"]
+[ext_resource type="Texture2D" path="res://asset/char-fix/rojali (main char)/with tools (pentungan)/attack/pentungan-attack-left.png" id="40_attack_pentungan_left"]
+[ext_resource type="Texture2D" path="res://asset/char-fix/rojali (main char)/with tools (pentungan)/attack/pentungan-attack-right.png" id="41_attack_pentungan_right"]
 
 [sub_resource type="AtlasTexture" id="Atlas_idle_front_0"]
 atlas = ExtResource("2_idle_front")
@@ -1478,6 +1482,102 @@ region = Rect2(1536, 0, 128, 128)
 atlas = ExtResource("37_run_pentungan_left")
 region = Rect2(1664, 0, 128, 128)
 
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_front_0"]
+atlas = ExtResource("38_attack_pentungan_front")
+region = Rect2(0, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_front_1"]
+atlas = ExtResource("38_attack_pentungan_front")
+region = Rect2(192, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_front_2"]
+atlas = ExtResource("38_attack_pentungan_front")
+region = Rect2(384, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_front_3"]
+atlas = ExtResource("38_attack_pentungan_front")
+region = Rect2(576, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_front_4"]
+atlas = ExtResource("38_attack_pentungan_front")
+region = Rect2(768, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_front_5"]
+atlas = ExtResource("38_attack_pentungan_front")
+region = Rect2(960, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_back_0"]
+atlas = ExtResource("39_attack_pentungan_back")
+region = Rect2(0, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_back_1"]
+atlas = ExtResource("39_attack_pentungan_back")
+region = Rect2(192, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_back_2"]
+atlas = ExtResource("39_attack_pentungan_back")
+region = Rect2(384, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_back_3"]
+atlas = ExtResource("39_attack_pentungan_back")
+region = Rect2(576, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_back_4"]
+atlas = ExtResource("39_attack_pentungan_back")
+region = Rect2(768, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_back_5"]
+atlas = ExtResource("39_attack_pentungan_back")
+region = Rect2(960, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_left_0"]
+atlas = ExtResource("40_attack_pentungan_left")
+region = Rect2(0, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_left_1"]
+atlas = ExtResource("40_attack_pentungan_left")
+region = Rect2(192, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_left_2"]
+atlas = ExtResource("40_attack_pentungan_left")
+region = Rect2(384, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_left_3"]
+atlas = ExtResource("40_attack_pentungan_left")
+region = Rect2(576, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_left_4"]
+atlas = ExtResource("40_attack_pentungan_left")
+region = Rect2(768, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_left_5"]
+atlas = ExtResource("40_attack_pentungan_left")
+region = Rect2(960, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_right_0"]
+atlas = ExtResource("41_attack_pentungan_right")
+region = Rect2(0, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_right_1"]
+atlas = ExtResource("41_attack_pentungan_right")
+region = Rect2(192, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_right_2"]
+atlas = ExtResource("41_attack_pentungan_right")
+region = Rect2(384, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_right_3"]
+atlas = ExtResource("41_attack_pentungan_right")
+region = Rect2(576, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_right_4"]
+atlas = ExtResource("41_attack_pentungan_right")
+region = Rect2(768, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_attack_pentungan_right_5"]
+atlas = ExtResource("41_attack_pentungan_right")
+region = Rect2(960, 0, 192, 128)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_main"]
 animations = [{
 "frames": [{
@@ -2739,6 +2839,98 @@ animations = [{
 "loop": true,
 "name": &"run_pentungan_left",
 "speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_front_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_front_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_front_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_front_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_front_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_front_5")
+}],
+"loop": false,
+"name": &"attack_pentungan_front",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_back_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_back_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_back_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_back_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_back_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_back_5")
+}],
+"loop": false,
+"name": &"attack_pentungan_back",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_left_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_left_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_left_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_left_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_left_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_left_5")
+}],
+"loop": false,
+"name": &"attack_pentungan_left",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_right_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_right_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_right_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_right_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_right_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_attack_pentungan_right_5")
+}],
+"loop": false,
+"name": &"attack_pentungan_right",
+"speed": 10.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
@@ -2748,6 +2940,7 @@ height = 14.0
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 2
 y_sort_enabled = true
+collision_mask = 7
 script = ExtResource("1_script")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

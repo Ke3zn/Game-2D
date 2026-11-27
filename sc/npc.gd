@@ -9,6 +9,7 @@ class_name NPC
 ]
 
 var _player_in_range: bool = false
+var _player_ref: Node2D = null
 
 @onready var prompt: Label = $PromptLabel
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -24,6 +25,13 @@ func _ready() -> void:
 		var tween = create_tween().set_loops()
 		tween.tween_property(sprite, "scale", Vector2(base_scale.x, base_scale.y * 0.96), 1.0).set_trans(Tween.TRANS_SINE)
 		tween.tween_property(sprite, "scale", base_scale, 1.0).set_trans(Tween.TRANS_SINE)
+
+func _process(_delta: float) -> void:
+	if not _player_ref or not is_instance_valid(_player_ref):
+		_player_ref = get_tree().get_first_node_in_group("player") as Node2D
+	if _player_ref:
+		# Urutan render Y-depth: saat player berdiri di bawah Kakek, player tampil di depan
+		z_index = 1 if _player_ref.global_position.y > global_position.y else 2
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _player_in_range:

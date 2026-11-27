@@ -93,6 +93,9 @@ func _physics_process(delta: float) -> void:
 	if not player or not is_instance_valid(player):
 		player = get_tree().get_first_node_in_group("player") as Node2D
 
+	if player and is_instance_valid(player):
+		z_index = 1 if player.global_position.y > global_position.y else 2
+
 	var hud = _get_hud()
 
 	if player and is_instance_valid(player) and not player.get("is_dead"):

@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://cburningtree01"]
+
+[ext_resource type="Script" path="res://sc/burning_tree.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/1. sprite sheet pohon saat kebakaran/1.png" id="2_s1_1"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/1. sprite sheet pohon saat kebakaran/2.png" id="3_s1_2"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/1. sprite sheet pohon saat kebakaran/3.png" id="4_s1_3"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/1. sprite sheet pohon saat kebakaran/4.png" id="5_s1_4"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/2. pohon saat di padamkan/5.png" id="6_s2_5"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/2. pohon saat di padamkan/6.png" id="7_s2_6"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/2. pohon saat di padamkan/7.png" id="8_s2_7"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/2. pohon saat di padamkan/8.png" id="9_s2_8"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/3. pohon mulai padam/9.png" id="10_s3_9"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/3. pohon mulai padam/10.png" id="11_s3_10"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/3. pohon mulai padam/11.png" id="12_s3_11"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/3. pohon mulai padam/12.png" id="13_s3_12"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/4. pohon padam/13.png" id="14_s4_13"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/4. pohon padam/14.png" id="15_s4_14"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/4. pohon padam/15.png" id="16_s4_15"]
+[ext_resource type="Texture2D" path="res://asset/pohon 2/4. pohon padam/16 (final pohon setelah di padam kan).png" id="17_s4_16"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tree"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_s1_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_s1_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_s1_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_s1_4")
+}],
+"loop": true,
+"name": &"stage_1_burning",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_s2_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_s2_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_s2_7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_s2_8")
+}],
+"loop": true,
+"name": &"stage_2_dying",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_s3_9")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_s3_10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_s3_11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_s3_12")
+}],
+"loop": true,
+"name": &"stage_3_embers",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_s4_13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_s4_14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_s4_15")
+}],
+"loop": false,
+"name": &"stage_4_out",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_s4_16")
+}],
+"loop": false,
+"name": &"stage_4_final",
+"speed": 1.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_trunk"]
+radius = 7.0
+
+[node name="BurningTree" type="StaticBody2D" groups=["burning_tree"]]
+z_index = 2
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -25)
+scale = Vector2(0.18, 0.18)
+sprite_frames = SubResource("SpriteFrames_tree")
+animation = &"stage_1_burning"
+autoplay = "stage_1_burning"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("CircleShape2D_trunk")

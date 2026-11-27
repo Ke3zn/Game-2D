@@ -20,7 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://dgbnska5sospt" path="res://asset/Dasar land-top-down-vector-tileset/PNG/Top-Down Simple Summer_Prop - Wooden Bridge Horizontal.png" id="16_c4aub"]
 [ext_resource type="Texture2D" uid="uid://dp3ncidlk0dr" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_3.png" id="17_0oiyf"]
 [ext_resource type="Texture2D" uid="uid://dpychtqxpw6hx" path="res://asset/Dasar land-top-down-vector-tileset/PNG/Top-Down Simple Summer_Prop - Tent.png" id="17_pgdxa"]
-[ext_resource type="PackedScene" path="res://asset/player.tscn" id="18_player"]
+[ext_resource type="PackedScene" uid="uid://dp5xk2m3wq1r8" path="res://asset/player.tscn" id="18_player"]
 [ext_resource type="Texture2D" uid="uid://dmywk8uxx3ws3" path="res://asset/poon/poon1.png" id="19_2v48b"]
 [ext_resource type="Texture2D" uid="uid://c7lksgrvroghy" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_1.png" id="20_6epkn"]
 [ext_resource type="Texture2D" uid="uid://nxw3b8t53bti" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_12.png" id="21_k8ljt"]
@@ -69,6 +69,7 @@
 [ext_resource type="Texture2D" uid="uid://boj5fscven1sa" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_4.png" id="64_ok3tt"]
 [ext_resource type="Texture2D" uid="uid://bh77ix5qiuov7" path="res://asset/craftpix-net-812442-free-fantasy-medieval-village-buildings-asset-pack/PNG/Houses and Warehouses_Wooden House - Level 2.png" id="66_wbm50"]
 [ext_resource type="Texture2D" uid="uid://02d8h6xifmcj" path="res://asset/craftpix-net-812442-free-fantasy-medieval-village-buildings-asset-pack/PNG/Houses and Warehouses_Wooden House - Level 3.png" id="67_t31x6"]
+[ext_resource type="PackedScene" uid="uid://cburningtree01" path="res://asset/burning_tree.tscn" id="68_burning_tree"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hm5r7"]
 texture = ExtResource("1_rah20")
@@ -6583,7 +6584,7 @@ texture = ExtResource("29_dv67d")
 script = ExtResource("48_fadetree")
 
 [node name="NPC_Kakek" parent="." unique_id=1644674515 instance=ExtResource("51_npc")]
-position = Vector2(775, 715)
+position = Vector2(694, 771)
 
 [node name="ItemPickup_Potion" parent="." unique_id=1044852418 instance=ExtResource("52_item")]
 position = Vector2(745, 340)
@@ -6599,6 +6600,30 @@ position = Vector2(760, 580)
 
 [node name="BossNormal" parent="." unique_id=2057301853 instance=ExtResource("54_boss")]
 position = Vector2(370, 128)
+
+[node name="BurningTree1" parent="." unique_id=2100001001 instance=ExtResource("68_burning_tree")]
+position = Vector2(205, 115)
+
+[node name="BurningTree2" parent="." unique_id=2100001002 instance=ExtResource("68_burning_tree")]
+position = Vector2(275, 105)
+
+[node name="BurningTree3" parent="." unique_id=2100001003 instance=ExtResource("68_burning_tree")]
+position = Vector2(455, 102)
+
+[node name="BurningTree4" parent="." unique_id=2100001004 instance=ExtResource("68_burning_tree")]
+position = Vector2(530, 118)
+
+[node name="BurningTree5" parent="." unique_id=2100001005 instance=ExtResource("68_burning_tree")]
+position = Vector2(195, 228)
+
+[node name="BurningTree6" parent="." unique_id=2100001006 instance=ExtResource("68_burning_tree")]
+position = Vector2(305, 252)
+
+[node name="BurningTree7" parent="." unique_id=2100001007 instance=ExtResource("68_burning_tree")]
+position = Vector2(465, 250)
+
+[node name="BurningTree8" parent="." unique_id=2100001008 instance=ExtResource("68_burning_tree")]
+position = Vector2(535, 248)
 
 [node name="HUD" parent="." unique_id=1784112505 instance=ExtResource("49_hud")]
 
@@ -6818,13 +6843,6 @@ position = Vector2(596, 490)
 texture = ExtResource("24_dl3wx")
 script = ExtResource("48_fadetree")
 
-[node name="Birch3" type="Sprite2D" parent="." unique_id=371758127]
-z_index = 3
-position = Vector2(829, 750.00006)
-scale = Vector2(0.73041475, 0.7661597)
-texture = ExtResource("63_20juf")
-script = ExtResource("48_fadetree")
-
 [node name="Birch4" type="Sprite2D" parent="." unique_id=772810212]
 z_index = 3
 position = Vector2(945.00006, 668)
@@ -6930,3 +6948,10 @@ position = Vector2(40.000034, 82.0067)
 rotation = 0.82108986
 scale = Vector2(1, 1.0000001)
 shape = SubResource("RectangleShape2D_bld_bh3")
+
+[node name="Birch3" type="Sprite2D" parent="." unique_id=401089440]
+z_index = 3
+position = Vector2(829, 750.00006)
+scale = Vector2(0.73041475, 0.7661597)
+texture = ExtResource("63_20juf")
+script = ExtResource("48_fadetree")
