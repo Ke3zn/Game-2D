@@ -1,0 +1,30 @@
+3COLORCAT WOOD FLOOR TILESET - LICENSE
+
+Creator: 3COLORCAT
+Product: Wood Floor Tileset - 256 Variations (32x32)
+
+By downloading or purchasing this asset pack, you receive a non-exclusive license to use the assets under the terms below. Ownership of the original assets is not transferred.
+
+PERMITTED USE
+
+- Use the assets in personal, educational, and commercial games or other creative projects, whether free or paid.
+- Modify, recolor, resize, combine, and adapt the assets for your projects.
+- Include the assets as part of a finished game or other creative work distributed to end users.
+- Use the assets in multiple projects.
+
+CREDIT
+
+Credit is appreciated but not required.
+If you would like to give credit, please use: "3COLORCAT".
+
+NOT PERMITTED
+
+- Resell, share, sublicense, or redistribute the original or modified assets as standalone files, asset packs, templates, or other reusable resources.
+- Claim that you created the original assets.
+- Include the assets in datasets for AI or machine-learning training, or use them to train, fine-tune, or improve AI models.
+
+ADDITIONAL NOTE
+
+This is a non-exclusive asset pack. Some tiles may also appear in 3COLORCAT's own game, Tongtong Bunsik, or other projects by the creator.
+
+For questions about these terms, please contact the creator through the itch.io product page.
