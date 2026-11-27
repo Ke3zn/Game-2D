@@ -70,7 +70,6 @@
 [ext_resource type="Texture2D" uid="uid://boj5fscven1sa" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_4.png" id="64_ok3tt"]
 [ext_resource type="Texture2D" uid="uid://bh77ix5qiuov7" path="res://asset/craftpix-net-812442-free-fantasy-medieval-village-buildings-asset-pack/PNG/Houses and Warehouses_Wooden House - Level 2.png" id="66_wbm50"]
 [ext_resource type="Texture2D" uid="uid://02d8h6xifmcj" path="res://asset/craftpix-net-812442-free-fantasy-medieval-village-buildings-asset-pack/PNG/Houses and Warehouses_Wooden House - Level 3.png" id="67_t31x6"]
-[ext_resource type="PackedScene" path="res://asset/boss_molotov.tscn" id="68_boss_molotov"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hm5r7"]
 texture = ExtResource("1_rah20")
@@ -5267,7 +5266,7 @@ scale = Vector2(0.99999976, 0.99999976)
 shape = SubResource("RectangleShape2D_skieg")
 
 [node name="Poon7" type="Sprite2D" parent="." unique_id=1454570701]
-position = Vector2(952.00006, 447)
+position = Vector2(959, 450)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
 script = ExtResource("48_fadetree")
@@ -5280,7 +5279,7 @@ scale = Vector2(0.99999976, 0.99999976)
 shape = SubResource("RectangleShape2D_skieg")
 
 [node name="Poon8" type="Sprite2D" parent="." unique_id=828266944]
-position = Vector2(975, 456)
+position = Vector2(997, 459)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
 script = ExtResource("48_fadetree")
@@ -5293,7 +5292,7 @@ scale = Vector2(0.99999976, 0.99999976)
 shape = SubResource("RectangleShape2D_skieg")
 
 [node name="Poon9" type="Sprite2D" parent="." unique_id=1230394339]
-position = Vector2(1005, 463)
+position = Vector2(1035, 465)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
 script = ExtResource("48_fadetree")
@@ -5314,6 +5313,462 @@ script = ExtResource("48_fadetree")
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon9/Poon9" unique_id=1067362606]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Poon9/Poon9/StaticBody2D" unique_id=1148369104]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon10" type="Sprite2D" parent="Poon9" unique_id=816578343]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon9/Poon10" unique_id=1507025564]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon9/Poon10/StaticBody2D" unique_id=1964633706]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon9/Poon10" unique_id=1208857926]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon9/Poon10/Poon9" unique_id=33176254]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon9/Poon10/Poon9/StaticBody2D" unique_id=562922041]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon11" type="Sprite2D" parent="Poon9" unique_id=1584272701]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon9/Poon11" unique_id=2000739775]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon9/Poon11/StaticBody2D" unique_id=1081213047]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon9/Poon11" unique_id=1830839113]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon9/Poon11/Poon9" unique_id=1248683797]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon9/Poon11/Poon9/StaticBody2D" unique_id=339739181]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon10" type="Sprite2D" parent="Poon9/Poon11" unique_id=1254234409]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon9/Poon11/Poon10" unique_id=1185495816]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon9/Poon11/Poon10/StaticBody2D" unique_id=902530016]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon9/Poon11/Poon10" unique_id=1135799780]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon9/Poon11/Poon10/Poon9" unique_id=854654487]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon9/Poon11/Poon10/Poon9/StaticBody2D" unique_id=1872575072]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon11" type="Sprite2D" parent="." unique_id=821624781]
+position = Vector2(1147.0001, 475)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11" unique_id=652033133]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/StaticBody2D" unique_id=499461389]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11" unique_id=1296581301]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon9" unique_id=1315949654]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon9/StaticBody2D" unique_id=2101213275]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon11" type="Sprite2D" parent="Poon11" unique_id=758633717]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon11" unique_id=1539663145]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon11/StaticBody2D" unique_id=1391303909]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon11" unique_id=1912159972]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon11/Poon9" unique_id=1937276383]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon11/Poon9/StaticBody2D" unique_id=386052780]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon12" type="Sprite2D" parent="Poon11" unique_id=787409295]
+position = Vector2(1036, 464)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon12" unique_id=840395574]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon12/StaticBody2D" unique_id=905260430]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon12" unique_id=272453968]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon12/Poon9" unique_id=1695783686]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon12/Poon9/StaticBody2D" unique_id=940821061]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon11" type="Sprite2D" parent="Poon11/Poon12" unique_id=1816716897]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon12/Poon11" unique_id=1461874519]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon12/Poon11/StaticBody2D" unique_id=514501720]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon12/Poon11" unique_id=1176414471]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon12/Poon11/Poon9" unique_id=1463435764]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon12/Poon11/Poon9/StaticBody2D" unique_id=1498740408]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon13" type="Sprite2D" parent="Poon11" unique_id=1009308994]
+position = Vector2(1039, 461)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon13" unique_id=353540572]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon13/StaticBody2D" unique_id=820265597]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon13" unique_id=694284774]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon13/Poon9" unique_id=47769242]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon13/Poon9/StaticBody2D" unique_id=1082643966]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon11" type="Sprite2D" parent="Poon11/Poon13" unique_id=1729999240]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon13/Poon11" unique_id=2077761116]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon13/Poon11/StaticBody2D" unique_id=2146805081]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon13/Poon11" unique_id=1220531423]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon13/Poon11/Poon9" unique_id=1376825017]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon13/Poon11/Poon9/StaticBody2D" unique_id=584453811]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon12" type="Sprite2D" parent="Poon11/Poon13" unique_id=2084025030]
+position = Vector2(1036, 464)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon13/Poon12" unique_id=231726659]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon13/Poon12/StaticBody2D" unique_id=1282606404]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon13/Poon12" unique_id=1865687257]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon13/Poon12/Poon9" unique_id=1546812051]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon13/Poon12/Poon9/StaticBody2D" unique_id=1676270518]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon11" type="Sprite2D" parent="Poon11/Poon13/Poon12" unique_id=1513341280]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon13/Poon12/Poon11" unique_id=1837062949]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon13/Poon12/Poon11/StaticBody2D" unique_id=1287782182]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon13/Poon12/Poon11" unique_id=647309945]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon13/Poon12/Poon11/Poon9" unique_id=2018730096]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon13/Poon12/Poon11/Poon9/StaticBody2D" unique_id=931143274]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon14" type="Sprite2D" parent="Poon11" unique_id=1501026763]
+position = Vector2(1147.0001, 475)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14" unique_id=846619673]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/StaticBody2D" unique_id=1939987720]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon14" unique_id=713727313]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon9" unique_id=1733284232]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon9/StaticBody2D" unique_id=367336691]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon11" type="Sprite2D" parent="Poon11/Poon14" unique_id=2118645598]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon11" unique_id=712575131]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon11/StaticBody2D" unique_id=514323611]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon14/Poon11" unique_id=1222409825]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon11/Poon9" unique_id=1563826459]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon11/Poon9/StaticBody2D" unique_id=2090437172]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon12" type="Sprite2D" parent="Poon11/Poon14" unique_id=656910820]
+position = Vector2(1036, 464)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon12" unique_id=1028751970]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon12/StaticBody2D" unique_id=634049886]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon14/Poon12" unique_id=823890893]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon12/Poon9" unique_id=779077455]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon12/Poon9/StaticBody2D" unique_id=930127134]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon11" type="Sprite2D" parent="Poon11/Poon14/Poon12" unique_id=2053940450]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon12/Poon11" unique_id=1045769784]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon12/Poon11/StaticBody2D" unique_id=449412471]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon14/Poon12/Poon11" unique_id=1603361373]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon12/Poon11/Poon9" unique_id=1580908274]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon12/Poon11/Poon9/StaticBody2D" unique_id=113664246]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon13" type="Sprite2D" parent="Poon11/Poon14" unique_id=1252072397]
+position = Vector2(1039, 461)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon13" unique_id=643714301]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon13/StaticBody2D" unique_id=1216058957]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon14/Poon13" unique_id=601917801]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon13/Poon9" unique_id=983761462]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon13/Poon9/StaticBody2D" unique_id=211402560]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon11" type="Sprite2D" parent="Poon11/Poon14/Poon13" unique_id=1487115732]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon13/Poon11" unique_id=2069984205]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon13/Poon11/StaticBody2D" unique_id=607833122]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon14/Poon13/Poon11" unique_id=1695130091]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon13/Poon11/Poon9" unique_id=1622763775]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon13/Poon11/Poon9/StaticBody2D" unique_id=448151076]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon12" type="Sprite2D" parent="Poon11/Poon14/Poon13" unique_id=2086549490]
+position = Vector2(1036, 464)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon13/Poon12" unique_id=1146752843]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon13/Poon12/StaticBody2D" unique_id=442634097]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon14/Poon13/Poon12" unique_id=411404248]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon13/Poon12/Poon9" unique_id=954308457]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon13/Poon12/Poon9/StaticBody2D" unique_id=613634350]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon11" type="Sprite2D" parent="Poon11/Poon14/Poon13/Poon12" unique_id=1347061624]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon13/Poon12/Poon11" unique_id=61112892]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon13/Poon12/Poon11/StaticBody2D" unique_id=694195744]
+position = Vector2(0.25012207, 5.205078)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_skieg")
+
+[node name="Poon9" type="Sprite2D" parent="Poon11/Poon14/Poon13/Poon12/Poon11" unique_id=888334790]
+position = Vector2(1005, 463)
+scale = Vector2(0.48412699, 0.4874996)
+texture = ExtResource("19_2v48b")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Poon11/Poon14/Poon13/Poon12/Poon11/Poon9" unique_id=399766783]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Poon11/Poon14/Poon13/Poon12/Poon11/Poon9/StaticBody2D" unique_id=658826312]
 position = Vector2(0.25012207, 5.205078)
 scale = Vector2(0.99999976, 0.99999976)
 shape = SubResource("RectangleShape2D_skieg")
@@ -6195,10 +6650,7 @@ position = Vector2(1050, 230)
 [node name="Door_VillageHouse" parent="." unique_id=443267989 instance=ExtResource("53_door")]
 position = Vector2(760, 580)
 
-[node name="BossSlime" parent="." unique_id=2057301853 instance=ExtResource("54_boss")]
-position = Vector2(1287, 192)
-
-[node name="BossMolotov" parent="." unique_id=1158781648 instance=ExtResource("68_boss_molotov")]
+[node name="BossNormal" parent="." unique_id=2057301853 instance=ExtResource("54_boss")]
 position = Vector2(370, 128)
 
 [node name="HUD" parent="." unique_id=1784112505 instance=ExtResource("49_hud")]

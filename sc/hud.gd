@@ -100,8 +100,8 @@ func _ready() -> void:
 		item_icon_0.texture = null
 
 	# Muat ikon tas ransel secara dinamis jika file ada
-	if FileAccess.file_exists("res://asset/char/tools/tas.png"):
-		var img_tas = Image.load_from_file("res://asset/char/tools/tas.png")
+	if FileAccess.file_exists("res://asset/tools/tas.png"):
+		var img_tas = Image.load_from_file("res://asset/tools/tas.png")
 		if img_tas and tas_icon:
 			tas_icon.texture = ImageTexture.create_from_image(img_tas)
 
@@ -408,8 +408,8 @@ func close_dialogue() -> void:
 
 func _register_apar_item() -> void:
 	var tex: Texture2D = null
-	if FileAccess.file_exists("res://asset/char/tools/pemadam.png"):
-		var img = Image.load_from_file("res://asset/char/tools/pemadam.png")
+	if FileAccess.file_exists("res://asset/tools/pemadam.png"):
+		var img = Image.load_from_file("res://asset/tools/pemadam.png")
 		if img:
 			tex = ImageTexture.create_from_image(img)
 	if item_icon_0:
@@ -453,7 +453,7 @@ func complete_quest() -> void:
 		return
 	quest_status = "COMPLETED"
 	get_tree().set_meta("quest_status", quest_status)
-	add_item_to_inventory("coin", "Koin Emas", "Koin mata uang berharga hadiah dari Kakek desa.", "res://asset/char/tools/coin.png", 100)
+	add_item_to_inventory("coin", "Koin Emas", "Koin mata uang berharga hadiah dari Kakek desa.", "res://asset/tools/coin.png", 100)
 	_update_quest_ui()
 
 func _update_quest_ui() -> void:

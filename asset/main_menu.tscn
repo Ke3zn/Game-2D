@@ -5,11 +5,11 @@
 [ext_resource type="Texture2D" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_3.png" id="3_fir3"]
 [ext_resource type="Texture2D" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/jungle_tree_1.png" id="4_jungle1"]
 [ext_resource type="Texture2D" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_1.png" id="5_birch1"]
-[ext_resource type="Texture2D" path="res://asset/char/main-char/idle/idle-front.png" id="6_hero"]
+[ext_resource type="Texture2D" path="res://asset/char-fix/rojali (main char)/no tools/idle_front.png" id="6_hero"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hero_idle"]
 atlas = ExtResource("6_hero")
-region = Rect2(0, 0, 96, 128)
+region = Rect2(0, 0, 128, 128)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_banner_ribbon"]
 bg_color = Color(0.870588, 0.807843, 0.580392, 0.95)

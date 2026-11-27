@@ -11,7 +11,7 @@ class_name NPC
 var _player_in_range: bool = false
 
 @onready var prompt: Label = $PromptLabel
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
 	add_to_group("npc")

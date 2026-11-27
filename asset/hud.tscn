@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://sc/hud.gd" id="1_hud"]
-[ext_resource type="Texture2D" path="res://asset/char/tools/pentungan.png" id="2_pentungan"]
+[ext_resource type="Texture2D" path="res://asset/tools/pentungan.png" id="2_pentungan"]
 [ext_resource type="Script" path="res://sc/minimap.gd" id="3_minimap"]
 [ext_resource type="Texture2D" path="res://asset/ui/dialogue_box.png" id="4_dlg_box"]
 [ext_resource type="Texture2D" path="res://asset/ui/dialogue_nameplate.png" id="5_dlg_name"]

@@ -1,34 +1,96 @@
 [gd_scene format=3 uid="uid://cnpckakek01"]
 
-[ext_resource type="Script" path="res://sc/npc.gd" id="1_npc"]
-[ext_resource type="Texture2D" uid="uid://cw6ke74ucwlwy" path="res://asset/char/npc-char/npc-kakek.webp" id="2_kakek_tex"]
+[ext_resource type="Script" path="res://sc/npc.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://asset/char-fix/npc (kakek)/idle.png" id="2_idle"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_kakek"]
-atlas = ExtResource("2_kakek_tex")
-region = Rect2(0, 0, 128, 123)
+[sub_resource type="AtlasTexture" id="Atlas_idle_0"]
+atlas = ExtResource("2_idle")
+region = Rect2(0, 0, 128, 128)
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_npc"]
+[sub_resource type="AtlasTexture" id="Atlas_idle_1"]
+atlas = ExtResource("2_idle")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_2"]
+atlas = ExtResource("2_idle")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_3"]
+atlas = ExtResource("2_idle")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_4"]
+atlas = ExtResource("2_idle")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_5"]
+atlas = ExtResource("2_idle")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_6"]
+atlas = ExtResource("2_idle")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="Atlas_idle_7"]
+atlas = ExtResource("2_idle")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_main"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_idle_7")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
 radius = 5.0
 height = 14.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
-radius = 24.0
+radius = 28.0
 
 [node name="NPC_Kakek" type="CharacterBody2D" groups=["npc"]]
 z_index = 2
 y_sort_enabled = true
 collision_layer = 2
 collision_mask = 1
-script = ExtResource("1_npc")
+script = ExtResource("1_script")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(0.29, 0.29)
-texture = SubResource("AtlasTexture_kakek")
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_main")
+animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 11)
-shape = SubResource("CapsuleShape2D_npc")
+position = Vector2(0, 14)
+shape = SubResource("CapsuleShape2D_body")
 
 [node name="InteractArea" type="Area2D" parent="."]
 collision_layer = 0

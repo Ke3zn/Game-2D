@@ -37,8 +37,8 @@ func _ready() -> void:
 	_create_shadow()
 
 	# Muat mahkota secara dinamis
-	if crown and FileAccess.file_exists("res://asset/char/tools/crown.png"):
-		var img = Image.load_from_file("res://asset/char/tools/crown.png")
+	if crown and FileAccess.file_exists("res://asset/tools/crown.png"):
+		var img = Image.load_from_file("res://asset/tools/crown.png")
 		if img:
 			crown.texture = ImageTexture.create_from_image(img)
 

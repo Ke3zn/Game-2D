@@ -5,27 +5,41 @@ signal health_changed(current: float, max_val: float)
 signal died()
 
 @export var boss_name: String = "🔥 BOSS PEMBAKAR"
-@export var max_health: float = 150.0
-@export var health: float = 150.0
-@export var damage: float = 18.0
-@export var molotov_damage: float = 15.0
-@export var speed: float = 26.0
-@export var detection_radius: float = 200.0
-@export var molotov_cooldown: float = 3.8
+@export var max_health: float = 140.0
+@export var health: float = 140.0
+@export var stick_damage: float = 8.0
+@export var molotov_damage: float = 10.0
+@export var speed: float = 30.0 # Disamakan dengan kecepatan jalan player
+@export var detection_radius: float = 195.0
+@export var stick_cooldown: float = 1.35
+@export var molotov_cooldown: float = 3.2
+
+const MOLOTOV_TEX := preload("res://asset/tools/molotov_projectile.png")
+const THROW_RELEASE_FRAME := 8
+const STICK_HIT_FRAME := 5
+
+const MELEE_SWITCH_RANGE := 52.0
+const MOLOTOV_SWITCH_RANGE := 60.0
+const STICK_ATTACK_RANGE := 24.0
 
 var player: Node2D = null
 var spawn_position: Vector2 = Vector2.ZERO
 var is_dead: bool = false
 
-var _attack_timer: float = 0.0
-var _molotov_timer: float = 1.5
+var _stick_timer: float = 0.0
+var _molotov_timer: float = 1.2
 var _is_throwing: bool = false
+var _is_stick_attacking: bool = false
 var _molotov_launched: bool = false
+var _stick_hit_dealt: bool = false
 var _throw_target_pos: Vector2 = Vector2.ZERO
+var _pending_telegraph: Node2D = null
 var _wave1_spawned: bool = false
 var _wave2_spawned: bool = false
 var _hurt_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
+var _last_dir: String = "front"
+var _weapon_suffix: String = "" # "" = molotov, "_stick" = stick
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
@@ -35,17 +49,32 @@ func _ready() -> void:
 	add_to_group("boss")
 	spawn_position = global_position
 	health = max_health
+	_create_shadow()
 	if sprite:
+		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		sprite.play("idle_front")
 		sprite.animation_finished.connect(_on_animation_finished)
 		sprite.frame_changed.connect(_on_frame_changed)
+
+func _create_shadow() -> void:
+	var shadow = Polygon2D.new()
+	shadow.name = "GroundShadow"
+	shadow.z_index = -1
+	shadow.color = Color(0.0, 0.0, 0.0, 0.32)
+	var pts = PackedVector2Array()
+	for i in range(16):
+		var a = (float(i) / 16.0) * TAU
+		pts.append(Vector2(cos(a) * 9.0, sin(a) * 4.0))
+	shadow.polygon = pts
+	shadow.position = Vector2(0, 15)
+	add_child(shadow)
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
 
-	if _attack_timer > 0.0:
-		_attack_timer = max(0.0, _attack_timer - delta)
+	if _stick_timer > 0.0 and not _is_stick_attacking:
+		_stick_timer = max(0.0, _stick_timer - delta)
 
 	if _molotov_timer > 0.0 and not _is_throwing:
 		_molotov_timer = max(0.0, _molotov_timer - delta)
@@ -57,7 +86,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
-	if _is_throwing:
+	if _is_throwing or _is_stick_attacking:
 		velocity = Vector2.ZERO
 		return
 
@@ -72,64 +101,75 @@ func _physics_process(delta: float) -> void:
 			if hud and hud.has_method("show_boss_bar"):
 				hud.show_boss_bar(boss_name, health, max_health)
 
-			# Lempar Molotov saat jarak menengah
-			if dist >= 38.0 and dist <= 165.0 and _molotov_timer <= 0.0:
-				_start_throw_molotov(player)
-				return
-
-			# Kejar player
 			var dir = (player.global_position - global_position).normalized()
-			var current_speed = speed * 1.25 if health <= max_health * 0.5 else speed
-			velocity = dir * current_speed
-			_update_move_anim(dir)
+			_last_dir = _vec_to_dir(dir)
 
-			# Serangan jarak dekat
-			if dist <= 22.0 and _attack_timer <= 0.0:
-				_attack_player(player)
+			# Ganti senjata otomatis berdasarkan jarak player (stick saat dekat, molotov saat jauh)
+			if dist <= MELEE_SWITCH_RANGE:
+				_weapon_suffix = "_stick"
+			elif dist >= MOLOTOV_SWITCH_RANGE:
+				_weapon_suffix = ""
+
+			if _weapon_suffix == "_stick":
+				# Dekat: serang dengan pukulan stick
+				if dist <= STICK_ATTACK_RANGE and _stick_timer <= 0.0:
+					_start_stick_attack(player)
+					return
+				if dist > 18.0:
+					velocity = dir * speed
+					_play_anim("run_stick_" + _last_dir)
+				else:
+					velocity = Vector2.ZERO
+					_play_anim("idle_stick_" + _last_dir)
+			else:
+				# Jauh: serang lempar molotov
+				if dist >= MOLOTOV_SWITCH_RANGE and dist <= 180.0 and _molotov_timer <= 0.0:
+					_start_throw_molotov(player)
+					return
+				velocity = dir * speed
+				_play_anim("run_" + _last_dir)
 		else:
 			if hud and hud.has_method("hide_boss_bar"):
 				hud.hide_boss_bar()
 
+			_weapon_suffix = ""
 			var dist_spawn = global_position.distance_to(spawn_position)
 			if dist_spawn > 15.0:
 				var dir_spawn = (spawn_position - global_position).normalized()
-				velocity = dir_spawn * (speed * 0.6)
-				_update_move_anim(dir_spawn)
+				_last_dir = _vec_to_dir(dir_spawn)
+				velocity = dir_spawn * (speed * 0.7)
+				_play_anim("walk_" + _last_dir)
 			else:
 				velocity = Vector2.ZERO
-				if sprite:
-					sprite.flip_h = false
-					if sprite.animation != "idle_front":
-						sprite.play("idle_front")
+				_play_anim("idle_front")
 	else:
+		_weapon_suffix = ""
 		velocity = Vector2.ZERO
-		if sprite:
-			sprite.flip_h = false
-			if sprite.animation != "idle_front":
-				sprite.play("idle_front")
+		_play_anim("idle_front")
 
 	move_and_slide()
 
-func _update_move_anim(dir: Vector2) -> void:
-	if not sprite:
-		return
-	sprite.flip_h = false
-	var target_anim := "idle_front"
-	if dir.x < -0.15:
-		target_anim = "walk_left"
-	elif dir.x > 0.15:
-		target_anim = "walk_right"
-	elif abs(dir.y) > 0.1:
-		target_anim = "walk_right" if dir.y < 0 else "idle_front"
-	if sprite.animation != target_anim or not sprite.is_playing():
-		sprite.play(target_anim)
+func _vec_to_dir(v: Vector2) -> String:
+	if abs(v.x) > abs(v.y):
+		return "right" if v.x >= 0.0 else "left"
+	return "front" if v.y >= 0.0 else "back"
 
-func _attack_player(p: Node2D) -> void:
-	_attack_timer = 1.4
-	if p.has_method("take_damage"):
-		p.take_damage(damage)
-	var lunge_dir = (p.global_position - global_position).normalized()
-	global_position += lunge_dir * 6.0
+func _play_anim(anim_name: String) -> void:
+	if not sprite or not sprite.sprite_frames:
+		return
+	if sprite.sprite_frames.has_animation(anim_name):
+		if sprite.animation != anim_name or not sprite.is_playing():
+			sprite.play(anim_name)
+
+func _start_stick_attack(p: Node2D) -> void:
+	_is_stick_attacking = true
+	_stick_hit_dealt = false
+	_stick_timer = stick_cooldown
+	velocity = Vector2.ZERO
+
+	var dir = (p.global_position - global_position).normalized()
+	_last_dir = _vec_to_dir(dir)
+	_play_anim("attack_stick_" + _last_dir)
 
 func _start_throw_molotov(p: Node2D) -> void:
 	_is_throwing = true
@@ -137,96 +177,135 @@ func _start_throw_molotov(p: Node2D) -> void:
 	_molotov_timer = molotov_cooldown
 	_throw_target_pos = p.global_position
 	velocity = Vector2.ZERO
-	if sprite:
-		sprite.flip_h = p.global_position.x < global_position.x
-		sprite.play("throw_molotov")
+
+	var dir = (p.global_position - global_position).normalized()
+	_last_dir = _vec_to_dir(dir)
+	_play_anim("throw_" + _last_dir)
+
+	# Lingkaran penanda target jatuh molotov agar player sempat menghindar
+	var parent = get_parent()
+	if parent:
+		var marker = Polygon2D.new()
+		marker.z_index = 1
+		marker.global_position = _throw_target_pos
+		marker.color = Color(1.0, 0.3, 0.08, 0.35)
+		var pts = PackedVector2Array()
+		for i in range(16):
+			var a = (float(i) / 16.0) * TAU
+			pts.append(Vector2(cos(a) * 20.0, sin(a) * 14.0))
+		marker.polygon = pts
+		parent.add_child(marker)
+		_pending_telegraph = marker
 
 func _on_frame_changed() -> void:
-	if _is_throwing and not _molotov_launched and sprite and sprite.animation == "throw_molotov":
-		# Lepas molotov tepat saat animasi mengayun lemparan ke depan (frame 9)
-		if sprite.frame >= 9:
+	if not sprite:
+		return
+	if _is_throwing and not _molotov_launched and sprite.animation.begins_with("throw_"):
+		if sprite.frame >= THROW_RELEASE_FRAME:
 			_molotov_launched = true
 			_spawn_molotov_projectile(_throw_target_pos)
+	elif _is_stick_attacking and not _stick_hit_dealt and sprite.animation.begins_with("attack_stick_"):
+		if sprite.frame >= STICK_HIT_FRAME:
+			_stick_hit_dealt = true
+			_execute_stick_hit()
+
+func _execute_stick_hit() -> void:
+	if player and is_instance_valid(player) and not player.get("is_dead"):
+		if global_position.distance_to(player.global_position) <= STICK_ATTACK_RANGE + 6.0:
+			if player.has_method("take_damage"):
+				var kb = (player.global_position - global_position).normalized() * 65.0
+				player.take_damage(stick_damage, kb)
 
 func _on_animation_finished() -> void:
-	if sprite and sprite.animation == "throw_molotov":
+	if not sprite:
+		return
+	if sprite.animation.begins_with("throw_"):
 		if not _molotov_launched:
 			_molotov_launched = true
 			_spawn_molotov_projectile(_throw_target_pos)
 		_is_throwing = false
-		sprite.flip_h = false
-		sprite.play("idle_front")
+		_play_anim("idle" + _weapon_suffix + "_" + _last_dir)
+	elif sprite.animation.begins_with("attack_stick_"):
+		if not _stick_hit_dealt:
+			_stick_hit_dealt = true
+			_execute_stick_hit()
+		_is_stick_attacking = false
+		_play_anim("idle" + _weapon_suffix + "_" + _last_dir)
 
 func _spawn_molotov_projectile(target_pos: Vector2) -> void:
 	var parent = get_parent()
 	if not parent:
 		return
 
-	# Node proyektil Molotov + efek api ledakan
-	var proj = Node2D.new()
+	var proj = Sprite2D.new()
+	proj.texture = MOLOTOV_TEX
+	proj.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	proj.scale = Vector2(0.7, 0.7)
 	proj.z_index = 4
-	var start_pos = global_position + Vector2(-8 if (sprite and sprite.flip_h) else 8, -10)
+
+	var hand_offset := Vector2(0, -8)
+	if _last_dir == "left":
+		hand_offset = Vector2(-8, -6)
+	elif _last_dir == "right":
+		hand_offset = Vector2(8, -6)
+	var start_pos = global_position + hand_offset
 	proj.global_position = start_pos
-
-	var bottle = ColorRect.new()
-	bottle.color = Color(1.0, 0.45, 0.1, 1.0)
-	bottle.size = Vector2(5, 7)
-	bottle.position = Vector2(-2.5, -3.5)
-	proj.add_child(bottle)
-
-	var flame = ColorRect.new()
-	flame.color = Color(1.0, 0.9, 0.2, 1.0)
-	flame.size = Vector2(3, 3)
-	flame.position = Vector2(-1.5, -6.0)
-	proj.add_child(flame)
-
 	parent.add_child(proj)
 
-	var flight_time := 0.45
-	var mid_pos = (start_pos + target_pos) * 0.5 + Vector2(0, -24)
+	var telegraph = _pending_telegraph
+	_pending_telegraph = null
+
+	var flight_time := 0.48
+	var mid_pos = (start_pos + target_pos) * 0.5 + Vector2(0, -26)
 	var tween = proj.create_tween()
 	tween.tween_property(proj, "global_position", mid_pos, flight_time * 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(proj, "rotation_degrees", 180.0, flight_time * 0.5)
 	tween.tween_property(proj, "global_position", target_pos, flight_time * 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.parallel().tween_property(proj, "rotation_degrees", 360.0, flight_time * 0.5)
 	tween.tween_callback(func():
+		if telegraph and is_instance_valid(telegraph):
+			telegraph.queue_free()
 		_on_molotov_impact(proj, target_pos)
 	)
 
 func _on_molotov_impact(proj: Node2D, impact_pos: Vector2) -> void:
 	if not is_instance_valid(proj):
 		return
-	for c in proj.get_children():
-		c.queue_free()
-
+	proj.texture = null
 	proj.rotation_degrees = 0.0
+	proj.scale = Vector2.ONE
 	proj.global_position = impact_pos
 
-	# Visual area api di tanah
-	var fire_outer = ColorRect.new()
-	fire_outer.color = Color(1.0, 0.35, 0.05, 0.75)
-	fire_outer.size = Vector2(28, 20)
-	fire_outer.position = Vector2(-14, -10)
+	var fire_outer = Polygon2D.new()
+	fire_outer.color = Color(1.0, 0.35, 0.05, 0.72)
+	var pts_o = PackedVector2Array()
+	for i in range(12):
+		var a = (float(i) / 12.0) * TAU
+		pts_o.append(Vector2(cos(a) * 18.0, sin(a) * 12.0))
+	fire_outer.polygon = pts_o
 	proj.add_child(fire_outer)
 
-	var fire_inner = ColorRect.new()
-	fire_inner.color = Color(1.0, 0.8, 0.15, 0.9)
-	fire_inner.size = Vector2(16, 12)
-	fire_inner.position = Vector2(-8, -6)
+	var fire_inner = Polygon2D.new()
+	fire_inner.color = Color(1.0, 0.85, 0.2, 0.9)
+	var pts_i = PackedVector2Array()
+	for i in range(10):
+		var a = (float(i) / 10.0) * TAU
+		pts_i.append(Vector2(cos(a) * 10.0, sin(a) * 7.0))
+	fire_inner.polygon = pts_i
 	proj.add_child(fire_inner)
 
-	# Beri damage ke player jika berada di radius ledakan molotov
 	if player and is_instance_valid(player) and not player.get("is_dead"):
 		if player.global_position.distance_to(impact_pos) <= 24.0:
 			if player.has_method("take_damage"):
-				player.take_damage(molotov_damage)
+				var kb = (player.global_position - impact_pos).normalized() * 65.0
+				player.take_damage(molotov_damage, kb)
 
 	var hud = _get_hud()
 	if hud and hud.has_method("trigger_screen_shake"):
 		hud.trigger_screen_shake(4.0, 0.2)
 
 	var ft = proj.create_tween()
-	ft.tween_interval(1.2)
+	ft.tween_interval(1.3)
 	ft.tween_property(proj, "modulate:a", 0.0, 0.4)
 	ft.tween_callback(proj.queue_free)
 
@@ -274,6 +353,8 @@ func _die() -> void:
 	is_dead = true
 	died.emit()
 	set_physics_process(false)
+	if _pending_telegraph and is_instance_valid(_pending_telegraph):
+		_pending_telegraph.queue_free()
 	if collision:
 		collision.set_deferred("disabled", true)
 
