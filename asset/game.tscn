@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://dgbnska5sospt" path="res://asset/Dasar land-top-down-vector-tileset/PNG/Top-Down Simple Summer_Prop - Wooden Bridge Horizontal.png" id="16_c4aub"]
 [ext_resource type="Texture2D" uid="uid://dp3ncidlk0dr" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_3.png" id="17_0oiyf"]
 [ext_resource type="Texture2D" uid="uid://dpychtqxpw6hx" path="res://asset/Dasar land-top-down-vector-tileset/PNG/Top-Down Simple Summer_Prop - Tent.png" id="17_pgdxa"]
-[ext_resource type="PackedScene" uid="uid://dp5xk2m3wq1r8" path="res://asset/player.tscn" id="18_player"]
+[ext_resource type="PackedScene" path="res://asset/player.tscn" id="18_player"]
 [ext_resource type="Texture2D" uid="uid://dmywk8uxx3ws3" path="res://asset/poon/poon1.png" id="19_2v48b"]
 [ext_resource type="Texture2D" uid="uid://c7lksgrvroghy" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_1.png" id="20_6epkn"]
 [ext_resource type="Texture2D" uid="uid://nxw3b8t53bti" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_12.png" id="21_k8ljt"]
@@ -67,6 +67,7 @@
 [ext_resource type="Texture2D" uid="uid://boj5fscven1sa" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/birch_4.png" id="64_ok3tt"]
 [ext_resource type="Texture2D" uid="uid://bh77ix5qiuov7" path="res://asset/craftpix-net-812442-free-fantasy-medieval-village-buildings-asset-pack/PNG/Houses and Warehouses_Wooden House - Level 2.png" id="66_wbm50"]
 [ext_resource type="Texture2D" uid="uid://02d8h6xifmcj" path="res://asset/craftpix-net-812442-free-fantasy-medieval-village-buildings-asset-pack/PNG/Houses and Warehouses_Wooden House - Level 3.png" id="67_t31x6"]
+[ext_resource type="PackedScene" path="res://asset/boss_molotov.tscn" id="68_boss_molotov"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hm5r7"]
 texture = ExtResource("1_rah20")
@@ -1329,7 +1330,7 @@ position = Vector2(2, 0)
 shape = SubResource("RectangleShape2D_bld_tent")
 
 [node name="Player" parent="." unique_id=1887675594 instance=ExtResource("18_player")]
-position = Vector2(713, 344)
+position = Vector2(709, 764)
 
 [node name="Poon1" type="Sprite2D" parent="." unique_id=83497818]
 position = Vector2(828, 376)
@@ -2332,7 +2333,10 @@ position = Vector2(1050, 230)
 position = Vector2(760, 580)
 
 [node name="BossSlime" parent="." unique_id=2057301853 instance=ExtResource("54_boss")]
-position = Vector2(320, 100)
+position = Vector2(1287, 192)
+
+[node name="BossMolotov" parent="." unique_id=1158781648 instance=ExtResource("68_boss_molotov")]
+position = Vector2(370, 128)
 
 [node name="HUD" parent="." unique_id=1784112505 instance=ExtResource("49_hud")]
 

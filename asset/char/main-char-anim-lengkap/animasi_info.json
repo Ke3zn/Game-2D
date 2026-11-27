@@ -1,0 +1,253 @@
+{
+ "attack-front": {
+  "file": "attack-front.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 7,
+  "durations_ms": [
+   90,
+   110,
+   70,
+   140,
+   90,
+   110,
+   120
+  ]
+ },
+ "attack-right": {
+  "file": "attack-right.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 7,
+  "durations_ms": [
+   90,
+   110,
+   70,
+   140,
+   100,
+   100,
+   120
+  ]
+ },
+ "attack-left": {
+  "file": "attack-left.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 7,
+  "durations_ms": [
+   90,
+   110,
+   70,
+   140,
+   100,
+   100,
+   120
+  ]
+ },
+ "attack-back": {
+  "file": "attack-back.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 6,
+  "durations_ms": [
+   90,
+   120,
+   70,
+   150,
+   110,
+   120
+  ]
+ },
+ "pentungan-attack-front": {
+  "file": "pentungan-attack-front.png",
+  "frame_w": 192,
+  "frame_h": 128,
+  "frames": 6,
+  "durations_ms": [
+   100,
+   170,
+   60,
+   150,
+   110,
+   110
+  ]
+ },
+ "pentungan-attack-right": {
+  "file": "pentungan-attack-right.png",
+  "frame_w": 192,
+  "frame_h": 128,
+  "frames": 6,
+  "durations_ms": [
+   100,
+   170,
+   60,
+   150,
+   110,
+   110
+  ]
+ },
+ "pentungan-attack-left": {
+  "file": "pentungan-attack-left.png",
+  "frame_w": 192,
+  "frame_h": 128,
+  "frames": 6,
+  "durations_ms": [
+   100,
+   170,
+   60,
+   150,
+   110,
+   110
+  ]
+ },
+ "pentungan-attack-back": {
+  "file": "pentungan-attack-back.png",
+  "frame_w": 192,
+  "frame_h": 128,
+  "frames": 6,
+  "durations_ms": [
+   100,
+   110,
+   170,
+   60,
+   150,
+   110
+  ]
+ },
+ "run-front": {
+  "file": "run-front.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 7,
+  "durations_ms": [
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85
+  ],
+  "loop": true
+ },
+ "run-right": {
+  "file": "run-right.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 8,
+  "durations_ms": [
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85
+  ],
+  "loop": true
+ },
+ "run-back": {
+  "file": "run-back.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 9,
+  "durations_ms": [
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85
+  ],
+  "loop": true
+ },
+ "run-left": {
+  "file": "run-left.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 8,
+  "durations_ms": [
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85
+  ],
+  "loop": true
+ },
+ "run-pentungan-right": {
+  "file": "run-pentungan-right.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 8,
+  "durations_ms": [
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85
+  ],
+  "loop": true
+ },
+ "run-pentungan-front": {
+  "file": "run-pentungan-front.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 7,
+  "durations_ms": [
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85
+  ],
+  "loop": true
+ },
+ "run-pentungan-back": {
+  "file": "run-pentungan-back.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 9,
+  "durations_ms": [
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85
+  ],
+  "loop": true
+ },
+ "run-pentungan-left": {
+  "file": "run-pentungan-left.png",
+  "frame_w": 128,
+  "frame_h": 128,
+  "frames": 8,
+  "durations_ms": [
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85,
+   85
+  ],
+  "loop": true
+ }
+}
