@@ -56,7 +56,7 @@
 [ext_resource type="PackedScene" uid="uid://cnpckakek01" path="res://asset/npc.tscn" id="51_npc"]
 [ext_resource type="PackedScene" uid="uid://citempickup01" path="res://asset/item_pickup.tscn" id="52_item"]
 [ext_resource type="PackedScene" uid="uid://cdoorhouse01" path="res://asset/door_house.tscn" id="53_door"]
-[ext_resource type="PackedScene" uid="uid://cbosslime01" path="res://asset/boss_slime.tscn" id="54_boss"]
+[ext_resource type="PackedScene" uid="uid://cbossnormal01" path="res://asset/boss_normal.tscn" id="54_boss"]
 [ext_resource type="Texture2D" uid="uid://decit845m536d" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_1.png" id="55_emgn2"]
 [ext_resource type="Texture2D" uid="uid://gf2yx0cwalf5" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree2.png" id="56_mtovm"]
 [ext_resource type="Texture2D" uid="uid://qt1l6ml8mxgp" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree5.png" id="57_2n4pe"]
@@ -1664,6 +1664,7 @@ texture = ExtResource("1_73jut")
 5:1/0 = 0
 6:1/0 = 0
 7:1/0 = 0
+7:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, -4, 5, -4, 5, 8, -5, 8)
 8:1/0 = 0
 9:1/0 = 0
 10:1/0 = 0
@@ -2001,6 +2002,7 @@ texture = ExtResource("1_73jut")
 4:18/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_e45ge"]
+physics_layer_0/collision_layer = 1
 sources/3 = SubResource("TileSetAtlasSource_wbm50")
 sources/4 = SubResource("TileSetAtlasSource_ov4cm")
 
@@ -2047,6 +2049,7 @@ texture = ExtResource("1_73jut")
 5:1/0 = 0
 6:1/0 = 0
 7:1/0 = 0
+7:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, -4, 5, -4, 5, 8, -5, 8)
 8:1/0 = 0
 9:1/0 = 0
 10:1/0 = 0
@@ -2179,6 +2182,7 @@ texture = ExtResource("1_73jut")
 7:6/0 = 0
 8:6/0 = 0
 9:6/0 = 0
+9:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-6, -6, 6, -6, 6, 7, -6, 7)
 10:6/0 = 0
 11:6/0 = 0
 12:6/0 = 0
@@ -2337,6 +2341,7 @@ texture = ExtResource("1_73jut")
 19:12/0 = 0
 22:12/0 = 0
 23:12/0 = 0
+23:12/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -6, 7, -6, 7, 7, -7, 7)
 24:12/0 = 0
 25:12/0 = 0
 27:12/0 = 0
@@ -4554,7 +4559,9 @@ texture = ExtResource("1_rah20")
 4:8/0 = 0
 5:8/0 = 0
 6:8/0 = 0
+6:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -4, 7, -4, 7, 7, -7, 7)
 7:8/0 = 0
+7:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -4, 7, -4, 7, 7, -7, 7)
 8:8/0 = 0
 9:8/0 = 0
 17:8/0 = 0
@@ -4883,6 +4890,7 @@ texture = ExtResource("1_rah20")
 10:12/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_co1a2"]
+physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_54n47")
 sources/1 = SubResource("TileSetAtlasSource_20juf")
 sources/2 = SubResource("TileSetAtlasSource_ok3tt")

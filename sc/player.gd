@@ -35,7 +35,6 @@ var _attack_buffer_timer: float = 0.0
 var _attack_failsafe_timer: float = 0.0
 var _attack_seq: int = 0
 var _apar_foam_timer: float = 0.0
-var _apar_hit_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
 var _attack_lunge_velocity: Vector2 = Vector2.ZERO
 var _hit_dealt_this_swing: bool = false
@@ -178,7 +177,6 @@ func _physics_process(delta: float) -> void:
 		_process_continuous_apar_spray(delta)
 	else:
 		_apar_foam_timer = 0.0
-		_apar_hit_timer = 0.0
 
 	if _attack_buffer_timer > 0.0:
 		_attack_buffer_timer = 0.0
@@ -312,7 +310,6 @@ func _is_dialogue_open() -> bool:
 func _process_continuous_apar_spray(delta: float) -> void:
 	var attack_dir := _get_facing_vector()
 	_apar_foam_timer -= delta
-	_apar_hit_timer -= delta
 
 	if _apar_foam_timer <= 0.0:
 		_apar_foam_timer = 0.065
@@ -322,19 +319,6 @@ func _process_continuous_apar_spray(delta: float) -> void:
 			if is_instance_valid(tree) and tree.has_method("apply_apar_spray"):
 				if tree.global_position.distance_to(tree_spray_center) <= 34.0 or global_position.distance_to(tree.global_position) <= 28.0:
 					tree.apply_apar_spray(0.065)
-
-	if _apar_hit_timer <= 0.0:
-		_apar_hit_timer = 0.24
-		var spray_center := global_position + attack_dir * 18.0
-		for e in get_tree().get_nodes_in_group("enemy"):
-			if is_instance_valid(e) and not e.get("is_dead"):
-				if e.global_position.distance_to(spray_center) <= 28.0:
-					var kb: Vector2 = (e.global_position - global_position).normalized()
-					if kb == Vector2.ZERO:
-						kb = attack_dir
-					if e.has_method("take_damage"):
-						var dmg: float = 14.0 if e.is_in_group("boss") else 7.0
-						e.take_damage(dmg, kb * 0.9)
 
 func _spawn_apar_foam(attack_dir: Vector2, puff_count: int = 5) -> void:
 	var parent_node = get_parent()
