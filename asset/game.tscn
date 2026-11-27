@@ -51,12 +51,13 @@
 [ext_resource type="Texture2D" uid="uid://dxhwyl5uk655n" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree6.png" id="46_ov4cm"]
 [ext_resource type="Texture2D" uid="uid://djlm8ghay2bsr" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree7.png" id="47_54n47"]
 [ext_resource type="Script" uid="uid://etn0ypnrcldh" path="res://sc/fade_tree.gd" id="48_fadetree"]
+[ext_resource type="Script" path="res://sc/fade_tilemap_trees.gd" id="69_fadetml"]
 [ext_resource type="PackedScene" path="res://asset/hud.tscn" id="49_hud"]
 [ext_resource type="PackedScene" uid="uid://c3q45slime01" path="res://asset/enemy_slime.tscn" id="50_slime"]
 [ext_resource type="PackedScene" uid="uid://cnpckakek01" path="res://asset/npc.tscn" id="51_npc"]
 [ext_resource type="PackedScene" uid="uid://citempickup01" path="res://asset/item_pickup.tscn" id="52_item"]
 [ext_resource type="PackedScene" uid="uid://cdoorhouse01" path="res://asset/door_house.tscn" id="53_door"]
-[ext_resource type="PackedScene" uid="uid://cbossnormal01" path="res://asset/boss_normal.tscn" id="54_boss"]
+[ext_resource type="PackedScene" uid="uid://cbosslime01" path="res://asset/boss_slime.tscn" id="54_boss"]
 [ext_resource type="Texture2D" uid="uid://decit845m536d" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/fir_tree_1.png" id="55_emgn2"]
 [ext_resource type="Texture2D" uid="uid://gf2yx0cwalf5" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree2.png" id="56_mtovm"]
 [ext_resource type="Texture2D" uid="uid://qt1l6ml8mxgp" path="res://asset/craftpix-net-168228-free-tree-pixel-art-asset-pack/PNG/middle_lane_tree5.png" id="57_2n4pe"]
@@ -4977,6 +4978,7 @@ position = Vector2(600, 296)
 shape = SubResource("RectangleShape2D_70lef")
 
 [node name="Rumput + Grass" type="TileMapLayer" parent="." unique_id=146182793]
+script = ExtResource("69_fadetml")
 tile_map_data = PackedByteArray("AAAaABEAAgAJAAkAAAAaABIAAgAJAAoAAAAaABMAAgAJAAsAAAAaABQAAgAJAAwAAAAiAA8AAgAIAAQAAAAkAAoAAgAIAAQAAAAZAA0AAgAIAAQAAAALAA8AAgAIAAQAAAAJAAoAAgAIAAQAAAAVAAgAAgAIAAQAAAATAAwAAgAIAAQAAAAcAAYAAgAIAAQAAAAKABIAAgATABsAAAAKABMAAgATABwAAAAKABQAAgATAB0AAAAKABUAAgATAB4AAAALABIAAgAUABsAAAALABMAAgAUABwAAAALABQAAgAUAB0AAAALABUAAgAUAB4AAAAMABIAAgAVABsAAAAMABMAAgAVABwAAAAMABQAAgAVAB0AAAAMABUAAgAVAB4AAAAnABIAAgATABsAAAAnABMAAgATABwAAAAnABQAAgATAB0AAAAnABUAAgAJAB0AAAAoABIAAgAUABsAAAAoABMAAgAUABwAAAAoABQAAgAUAB0AAAAoABUAAgAUAB4AAAApABIAAgAVABsAAAApABMAAgAVABwAAAApABQAAgAVAB0AAAApABUAAgAVAB4AAAANABUAAgARABwAAAANABYAAgARAB0AAAANABcAAgARAB4AAAAOABUAAgASABwAAAAOABYAAgASAB0AAAAOABcAAgASAB4AAAAQABMAAgARABwAAAAQABQAAgARAB0AAAAQABUAAgARAB4AAAARABMAAgASABwAAAARABQAAgASAB0AAAARABUAAgASAB4AAAAcABIAAgARABwAAAAcABMAAgARAB0AAAAcABQAAgARAB4AAAAdABIAAgASABwAAAAdABMAAgASAB0AAAAdABQAAgASAB4AAAAkABUAAgARABwAAAAkABYAAgARAB0AAAAkABcAAgARAB4AAAAlABUAAgASABwAAAAlABYAAgASAB0AAAAlABcAAgASAB4AAAASABMAAgAWABsAAAASABQAAgAWABwAAAASABUAAgAWAB0AAAASABYAAgAWAB4AAAATABMAAgAXABsAAAATABQAAgAXABwAAAATABUAAgAXAB0AAAATABYAAgAXAB4AAAAUABUAAgAYAB0AAAAUABYAAgAYAB4AAAAgABMAAgAWABsAAAAgABQAAgAWABwAAAAgABUAAgAWAB0AAAAgABYAAgAWAB4AAAAhABMAAgAXABsAAAAhABQAAgAXABwAAAAhABUAAgAXAB0AAAAhABYAAgAXAB4AAAAiABUAAgARABoAAAAiABYAAgAYAB4AAAAFAAwAAgAWABsAAAAFAA0AAgAWABwAAAAFAA4AAgAWAB0AAAAFAA8AAgAWAB4AAAAGAAwAAgAXABsAAAAGAA0AAgAXABwAAAAGAA4AAgAXAB0AAAAGAA8AAgAXAB4AAAAHAA4AAgAYAB0AAAAHAA8AAgAYAB4AAAAHABAAAgAZAB4AAAAOABQAAgAZAB4AAAAPABQAAgAZAB4AAAAYABMAAgAaAB0AAAAYABQAAgAaAB4AAAAZABMAAgAbAB0AAAAZABQAAgAbAB4AAAAXABQAAgAZAB4AAAAVABQAAgARABcAAAAVABUAAgARABgAAAAVABYAAgARABkAAAAVABcAAgARABoAAAAWABQAAgASABcAAAAWABUAAgASABgAAAAWABYAAgASABkAAAAWABcAAgASABoAAAAiABIAAgARABcAAAAiABMAAgARABgAAAAiABQAAgARABkAAAAjABIAAgASABcAAAAjABMAAgASABgAAAAjABQAAgASABkAAAAjABUAAgASABoAAAAcABUAAgAaAB0AAAAcABYAAgAaAB4AAAAdABUAAgAbAB0AAAAdABYAAgAbAB4AAAAlABMAAgAaAB0AAAAlABQAAgAaAB4AAAAmABMAAgAbAB0AAAAmABQAAgAbAB4AAAAJABMAAgAQAB4AAAAUABQAAgAJAB0AAAARABYAAgAJAB0AAAAIABIAAgAJAB0AAAAMABYAAgAJAB0AAAAeABQAAgAJAB0AAAAkABQAAgAJAB0AAAAqABQAAgAJAB0AAAAhAAwAAgAKAB0AAAAUABAAAgAKAB0AAAAMAAcAAgAKAB0AAAAKAA4AAgAKAB0AAAALAA4AAgAKAB0AAAAbAAcAAgAKAB0AAAAiAAYAAAAXAAwAAABBACcAAAAGAAEAAABIACYAAAAGAAEAAABOACwAAAAGAAEAAABRACkAAAAGAAEAAABHACwAAAAGAAEAAAA/AC0AAAAGAAEAAAA7AC8AAAAGAAEAAAAvADUAAAAGAAEAAAAqADIAAAAGAAEAAAAjADQAAAAGAAEAAAAgADQAAAAGAAEAAAAiADIAAAAGAAEAAAAgADEAAAAGAAEAAAAZADIAAAAGAAEAAAAVADQAAAAGAAEAAAAWAC8AAAAGAAEAAAAWACwAAAAGAAEAAAAeACMAAAAGAAEAAAAmAB8AAAAHAAAAAAAmACAAAAAHAAEAAAAnACYAAAAHAAAAAAAnACcAAAAHAAEAAAAoACwAAAAGAAEAAAAoACgAAAAGAAEAAAAlACkAAAAGAAEAAAAcACoAAAAGAAEAAAAuACcAAAAGAAEAAAAzACYAAAAGAAEAAAA/ACQAAAAGAAEAAAAzAB0AAAAGAAEAAAAqABgAAAAGAAEAAAAzADIAAAAGAAEAAABbADMAAAAGAAEAAABXAC8AAAAGAAEAAABZACsAAAAGAAEAAAAsADEAAAAJAAUAAAAsADIAAAAJAAYAAAAKAA8AAAAXAAsAAAAKABAAAAAXAAwAAAAmAA8AAAAXAAsAAAAmABAAAAAXAAwAAAAiAAUAAAAXAAsAAAALAAYAAAAXAAsAAAALAAcAAAAXAAwAAAA7AA4AAAAIAAYAAABFAA8AAAAIAAYAAABJAA8AAAAIAAYAAABHAAkAAAAIAAYAAABDABUAAAAIAAYAAABCABUAAAAIAAYAAABCABQAAAAIAAYAAABCABMAAAAIAAYAAABBABgAAAAIAAYAAABCABgAAAAIAAYAAABDABkAAAAIAAYAAABRABcAAAAIAAYAAABSABcAAAAIAAYAAABXABcAAAAIAAYAAABYABcAAAAIAAYAAABcABYAAAAIAAYAAABYAA4AAAAIAAYAAABYAA0AAAAIAAYAAABQAAoAAAAIAAYAAABPAAoAAAAIAAYAAABPAAkAAAAIAAYAAABcAAYAAAAIAAYAAABaAAcAAAAIAAYAAABaAAYAAAAIAAYAAABZAAYAAAAIAAYAAABZAAUAAAAIAAYAAABlAAwAAAAIAAYAAABmAAwAAAAIAAYAAABnAAwAAAAIAAYAAABqAAgAAAAIAAYAAABrAAkAAAAIAAYAAABsAAoAAAAIAAYAAABtAA4AAAAIAAYAAABuAA8AAAAIAAYAAABjABkAAAAIAAYAAABiABkAAAAIAAYAAABsABkAAAAIAAYAAABtABkAAAAIAAYAAABuABkAAAAIAAYAAABvABkAAAAIAAYAAABvABgAAAAIAAYAAABwABgAAAAIAAYAAABrABYAAAAIAAYAAABtABEAAAAIAAYAAABjABUAAAAIAAYAAABOAA4AAAAIAAYAAABRAA8AAAAIAAYAAAA/AAkAAAAIAAYAAAA0AA4AAAAIAAYAAAAzAA4AAAAIAAYAAAACABsAAQAsAB0AAAACABwAAQAsAB4AAAACAB0AAQAsAB8AAAACAB4AAQAsACAAAAACAB8AAQAsACEAAAACACAAAQAsACIAAAACACEAAQAsACMAAAACACIAAQAsACQAAAADABsAAQAtAB0AAAADABwAAQAtAB4AAAADAB0AAQAtAB8AAAADAB4AAQAtACAAAAADAB8AAQAtACEAAAADACAAAQAtACIAAAADACEAAQAtACMAAAADACIAAQAtACQAAAAEABsAAQAuAB0AAAAEABwAAQAuAB4AAAAEAB0AAQAuAB8AAAAEAB4AAQAuACAAAAAEAB8AAQAuACEAAAAEACAAAQAuACIAAAAEACEAAQAuACMAAAAEACIAAQAuACQAAAAFABsAAQAvAB0AAAAFABwAAQAvAB4AAAAFAB0AAQAvAB8AAAAFAB4AAQAvACAAAAAFAB8AAQAvACEAAAAFACAAAQAvACIAAAAFACEAAQAvACMAAAAFACIAAQAvACQAAAAGABsAAQAwAB0AAAAGABwAAQAwAB4AAAAGAB0AAQAwAB8AAAAGAB4AAQAwACAAAAAGAB8AAQAwACEAAAAGACAAAQAwACIAAAAGACEAAQAwACMAAAAGACIAAQAwACQAAAAHABsAAQAxAB0AAAAHABwAAQAxAB4AAAAHAB0AAQAxAB8AAAAHAB4AAQAxACAAAAAHAB8AAQAxACEAAAAHACAAAQAxACIAAAAHACEAAQAxACMAAAAHACIAAQAxACQAAAAJAB8AAQAAAB4AAAAJACAAAQAAAB8AAAAJACEAAQAAACAAAAAJACIAAQAAACEAAAAJACMAAQAAACIAAAAJACQAAQAAACMAAAAJACUAAQAAACQAAAAKAB8AAQABAB4AAAAKACAAAQABAB8AAAAKACEAAQABACAAAAAKACIAAQABACEAAAAKACMAAQABACIAAAAKACQAAQABACMAAAAKACUAAQABACQAAAALAB8AAQACAB4AAAALACAAAQACAB8AAAALACEAAQACACAAAAALACIAAQACACEAAAALACMAAQACACIAAAALACQAAQACACMAAAALACUAAQACACQAAAAMAB8AAQADAB4AAAAMACAAAQADAB8AAAAMACEAAQADACAAAAAMACIAAQADACEAAAAMACMAAQADACIAAAAMACQAAQADACMAAAAMACUAAQADACQAAAAvAAwAAQABAB0AAAAvAA0AAQABAB4AAAAvAA4AAQABAB8AAAAwAAwAAQACAB0AAAAwAA0AAQACAB4AAAAwAA4AAQACAB8AAAAxAAwAAQADAB0AAAAxAA0AAQADAB4AAAAxAA4AAQADAB8AAAA8ADoAAgAGAAcAAAA8ADsAAgAGAAgAAAA9ADoAAgAHAAcAAAA9ADsAAgAHAAgAAAAmABcAAQASABgAAAAmABgAAQASABkAAAAmABkAAQASABoAAAAnABcAAQATABgAAAAnABgAAQATABkAAAAnABkAAQATABoAAAASABoAAQASABgAAAASABsAAQASABkAAAASABwAAQASABoAAAATABoAAQATABgAAAATABsAAQATABkAAAATABwAAQATABoAAAAQABgAAgAPABgAAAAQABkAAgAPABkAAAAQABoAAgAPABoAAAARABgAAgAQABgAAAARABkAAgAQABkAAAARABoAAgAQABoAAAAoABcAAgAPABgAAAAoABgAAgAPABkAAAAoABkAAgAPABoAAAApABcAAgAQABgAAAApABgAAgAQABkAAAApABkAAgAQABoAAAAlADcAAgABAAQAAAAoADQAAgABAAQAAAAxADMAAgABAAQAAAA4ADIAAgABAAQAAAA+ADEAAgABAAQAAABCACkAAgABAAQAAABKACYAAgABAAQAAABQAC4AAgABAAQAAABWADEAAgABAAQAAABhAC0AAgABAAQAAABVACQAAgABAAQAAABMACAAAgABAAQAAAA+AB8AAgABAAQAAAA+ACQAAgABAAQAAAA3ACgAAgABAAQAAAA3ACkAAgABAAQAAAAsACcAAgABAAQAAAAjACAAAgABAAQAAAAtABsAAgABAAQAAAAwABkAAgABAAQAAAAVAB8AAgABAAQAAAAkABkAAgABAAQAAAAPACEAAgABAAQAAAAOACUAAgABAAQAAAAPACIAAgABAAQAAAAOACMAAgABAAQAAAARAC4AAgABAAQAAAAXADcAAgABAAQAAAAKACwAAgADAAQAAAAKAC0AAgADAAQAAAAKAC8AAgADAAQAAAAMADUAAgADAAQAAAAMADQAAgADAAQAAAANADYAAgADAAQAAAAOADcAAgADAAQAAAAUADkAAgADAAQAAAAVADkAAgADAAQAAAAcADkAAgADAAQAAAAeADkAAgADAAQAAAAnADoAAgADAAQAAAAoADoAAgADAAQAAAApADoAAgADAAQAAAAuADoAAgADAAQAAAAuADkAAgADAAQAAAAyADgAAgADAAQAAAAzADgAAgADAAQAAAA4ADUAAgADAAQAAAA6ADUAAgADAAQAAAA7ADQAAgADAAQAAABCADUAAgADAAQAAABBADUAAgADAAQAAABFADcAAgADAAQAAABHADgAAgADAAQAAABNADkAAgADAAQAAABOADkAAgADAAQAAABSADgAAgADAAQAAABTADgAAgADAAQAAABUADgAAgADAAQAAABaADkAAgADAAQAAABgADkAAgADAAQAAABjADcAAgADAAQAAABiADcAAgADAAQAAABkADcAAgADAAQAAABoADQAAgADAAQAAABoADMAAgADAAQAAABpAC8AAgADAAQAAABpAC4AAgADAAQAAABpAC0AAgADAAQAAABVAB8AAgADAAQAAABWAB8AAgADAAQAAABbAB4AAgADAAQAAABcAB4AAgADAAQAAABgAB4AAgADAAQAAABhAB4AAgADAAQAAABiAB4AAgADAAQAAABiAB8AAgADAAQAAABkACAAAgADAAQAAABlACEAAgADAAQAAABmACEAAgADAAQAAABmACIAAgADAAQAAABpACkAAgADAAQAAABpACgAAgADAAQAAABpACcAAgADAAQAAABpACYAAgADAAQAAABIAB4AAgADAAQAAABIAB8AAgADAAQAAABJAB8AAgADAAQAAAAxABcAAgADAAQAAAAxABgAAgADAAQAAAAzABkAAgADAAQAAAA0ABkAAgADAAQAAAA0ABoAAgADAAQAAAALABcAAgADAAQAAAALABgAAgADAAQAAAANABwAAgADAAQAAAANAB0AAgADAAQAAAAOAB0AAgADAAQAAAAMACgAAgADAAQAAAAMACcAAgADAAQAAAAmAD4AAQAAACAAAAAmAD8AAQAAACEAAAAmAEAAAQAAACIAAAAmAEEAAQAAACMAAAAnAD4AAQABACAAAAAnAD8AAQABACEAAAAnAEAAAQABACIAAAAnAEEAAQABACMAAAAoAD4AAQACACAAAAAoAD8AAQACACEAAAAoAEAAAQACACIAAAAoAEEAAQACACMAAAApAD4AAQADACAAAAApAD8AAQADACEAAAApAEAAAQADACIAAAApAEEAAQADACMAAAAqAD4AAQAEACAAAAAqAD8AAQAEACEAAAAqAEAAAQAEACIAAAAqAEEAAQAEACMAAAArAD4AAQAFACAAAAArAD8AAQAFACEAAAArAEAAAQAFACIAAAArAEEAAQAFACMAAAAbABEAAgAJAAkAAAAbABIAAgAJAAoAAAAbABMAAgAJAAsAAAAbABQAAgAJAAwAAAA=")
 tile_set = SubResource("TileSet_co1a2")
 
@@ -5177,6 +5179,7 @@ position = Vector2(564, 195)
 position = Vector2(828, 376)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon1" unique_id=2068988723]
 
@@ -5189,6 +5192,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(776.00006, 300)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon10" unique_id=2029084488]
 
@@ -5201,6 +5205,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(848.00006, 390)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon2" unique_id=310991488]
 
@@ -5213,6 +5218,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(869, 408)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon3" unique_id=1842893171]
 
@@ -5225,6 +5231,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(893, 424)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon4" unique_id=1459558025]
 
@@ -5237,6 +5244,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(908, 434)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon5" unique_id=1115665086]
 
@@ -5249,6 +5257,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(929, 439)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon6" unique_id=1912344674]
 
@@ -5261,6 +5270,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(952.00006, 447)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon7" unique_id=460679824]
 
@@ -5273,6 +5283,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(975, 456)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon8" unique_id=76969902]
 
@@ -5285,6 +5296,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon9" unique_id=54088361]
 
@@ -5297,6 +5309,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon9/Poon9" unique_id=1067362606]
 
@@ -5309,6 +5322,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1185, 479)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon14" unique_id=526820057]
 
@@ -5321,6 +5335,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon14/Poon9" unique_id=264388366]
 
@@ -5333,6 +5348,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1214.0001, 477.99997)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon15" unique_id=26070335]
 
@@ -5345,6 +5361,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon15/Poon9" unique_id=1488681707]
 
@@ -5357,6 +5374,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1242.0001, 476)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon16" unique_id=1744554305]
 
@@ -5369,6 +5387,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon16/Poon9" unique_id=849952456]
 
@@ -5381,6 +5400,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1273.0001, 476)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon17" unique_id=1340953928]
 
@@ -5393,6 +5413,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon17/Poon9" unique_id=904405952]
 
@@ -5405,6 +5426,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1301.25, 478.5)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon18" unique_id=2022015990]
 
@@ -5417,6 +5439,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon18/Poon9" unique_id=946933412]
 
@@ -5429,6 +5452,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1330.2501, 477.49997)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon19" unique_id=714650207]
 
@@ -5441,6 +5465,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon19/Poon9" unique_id=1532714823]
 
@@ -5453,6 +5478,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1358.2501, 475.5)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon20" unique_id=1568386132]
 
@@ -5465,6 +5491,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon20/Poon9" unique_id=1416639672]
 
@@ -5477,6 +5504,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1389.2501, 475.5)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon21" unique_id=1114937744]
 
@@ -5489,6 +5517,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon21/Poon9" unique_id=1231854448]
 
@@ -5501,6 +5530,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1419.0001, 481)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon22" unique_id=868641067]
 
@@ -5513,6 +5543,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon22/Poon9" unique_id=1445739884]
 
@@ -5525,6 +5556,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1462, 466)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon23" unique_id=815108245]
 
@@ -5537,6 +5569,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon23/Poon9" unique_id=1792328029]
 
@@ -5549,6 +5582,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1447, 482.00006)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon24" unique_id=519725019]
 
@@ -5561,6 +5595,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon24/Poon9" unique_id=1701234853]
 
@@ -5573,6 +5608,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1492, 467)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon25" unique_id=931492575]
 
@@ -5585,6 +5621,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon25/Poon9" unique_id=1926375455]
 
@@ -5597,6 +5634,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1520.0001, 457)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon26" unique_id=1899252938]
 
@@ -5609,6 +5647,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon26/Poon9" unique_id=345873761]
 
@@ -5621,6 +5660,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1543.0001, 457)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon27" unique_id=1528863976]
 
@@ -5633,6 +5673,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon27/Poon9" unique_id=1723542652]
 
@@ -5645,6 +5686,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1569, 462)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon28" unique_id=1334407379]
 
@@ -5657,6 +5699,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon28/Poon9" unique_id=309310841]
 
@@ -5669,6 +5712,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1589, 476.99997)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon29" unique_id=2102630580]
 
@@ -5681,6 +5725,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon29/Poon9" unique_id=142652270]
 
@@ -5693,6 +5738,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1612, 485)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon30" unique_id=1447166351]
 
@@ -5705,6 +5751,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon30/Poon9" unique_id=578613401]
 
@@ -5717,6 +5764,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1627.0001, 501)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon31" unique_id=1365446501]
 
@@ -5729,6 +5777,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon31/Poon9" unique_id=403865730]
 
@@ -5741,6 +5790,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1650.0001, 512)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon32" unique_id=931477357]
 
@@ -5753,6 +5803,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon32/Poon9" unique_id=794317803]
 
@@ -5765,6 +5816,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1669, 513)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon33" unique_id=1394311491]
 
@@ -5777,6 +5829,7 @@ shape = SubResource("RectangleShape2D_skieg")
 position = Vector2(1005, 463)
 scale = Vector2(0.48412699, 0.4874996)
 texture = ExtResource("19_2v48b")
+script = ExtResource("48_fadetree")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Poon33/Poon9" unique_id=68646364]
 

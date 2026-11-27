@@ -108,10 +108,22 @@ func _physics_process(delta: float) -> void:
 
 			var enraged = health <= max_health * 0.5
 			var move_speed = speed * (1.25 if enraged else 1.0)
-			velocity = dir * move_speed
-			var run_anim = "run_" + _facing
-			if sprite and sprite.animation != run_anim:
-				sprite.play(run_anim)
+			if dist < 22.0:
+				# Jaga jarak agar sprite tidak menempel / tumpang tindih dengan player
+				velocity = -dir * (move_speed * 0.55)
+				var run_anim = "run_" + _facing
+				if sprite and sprite.animation != run_anim:
+					sprite.play(run_anim)
+			elif dist <= 26.0:
+				# Sudah dalam jangkauan pukul, tunggu cooldown tanpa menabrak player
+				velocity = Vector2.ZERO
+				if sprite and sprite.animation != "idle_front":
+					sprite.play("idle_front")
+			else:
+				velocity = dir * move_speed
+				var run_anim = "run_" + _facing
+				if sprite and sprite.animation != run_anim:
+					sprite.play(run_anim)
 		else:
 			if hud and hud.has_method("hide_boss_bar"):
 				hud.hide_boss_bar()
@@ -140,8 +152,7 @@ func _perform_melee_tongkat(p: Node2D) -> void:
 	_melee_hit_dealt = false
 	_attack_timer = 1.3
 	_facing = "right" if p.global_position.x >= global_position.x else "left"
-	var dir = (p.global_position - global_position).normalized()
-	velocity = dir * 35.0
+	velocity = Vector2.ZERO
 	if sprite:
 		sprite.flip_h = false
 		sprite.play("melee_tongkat_" + _facing)

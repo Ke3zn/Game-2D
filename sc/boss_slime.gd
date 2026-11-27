@@ -92,10 +92,15 @@ func _physics_process(delta: float) -> void:
 				_perform_ground_slam(player)
 				return
 
-			# Kejar player
+			# Kejar player sambil menjaga jarak agar tidak menempel
 			var dir = (player.global_position - global_position).normalized()
 			var current_speed = speed * 1.25 if health <= max_health * 0.5 else speed
-			velocity = dir * current_speed
+			if dist < 20.0:
+				velocity = -dir * (current_speed * 0.45)
+			elif dist <= 26.0:
+				velocity = Vector2.ZERO
+			else:
+				velocity = dir * current_speed
 
 			if sprite:
 				sprite.flip_h = dir.x < 0

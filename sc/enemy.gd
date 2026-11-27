@@ -51,14 +51,19 @@ func _physics_process(delta: float) -> void:
 	if player and is_instance_valid(player):
 		var dist = global_position.distance_to(player.global_position)
 		if dist <= detection_radius:
-			# Kejar player
+			# Kejar player sambil menjaga jarak agar tidak menempel
 			var dir = (player.global_position - global_position).normalized()
-			velocity = dir * speed
+			if dist < 13.0:
+				velocity = -dir * (speed * 0.5)
+			elif dist <= 16.0:
+				velocity = Vector2.ZERO
+			else:
+				velocity = dir * speed
 			if sprite:
 				sprite.flip_h = dir.x < 0
 
 			# Cek jika menyentuh player untuk menyerang
-			if dist <= 14.0 and _attack_timer <= 0.0:
+			if dist <= 17.0 and _attack_timer <= 0.0:
 				_attack_player(player)
 		else:
 			# Kembali ke posisi awal perlahan jika player di luar jangkauan
@@ -86,9 +91,6 @@ func _attack_player(p: Node2D) -> void:
 	_attack_timer = attack_cooldown
 	if p.has_method("take_damage"):
 		p.take_damage(damage)
-	# Efek lunging kecil
-	var lunge_dir = (p.global_position - global_position).normalized()
-	global_position += lunge_dir * 4.0
 
 func take_damage(amount: float, knockback_dir: Vector2 = Vector2.ZERO) -> void:
 	if is_dead:

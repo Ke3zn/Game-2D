@@ -454,13 +454,13 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_boss_molotov"]
-radius = 7.0
-height = 18.0
+radius = 10.0
+height = 22.0
 
 [node name="BossMolotov" type="CharacterBody2D" unique_id=59652774 groups=["boss", "enemy"]]
 z_index = 2
 y_sort_enabled = true
-collision_layer = 4
+collision_layer = 5
 collision_mask = 3
 script = ExtResource("1_boss_molotov")
 

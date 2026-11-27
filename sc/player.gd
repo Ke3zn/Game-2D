@@ -55,6 +55,22 @@ func _ready() -> void:
 	blood_changed.emit(current_blood, max_blood)
 	energy_changed.emit(current_energy, max_energy)
 	active_slot_changed.emit(active_slot)
+	if get_tree().get_meta("spawn_outside_house", false):
+		call_deferred("_apply_house_exit_spawn")
+
+func _apply_house_exit_spawn() -> void:
+	if not get_tree() or not get_tree().get_meta("spawn_outside_house", false):
+		return
+	var door := get_tree().get_first_node_in_group("door") as Node2D
+	if door:
+		get_tree().remove_meta("spawn_outside_house")
+		global_position = door.global_position + Vector2(0, 26)
+		var cam := get_node_or_null("Camera2D") as Camera2D
+		if cam:
+			cam.reset_smoothing()
+			cam.force_update_scroll()
+		last_direction = "front"
+		_play_state_anim("idle")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if is_dead:
