@@ -5,8 +5,8 @@ signal health_changed(current: float, max_val: float)
 signal died()
 
 @export var boss_name: String = "👑 SLIME KING"
-@export var max_health: float = 100.0
-@export var health: float = 100.0
+@export var max_health: float = 180.0
+@export var health: float = 180.0
 @export var damage: float = 20.0
 @export var speed: float = 22.0
 @export var detection_radius: float = 180.0
@@ -21,6 +21,7 @@ var _slam_timer: float = 2.0
 var _is_slamming: bool = false
 var _is_lunging: bool = false
 var _minion_spawned: bool = false
+var _was_player_in_range: bool = false
 var _hurt_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
 var _shadow: Polygon2D = null
@@ -81,8 +82,10 @@ func _physics_process(delta: float) -> void:
 	var hud = _get_hud()
 
 	if player and is_instance_valid(player):
+		z_index = 1 if player.global_position.y > global_position.y else 2
 		var dist = global_position.distance_to(player.global_position)
 		if dist <= detection_radius:
+			_was_player_in_range = true
 			# Beritahu HUD untuk memunculkan Boss Health Bar
 			if hud and hud.has_method("show_boss_bar"):
 				hud.show_boss_bar(boss_name, health, max_health)
@@ -112,8 +115,10 @@ func _physics_process(delta: float) -> void:
 				_attack_player(player)
 		else:
 			# Di luar jangkauan, sembunyikan Boss Bar dan kembali perlahan
-			if hud and hud.has_method("hide_boss_bar"):
-				hud.hide_boss_bar()
+			if _was_player_in_range:
+				_was_player_in_range = false
+				if hud and hud.has_method("hide_boss_bar"):
+					hud.hide_boss_bar()
 
 			var dist_spawn = global_position.distance_to(spawn_position)
 			if dist_spawn > 15.0:

@@ -34,10 +34,21 @@ var _invuln_timer: float = 0.0
 var _attack_buffer_timer: float = 0.0
 var _attack_failsafe_timer: float = 0.0
 var _attack_seq: int = 0
+const SFX_BAT_PATH := "res://asset/music/sfx/bathitball.mp3"
+const SFX_APAR_PATH := "res://asset/music/sfx/spray-first-aid.mp3"
+const SFX_WALK_PATH := "res://asset/music/sfx/baim_walk.mp3"
+const SFX_RUN_PATH := "res://asset/music/sfx/baim_run.mp3"
+
 var _apar_foam_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
 var _attack_lunge_velocity: Vector2 = Vector2.ZERO
 var _hit_dealt_this_swing: bool = false
+var _sfx_pentungan: AudioStreamPlayer = null
+var _sfx_apar: AudioStreamPlayer = null
+var _sfx_walk: AudioStreamPlayer = null
+var _sfx_run: AudioStreamPlayer = null
+var _is_walking_sfx: bool = false
+var _is_running_sfx: bool = false
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -48,6 +59,7 @@ func _ready() -> void:
 	if bonus_hp > 0.0:
 		max_blood += bonus_hp
 		current_blood = minf(max_blood, current_blood + bonus_hp)
+	_setup_audio()
 	if sprite:
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		_play_state_anim("idle")
@@ -117,6 +129,8 @@ func _physics_process(delta: float) -> void:
 
 	if is_attacking:
 		is_spraying_apar = false
+		_stop_apar_sfx()
+		_stop_move_sfx()
 		_attack_failsafe_timer = max(0.0, _attack_failsafe_timer - delta)
 		if _attack_failsafe_timer <= 0.0:
 			is_attacking = false
@@ -165,6 +179,8 @@ func _physics_process(delta: float) -> void:
 			sprite.speed_scale = 1.0
 		_play_state_anim("idle")
 
+	_update_move_sfx(direction != Vector2.ZERO, is_sprinting)
+
 	# Pemulihan energi jika tidak sedang sprint dan jeda delay sudah selesai
 	if not is_sprinting:
 		if _energy_recovery_timer > 0.0:
@@ -174,9 +190,12 @@ func _physics_process(delta: float) -> void:
 			energy_changed.emit(current_energy, max_energy)
 
 	if is_spraying_apar:
+		if _sfx_apar and _sfx_apar.stream and not _sfx_apar.playing:
+			_sfx_apar.play()
 		_process_continuous_apar_spray(delta)
 	else:
 		_apar_foam_timer = 0.0
+		_stop_apar_sfx()
 
 	if _attack_buffer_timer > 0.0:
 		_attack_buffer_timer = 0.0
@@ -263,6 +282,8 @@ func _start_attack_pentungan() -> void:
 	var attack_dir = _get_facing_vector()
 	_attack_lunge_velocity = attack_dir * 24.0
 	velocity = _attack_lunge_velocity
+	if _sfx_pentungan and _sfx_pentungan.stream:
+		_sfx_pentungan.play()
 
 	var anim_name = "attack_pentungan_" + last_direction
 	if sprite and sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_name):
@@ -300,6 +321,66 @@ func _execute_pentungan_hit() -> void:
 		Engine.time_scale = 0.08
 		await get_tree().create_timer(0.04, true, false, true).timeout
 		Engine.time_scale = 1.0
+
+func _make_sfx_player(path: String, vol_db: float, loop_mp3: bool) -> AudioStreamPlayer:
+	var p := AudioStreamPlayer.new()
+	p.volume_db = vol_db
+	if ResourceLoader.exists(path):
+		var s: AudioStream = load(path)
+		if loop_mp3 and s is AudioStreamMP3:
+			s.loop = true
+		p.stream = s
+	add_child(p)
+	return p
+
+func _setup_audio() -> void:
+	_sfx_pentungan = _make_sfx_player(SFX_BAT_PATH, -3.0, false)
+	_sfx_apar = _make_sfx_player(SFX_APAR_PATH, -4.0, true)
+	_sfx_apar.finished.connect(func():
+		if is_spraying_apar and not is_dead and _sfx_apar.stream and is_inside_tree():
+			_sfx_apar.play()
+	)
+	_sfx_walk = _make_sfx_player(SFX_WALK_PATH, -28.0, true)
+	_sfx_walk.finished.connect(func():
+		if _is_walking_sfx and not is_dead and _sfx_walk.stream and is_inside_tree():
+			_sfx_walk.play()
+	)
+	_sfx_run = _make_sfx_player(SFX_RUN_PATH, -25.0, true)
+	_sfx_run.finished.connect(func():
+		if _is_running_sfx and not is_dead and _sfx_run.stream and is_inside_tree():
+			_sfx_run.play()
+	)
+
+func _update_move_sfx(is_moving: bool, is_sprinting: bool) -> void:
+	if not is_moving or is_dead or is_attacking:
+		_stop_move_sfx()
+		return
+	if is_sprinting:
+		_is_walking_sfx = false
+		_is_running_sfx = true
+		if _sfx_walk and _sfx_walk.playing:
+			_sfx_walk.stop()
+		if _sfx_run and _sfx_run.stream and not _sfx_run.playing:
+			_sfx_run.play()
+	else:
+		_is_running_sfx = false
+		_is_walking_sfx = true
+		if _sfx_run and _sfx_run.playing:
+			_sfx_run.stop()
+		if _sfx_walk and _sfx_walk.stream and not _sfx_walk.playing:
+			_sfx_walk.play()
+
+func _stop_move_sfx() -> void:
+	_is_walking_sfx = false
+	_is_running_sfx = false
+	if _sfx_walk and _sfx_walk.playing:
+		_sfx_walk.stop()
+	if _sfx_run and _sfx_run.playing:
+		_sfx_run.stop()
+
+func _stop_apar_sfx() -> void:
+	if _sfx_apar and _sfx_apar.playing:
+		_sfx_apar.stop()
 
 func _is_dialogue_open() -> bool:
 	var hud = get_tree().get_first_node_in_group("hud")
@@ -405,6 +486,9 @@ func _die() -> void:
 	Engine.time_scale = 1.0
 	is_dead = true
 	is_attacking = false
+	is_spraying_apar = false
+	_stop_apar_sfx()
+	_stop_move_sfx()
 	_attack_buffer_timer = 0.0
 	velocity = Vector2.ZERO
 	died.emit()
@@ -418,6 +502,9 @@ func respawn(respawn_pos: Vector2 = Vector2.ZERO) -> void:
 	Engine.time_scale = 1.0
 	is_dead = false
 	is_attacking = false
+	is_spraying_apar = false
+	_stop_apar_sfx()
+	_stop_move_sfx()
 	_attack_buffer_timer = 0.0
 	_attack_failsafe_timer = 0.0
 	is_hurt = false

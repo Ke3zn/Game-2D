@@ -6,12 +6,26 @@ extends Node2D
 @onready var fade_rect: ColorRect = $FadeCanvas/FadeRect
 @onready var sleep_notify: Control = $FadeCanvas/SleepNotify
 
+const QUIET_BGM_PATH := "res://asset/music/background music/baim_quite_place_backsound.wav"
+
 var _can_sleep: bool = false
 var _can_exit: bool = false
 var _is_busy: bool = false
+var _bgm_player: AudioStreamPlayer
 
 func _ready() -> void:
 	_setup_textures()
+	_bgm_player = AudioStreamPlayer.new()
+	_bgm_player.volume_db = -19.0
+	if ResourceLoader.exists(QUIET_BGM_PATH):
+		_bgm_player.stream = load(QUIET_BGM_PATH)
+	add_child(_bgm_player)
+	_bgm_player.finished.connect(func():
+		if _bgm_player.stream and is_inside_tree():
+			_bgm_player.play()
+	)
+	if _bgm_player.stream:
+		_bgm_player.play()
 	if bed_prompt:
 		bed_prompt.visible = false
 	if door_prompt:

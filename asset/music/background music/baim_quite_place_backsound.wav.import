@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://buiahs6rmsxdw"
+path="res://.godot/imported/baim_quite_place_backsound.wav-86db9122dbd87078350333c538ef5de1.sample"
+
+[deps]
+
+source_file="res://asset/music/background music/baim_quite_place_backsound.wav"
+dest_files=["res://.godot/imported/baim_quite_place_backsound.wav-86db9122dbd87078350333c538ef5de1.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

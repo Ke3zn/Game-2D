@@ -71,6 +71,8 @@
 [ext_resource type="Texture2D" uid="uid://02d8h6xifmcj" path="res://asset/craftpix-net-812442-free-fantasy-medieval-village-buildings-asset-pack/PNG/Houses and Warehouses_Wooden House - Level 3.png" id="67_t31x6"]
 [ext_resource type="PackedScene" uid="uid://bfyvmwblqnea" path="res://asset/burning_tree.tscn" id="68_burning_tree"]
 [ext_resource type="Script" uid="uid://c2fodfiomk4m0" path="res://sc/fade_tilemap_trees.gd" id="69_fadetml"]
+[ext_resource type="PackedScene" uid="uid://cbosslime01" path="res://asset/boss_slime.tscn" id="70_boss_slime"]
+[ext_resource type="Script" path="res://sc/game_audio.gd" id="71_game_audio"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hm5r7"]
 texture = ExtResource("1_rah20")
@@ -6693,6 +6695,12 @@ horizontal_alignment = 1
 
 [node name="BossNormal" parent="." unique_id=2057301853 instance=ExtResource("54_boss")]
 position = Vector2(370, 128)
+
+[node name="BossSlime" parent="." unique_id=2057301854 instance=ExtResource("70_boss_slime")]
+position = Vector2(1287, 192)
+
+[node name="GameAudio" type="Node" parent="." unique_id=2100002001]
+script = ExtResource("71_game_audio")
 
 [node name="BurningTree1" parent="." unique_id=2100001001 instance=ExtResource("68_burning_tree")]
 position = Vector2(205, 115)

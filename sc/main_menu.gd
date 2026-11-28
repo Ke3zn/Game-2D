@@ -1,6 +1,7 @@
 extends Control
 
 const GAME_SCENE_PATH := "res://asset/game.tscn"
+const OPENING_BGM_PATH := "res://asset/music/background music/baim_opening_backsound.wav"
 
 @onready var menu_buttons: Array[Button] = [
 	%BtnStart,
@@ -22,8 +23,20 @@ const GAME_SCENE_PATH := "res://asset/game.tscn"
 var _selected_idx: int = 0
 var _is_starting: bool = false
 var _cursor_tween: Tween
+var _bgm_player: AudioStreamPlayer
 
 func _ready() -> void:
+	_bgm_player = AudioStreamPlayer.new()
+	_bgm_player.volume_db = -5.0
+	if ResourceLoader.exists(OPENING_BGM_PATH):
+		_bgm_player.stream = load(OPENING_BGM_PATH)
+	add_child(_bgm_player)
+	_bgm_player.finished.connect(func():
+		if not _is_starting and _bgm_player.stream and is_inside_tree():
+			_bgm_player.play()
+	)
+	if _bgm_player.stream:
+		_bgm_player.play()
 	# Fade in halus saat halaman depan muncul
 	if fade_rect:
 		fade_rect.visible = true
@@ -130,6 +143,9 @@ func _on_start_pressed() -> void:
 	if _is_starting:
 		return
 	_is_starting = true
+	if _bgm_player and _bgm_player.playing:
+		var bt = create_tween()
+		bt.tween_property(_bgm_player, "volume_db", -50.0, 0.38)
 	if fade_rect:
 		fade_rect.visible = true
 		var t = create_tween()
