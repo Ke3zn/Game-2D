@@ -643,19 +643,19 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -440.0
+offset_left = -320.0
 offset_top = 145.0
 offset_right = -60.0
-offset_bottom = 230.0
+offset_bottom = 145.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue_bg")
 
 [node name="Margin" type="MarginContainer" parent="Control/QuestTracker"]
 layout_mode = 2
 theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 8
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 8
+theme_override_constants/margin_bottom = 10
 
 [node name="VBox" type="VBoxContainer" parent="Control/QuestTracker/Margin"]
 layout_mode = 2
@@ -663,10 +663,12 @@ theme_override_constants/separation = 2
 
 [node name="QuestTitleLabel" type="Label" parent="Control/QuestTracker/Margin/VBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(232, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.25, 0.15, 0.08, 1)
 theme_override_font_sizes/font_size = 14
-text = "📜 Misi: Basmi Slime Liar"
+text = "Misi: Basmi Slime Liar"
+autowrap_mode = 3
 
 [node name="QuestProgressLabel" type="Label" parent="Control/QuestTracker/Margin/VBox"]
 unique_name_in_owner = true
@@ -691,11 +693,10 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -230.0
-offset_top = -170.0
+offset_top = -140.0
 offset_right = -20.0
-offset_bottom = 170.0
+offset_bottom = -140.0
 grow_horizontal = 0
-grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_guide_bg")
 
 [node name="Margin" type="MarginContainer" parent="Control/ControlsGuide"]
@@ -748,7 +749,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
 theme_override_font_sizes/font_size = 11
-text = "🚶 Gerak / Jalan"
+text = "Gerak / Jalan"
 
 [node name="MoveKey" type="Label" parent="Control/ControlsGuide/Margin/VBox/GuideContent/RowMove"]
 layout_mode = 2
@@ -764,7 +765,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
 theme_override_font_sizes/font_size = 11
-text = "⚡ Lari (Sprint)"
+text = "Lari (Sprint)"
 
 [node name="SprintKey" type="Label" parent="Control/ControlsGuide/Margin/VBox/GuideContent/RowSprint"]
 layout_mode = 2
@@ -780,7 +781,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
 theme_override_font_sizes/font_size = 11
-text = "⚔️ Serang (Pentungan)"
+text = "Serang pakai senjata"
 
 [node name="AttackKey" type="Label" parent="Control/ControlsGuide/Margin/VBox/GuideContent/RowAttack"]
 layout_mode = 2
@@ -796,13 +797,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
 theme_override_font_sizes/font_size = 11
-text = "💬 Bicara Kakek"
+text = "Bicara Kakek"
 
 [node name="TalkKey" type="Label" parent="Control/ControlsGuide/Margin/VBox/GuideContent/RowTalk"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.12, 0.12, 0.12, 1)
 theme_override_font_sizes/font_size = 11
-text = "[ E / F ] Dekat NPC"
+text = "[ E ] Dekat NPC"
 
 [node name="RowPickup" type="HBoxContainer" parent="Control/ControlsGuide/Margin/VBox/GuideContent"]
 layout_mode = 2
@@ -812,13 +813,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
 theme_override_font_sizes/font_size = 11
-text = "📦 Ambil Barang"
+text = "Ambil Barang"
 
 [node name="PickupKey" type="Label" parent="Control/ControlsGuide/Margin/VBox/GuideContent/RowPickup"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.12, 0.12, 0.12, 1)
 theme_override_font_sizes/font_size = 11
-text = "[ E / F ] Item"
+text = "[ E ] Item"
 
 [node name="RowDoor" type="HBoxContainer" parent="Control/ControlsGuide/Margin/VBox/GuideContent"]
 layout_mode = 2
@@ -828,13 +829,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
 theme_override_font_sizes/font_size = 11
-text = "🏠 Masuk Rumah"
+text = "Masuk Rumah"
 
 [node name="DoorKey" type="Label" parent="Control/ControlsGuide/Margin/VBox/GuideContent/RowDoor"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.12, 0.12, 0.12, 1)
 theme_override_font_sizes/font_size = 11
-text = "[ E / F ] di Pintu"
+text = "[ E ] di Pintu"
 
 [node name="RowBag" type="HBoxContainer" parent="Control/ControlsGuide/Margin/VBox/GuideContent"]
 layout_mode = 2
@@ -844,13 +845,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
 theme_override_font_sizes/font_size = 11
-text = "🎒 Buka Tas"
+text = "Buka Tas"
 
 [node name="BagKey" type="Label" parent="Control/ControlsGuide/Margin/VBox/GuideContent/RowBag"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.12, 0.12, 0.12, 1)
 theme_override_font_sizes/font_size = 11
-text = "[ TAB / B ] / Tas 🎒"
+text = "[ B ] / Tas "
 
 [node name="RowSlot" type="HBoxContainer" parent="Control/ControlsGuide/Margin/VBox/GuideContent"]
 layout_mode = 2
@@ -860,7 +861,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
 theme_override_font_sizes/font_size = 11
-text = "🗡️ Pilih Slot Senjata"
+text = "Pilih Slot Senjata"
 
 [node name="SlotKey" type="Label" parent="Control/ControlsGuide/Margin/VBox/GuideContent/RowSlot"]
 layout_mode = 2
@@ -876,7 +877,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
 theme_override_font_sizes/font_size = 11
-text = "❌ Tutup Menu"
+text = "Tutup Menu"
 
 [node name="CancelKey" type="Label" parent="Control/ControlsGuide/Margin/VBox/GuideContent/RowCancel"]
 layout_mode = 2
@@ -1267,7 +1268,7 @@ offset_left = 40.0
 offset_top = 48.0
 offset_right = 860.0
 offset_bottom = 138.0
-theme_override_colors/font_color = Color(0.55, 0.35, 0.02, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 19
 text = "Halo anak muda! Selamat datang di desa kami."
 vertical_alignment = 1
@@ -1393,7 +1394,7 @@ theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 20
-text = "🏆 BOS TELAH DIKALAHKAN!"
+text = "BOS TELAH DIKALAHKAN!"
 horizontal_alignment = 1
 
 [node name="VictorySub" type="Label" parent="Control/VictoryBanner/Margin/VBox"]
@@ -1402,7 +1403,7 @@ theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 14
-text = "Pulau kini kembali aman dan damai!"
+text = "Pulau kini kembali aman!"
 horizontal_alignment = 1
 
 [node name="GameOverModal" type="Control" parent="Control"]

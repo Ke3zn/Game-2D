@@ -6,7 +6,7 @@ signal active_slot_changed(slot_index: int)
 signal died()
 
 @export_group("Inventory")
-@export var active_slot: int = 1 # 0: Pemadam Api, 1: Pentungan, 2: Slot Kosong
+@export var active_slot: int = 0 # 0: Tangan Kosong, 1: Slot 2, 2: Slot 3
 
 @export_group("Movement")
 @export var speed: float = 30.0
@@ -29,6 +29,7 @@ var is_spraying_apar := false
 var is_hurt := false
 var is_dead := false
 var has_apar := false
+var has_pentungan := false
 var _energy_recovery_timer: float = 0.0
 var _invuln_timer: float = 0.0
 var _attack_buffer_timer: float = 0.0
@@ -55,6 +56,7 @@ var _is_running_sfx: bool = false
 func _ready() -> void:
 	add_to_group("player")
 	has_apar = get_tree().get_meta("has_apar", false)
+	has_pentungan = get_tree().get_meta("has_pentungan", false)
 	var bonus_hp: float = float(get_tree().get_meta("bonus_max_blood", 0.0))
 	if bonus_hp > 0.0:
 		max_blood += bonus_hp
@@ -98,7 +100,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			set_active_slot(1)
 		elif event.keycode == KEY_3:
 			set_active_slot(2)
-		elif event.keycode == KEY_B or event.keycode == KEY_I or event.keycode == KEY_TAB:
+		elif event.keycode == KEY_B:
 			var hud = get_tree().get_first_node_in_group("hud")
 			if not hud:
 				hud = get_parent().get_node_or_null("HUD")
@@ -117,8 +119,14 @@ func _physics_process(delta: float) -> void:
 	if _invuln_timer > 0.0:
 		_invuln_timer = max(0.0, _invuln_timer - delta)
 
-	if Input.is_action_just_pressed("attack") and _get_active_item_id() == "pentungan":
-		_attack_buffer_timer = 0.18
+	if Input.is_action_just_pressed("attack") and not _is_dialogue_open():
+		var active_id := _get_active_item_id()
+		if active_id == "pentungan" and has_pentungan:
+			_attack_buffer_timer = 0.18
+		elif active_id == "potion_red":
+			var hud = get_tree().get_first_node_in_group("hud")
+			if hud and hud.has_method("consume_potion_from_hotbar"):
+				hud.consume_potion_from_hotbar()
 	elif _attack_buffer_timer > 0.0:
 		_attack_buffer_timer = max(0.0, _attack_buffer_timer - delta)
 
@@ -199,7 +207,7 @@ func _physics_process(delta: float) -> void:
 
 	if _attack_buffer_timer > 0.0:
 		_attack_buffer_timer = 0.0
-		if _get_active_item_id() == "pentungan":
+		if _get_active_item_id() == "pentungan" and has_pentungan:
 			# Bisa attack jika slot aktif sedang memegang pentungan
 			if current_energy >= attack_energy_cost:
 				current_energy -= attack_energy_cost
@@ -218,14 +226,14 @@ func _physics_process(delta: float) -> void:
 func _get_active_item_id() -> String:
 	if active_slot == 0:
 		return "hand"
-	var eq = get_tree().get_meta("hotbar_equips", ["hand", "pentungan", ""])
+	var eq = get_tree().get_meta("hotbar_equips", ["hand", "", ""])
 	if eq is Array and active_slot >= 0 and active_slot < eq.size():
 		return str(eq[active_slot])
-	return "pentungan" if active_slot == 1 else ""
+	return ""
 
 func _get_tool_suffix() -> String:
 	var item_id := _get_active_item_id()
-	if item_id == "pentungan":
+	if item_id == "pentungan" and has_pentungan:
 		return "_pentungan"
 	elif item_id == "pemadam" and has_apar:
 		return "_apar"
@@ -251,11 +259,17 @@ func _get_move_state() -> String:
 		return "run"
 	return "walk"
 
+func grant_pentungan() -> void:
+	has_pentungan = true
+	get_tree().set_meta("has_pentungan", true)
+	if not is_attacking and not is_hurt and not is_dead:
+		_play_state_anim(_get_move_state())
+
 func grant_apar() -> void:
 	has_apar = true
 	get_tree().set_meta("has_apar", true)
 	var target := 2
-	var eq = get_tree().get_meta("hotbar_equips", ["hand", "pentungan", "pemadam"])
+	var eq = get_tree().get_meta("hotbar_equips", ["hand", "", "pemadam"])
 	if eq is Array and eq.size() >= 3:
 		if str(eq[1]) == "pemadam":
 			target = 1
@@ -468,13 +482,60 @@ func heal(amount: float) -> void:
 	current_blood = min(max_blood, current_blood + amount)
 	blood_changed.emit(current_blood, max_blood)
 
-func use_energy(amount: float) -> bool:
-	if current_energy >= amount:
-		current_energy -= amount
-		_energy_recovery_timer = energy_recovery_delay
-		energy_changed.emit(current_energy, max_energy)
-		return true
-	return false
+func drink_potion(amount: float = 40.0) -> bool:
+	if is_dead or current_blood >= max_blood:
+		return false
+	heal(amount)
+	_play_drink_potion_anim()
+	return true
+
+func _play_drink_potion_anim() -> void:
+	if sprite:
+		var base_scale := sprite.scale
+		var st := create_tween()
+		st.tween_property(sprite, "scale", Vector2(base_scale.x * 1.08, base_scale.y * 0.92), 0.10)
+		st.parallel().tween_property(sprite, "modulate", Color(0.7, 1.0, 0.78, 1.0), 0.12)
+		st.tween_property(sprite, "scale", Vector2(base_scale.x * 0.96, base_scale.y * 1.06), 0.12)
+		st.tween_property(sprite, "scale", base_scale, 0.12)
+		st.parallel().tween_property(sprite, "modulate", Color.WHITE, 0.20)
+
+	# Tampilkan botol potion terangkat & miring saat diminum
+	var bottle_tex: Texture2D = null
+	if ResourceLoader.exists("res://asset/tools/potion_red.png"):
+		bottle_tex = load("res://asset/tools/potion_red.png")
+	elif FileAccess.file_exists("res://asset/tools/potion_red.png"):
+		var img := Image.load_from_file("res://asset/tools/potion_red.png")
+		if img:
+			bottle_tex = ImageTexture.create_from_image(img)
+	if bottle_tex:
+		var bottle := Sprite2D.new()
+		bottle.texture = bottle_tex
+		bottle.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		bottle.z_index = 6
+		bottle.scale = Vector2(0.26, 0.26)
+		bottle.position = Vector2(6, -6)
+		add_child(bottle)
+		var bt := bottle.create_tween()
+		bt.tween_property(bottle, "position", Vector2(2, -14), 0.16).set_ease(Tween.EASE_OUT)
+		bt.parallel().tween_property(bottle, "rotation_degrees", -48.0, 0.16)
+		bt.tween_interval(0.18)
+		bt.tween_property(bottle, "modulate:a", 0.0, 0.16)
+		bt.tween_callback(bottle.queue_free)
+
+	# Partikel hijau pemulihan + teks +40 HP
+	var parent_node := get_parent()
+	if parent_node:
+		for i in range(6):
+			var sp := Polygon2D.new()
+			sp.z_index = 6
+			sp.polygon = PackedVector2Array([Vector2(-1.8, -1.8), Vector2(1.8, -1.8), Vector2(1.8, 1.8), Vector2(-1.8, 1.8)])
+			sp.color = Color(0.35, 0.98, 0.48, 0.92)
+			sp.global_position = global_position + Vector2(randf_range(-10.0, 10.0), randf_range(-12.0, 4.0))
+			parent_node.add_child(sp)
+			var pt := sp.create_tween().set_parallel(true)
+			pt.tween_property(sp, "global_position:y", sp.global_position.y - randf_range(14.0, 24.0), 0.5)
+			pt.tween_property(sp, "modulate:a", 0.0, 0.5)
+			pt.chain().tween_callback(sp.queue_free)
 
 func restore_energy(amount: float) -> void:
 	current_energy = min(max_energy, current_energy + amount)
@@ -497,25 +558,4 @@ func _die() -> void:
 		tween.tween_property(sprite, "rotation_degrees", 90.0, 0.35)
 		tween.tween_property(sprite, "modulate", Color(0.85, 0.2, 0.2, 0.8), 0.35)
 		tween.tween_property(sprite, "position:y", sprite.position.y + 6.0, 0.35)
-
-func respawn(respawn_pos: Vector2 = Vector2.ZERO) -> void:
-	Engine.time_scale = 1.0
-	is_dead = false
-	is_attacking = false
-	is_spraying_apar = false
-	_stop_apar_sfx()
-	_stop_move_sfx()
-	_attack_buffer_timer = 0.0
-	_attack_failsafe_timer = 0.0
-	is_hurt = false
-	current_blood = max_blood
-	current_energy = max_energy
-	blood_changed.emit(current_blood, max_blood)
-	energy_changed.emit(current_energy, max_energy)
-	if respawn_pos != Vector2.ZERO:
-		global_position = respawn_pos
-	if sprite:
-		sprite.rotation_degrees = 0.0
-		sprite.modulate = Color.WHITE
-		sprite.position = Vector2.ZERO
 		_play_state_anim("idle")

@@ -4,7 +4,7 @@ class_name BossMolotov
 signal health_changed(current: float, max_val: float)
 signal died()
 
-@export var boss_name: String = "🔥 BOSS PEMBAKAR"
+@export var boss_name: String = "BOSS PEMBAKAR"
 @export var max_health: float = 120.0
 @export var health: float = 120.0
 @export var damage: float = 18.0
@@ -110,7 +110,7 @@ func _physics_process(delta: float) -> void:
 			var move_speed = speed * (1.25 if enraged else 1.0)
 			if dist < 22.0:
 				# Jaga jarak agar sprite tidak menempel / tumpang tindih dengan player
-				velocity = -dir * (move_speed * 0.55)
+				velocity = - dir * (move_speed * 0.55)
 				var run_anim = "run_" + _facing
 				if sprite and sprite.animation != run_anim:
 					sprite.play(run_anim)

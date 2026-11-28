@@ -149,7 +149,7 @@ theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 8
-text = "[E/F] Tidur / Istirahat"
+text = "[E] Tidur / Istirahat"
 horizontal_alignment = 1
 
 [node name="DoorArea" type="Area2D" parent="."]
@@ -169,7 +169,7 @@ theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 8
-text = "[E/F] Keluar ke Desa"
+text = "[E] Keluar ke Desa"
 horizontal_alignment = 1
 
 [node name="Player" parent="." instance=ExtResource("2_player")]

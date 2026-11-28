@@ -154,7 +154,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_close_store()
 			get_viewport().set_input_as_handled()
 		return
-	if event is InputEventKey and event.pressed and (event.keycode == KEY_E or event.keycode == KEY_F or event.keycode == KEY_SPACE):
+	if event is InputEventKey and event.pressed and event.keycode == KEY_E:
 		if _can_shop:
 			_open_store()
 			get_viewport().set_input_as_handled()

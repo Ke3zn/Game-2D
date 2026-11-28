@@ -72,7 +72,7 @@ func _setup_textures() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if _is_busy:
 		return
-	if event is InputEventKey and event.pressed and (event.keycode == KEY_E or event.keycode == KEY_F or event.keycode == KEY_SPACE):
+	if event is InputEventKey and event.pressed and event.keycode == KEY_E:
 		if _can_sleep:
 			sleep()
 		elif _can_exit:

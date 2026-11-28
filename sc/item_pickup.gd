@@ -56,7 +56,7 @@ func _process(_delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _can_pickup and not _is_picked_up:
-		if event is InputEventKey and event.pressed and (event.keycode == KEY_E or event.keycode == KEY_F or event.keycode == KEY_SPACE):
+		if event is InputEventKey and event.pressed and event.keycode == KEY_E:
 			collect()
 
 func _on_body_entered(body: Node2D) -> void:

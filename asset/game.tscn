@@ -72,7 +72,7 @@
 [ext_resource type="PackedScene" uid="uid://bfyvmwblqnea" path="res://asset/burning_tree.tscn" id="68_burning_tree"]
 [ext_resource type="Script" uid="uid://c2fodfiomk4m0" path="res://sc/fade_tilemap_trees.gd" id="69_fadetml"]
 [ext_resource type="PackedScene" uid="uid://cbosslime01" path="res://asset/boss_slime.tscn" id="70_boss_slime"]
-[ext_resource type="Script" path="res://sc/game_audio.gd" id="71_game_audio"]
+[ext_resource type="Script" uid="uid://bbl0cja0w8eur" path="res://sc/game_audio.gd" id="71_game_audio"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hm5r7"]
 texture = ExtResource("1_rah20")
@@ -5183,7 +5183,7 @@ position = Vector2(2, 0)
 shape = SubResource("RectangleShape2D_bld_tent")
 
 [node name="Player" parent="." unique_id=1887675594 instance=ExtResource("18_player")]
-position = Vector2(761, 660)
+position = Vector2(388, 833)
 
 [node name="Poon1" type="Sprite2D" parent="." unique_id=83497818]
 position = Vector2(828, 376)
@@ -6647,21 +6647,30 @@ texture = ExtResource("29_dv67d")
 script = ExtResource("48_fadetree")
 
 [node name="NPC_Kakek" parent="." unique_id=1644674515 instance=ExtResource("51_npc")]
-position = Vector2(694, 771)
+position = Vector2(782, 745)
 
 [node name="ItemPickup_Potion" parent="." unique_id=1044852418 instance=ExtResource("52_item")]
-position = Vector2(745, 340)
+position = Vector2(321, 190)
+
+[node name="ItemPickup_Potion2" parent="." unique_id=1718301342 instance=ExtResource("52_item")]
+position = Vector2(422, 192)
+
+[node name="ItemPickup_Potion3" parent="." unique_id=37369522 instance=ExtResource("52_item")]
+position = Vector2(313, 111)
+
+[node name="ItemPickup_Potion4" parent="." unique_id=661754052 instance=ExtResource("52_item")]
+position = Vector2(400, 107)
 
 [node name="EnemySlime_1" parent="." unique_id=1209252506 instance=ExtResource("50_slime")]
-position = Vector2(960, 180)
+position = Vector2(1418, 117)
 
 [node name="EnemySlime_2" parent="." unique_id=1565330586 instance=ExtResource("50_slime")]
-position = Vector2(1050, 230)
+position = Vector2(1457, 141)
 
 [node name="Door_VillageHouse" parent="." unique_id=443267989 instance=ExtResource("53_door")]
 position = Vector2(760, 580)
 
-[node name="HouseSignLabel" type="Label" parent="."]
+[node name="HouseSignLabel" type="Label" parent="." unique_id=1426092920]
 z_index = 4
 offset_left = 715.0
 offset_top = 516.0
@@ -6677,7 +6686,7 @@ horizontal_alignment = 1
 [node name="Door_WeaponStore" parent="." unique_id=1976150421 instance=ExtResource("53_door")]
 position = Vector2(839, 738)
 target_scene = "res://asset/interior_store.tscn"
-prompt_text = "[E/F] Masuk Toko Senjata"
+prompt_text = "[E] Masuk Toko Senjata"
 spawn_meta_key = "spawn_outside_store"
 
 [node name="StoreSignLabel" type="Label" parent="." unique_id=346131373]
@@ -6694,10 +6703,10 @@ text = "TOKO SENJATA"
 horizontal_alignment = 1
 
 [node name="BossNormal" parent="." unique_id=2057301853 instance=ExtResource("54_boss")]
-position = Vector2(370, 128)
+position = Vector2(382, 142)
 
 [node name="BossSlime" parent="." unique_id=2057301854 instance=ExtResource("70_boss_slime")]
-position = Vector2(1287, 192)
+position = Vector2(1455, 114)
 
 [node name="GameAudio" type="Node" parent="." unique_id=2100002001]
 script = ExtResource("71_game_audio")
@@ -6720,11 +6729,41 @@ position = Vector2(195, 228)
 [node name="BurningTree6" parent="." unique_id=2100001006 instance=ExtResource("68_burning_tree")]
 position = Vector2(305, 252)
 
+[node name="BurningTree16" parent="." unique_id=1095377718 instance=ExtResource("68_burning_tree")]
+position = Vector2(347, 461)
+
+[node name="BurningTree14" parent="." unique_id=1462821606 instance=ExtResource("68_burning_tree")]
+position = Vector2(564, 435)
+
 [node name="BurningTree7" parent="." unique_id=2100001007 instance=ExtResource("68_burning_tree")]
 position = Vector2(465, 250)
 
+[node name="BurningTree18" parent="." unique_id=430372798 instance=ExtResource("68_burning_tree")]
+position = Vector2(397, 482)
+
+[node name="BurningTree13" parent="." unique_id=1547988231 instance=ExtResource("68_burning_tree")]
+position = Vector2(352, 414)
+
+[node name="BurningTree12" parent="." unique_id=1350958408 instance=ExtResource("68_burning_tree")]
+position = Vector2(561, 399)
+
 [node name="BurningTree8" parent="." unique_id=2100001008 instance=ExtResource("68_burning_tree")]
 position = Vector2(535, 248)
+
+[node name="BurningTree17" parent="." unique_id=1637981886 instance=ExtResource("68_burning_tree")]
+position = Vector2(517, 457)
+
+[node name="BurningTree15" parent="." unique_id=1451094068 instance=ExtResource("68_burning_tree")]
+position = Vector2(233, 426)
+
+[node name="BurningTree11" parent="." unique_id=1201599644 instance=ExtResource("68_burning_tree")]
+position = Vector2(296, 404)
+
+[node name="BurningTree10" parent="." unique_id=724652607 instance=ExtResource("68_burning_tree")]
+position = Vector2(462, 394)
+
+[node name="BurningTree9" parent="." unique_id=1098618726 instance=ExtResource("68_burning_tree")]
+position = Vector2(389, 374)
 
 [node name="HUD" parent="." unique_id=1784112505 instance=ExtResource("49_hud")]
 

@@ -46,6 +46,8 @@ var is_dead: bool = false
 
 var _base_max_health: float = 250.0
 var _is_evolving: bool = false
+var _awaiting_phase2_dialogue: bool = false
+var _awaiting_defeat_dialogue: bool = false
 var _is_evil: bool = false
 var _evil_throw_count: int = 0
 var _fire_aura_timer: float = 0.0
@@ -60,8 +62,6 @@ var _throw_target_pos: Vector2 = Vector2.ZERO
 var _pending_telegraph: Node2D = null
 var _pending_telegraphs: Array[Node2D] = []
 var _pending_fireball_targets: Array[Vector2] = []
-var _wave1_spawned: bool = false
-var _wave2_spawned: bool = false
 var _was_player_in_range: bool = false
 var _hurt_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
@@ -138,7 +138,7 @@ func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
 
-	if _is_evolving:
+	if _is_evolving or _awaiting_phase2_dialogue or _awaiting_defeat_dialogue:
 		velocity = Vector2.ZERO
 		_process_evil_aura(delta, 0.08)
 		return
@@ -170,6 +170,16 @@ func _physics_process(delta: float) -> void:
 		z_index = 1 if player.global_position.y > global_position.y else 2
 
 	var hud = _get_hud()
+	if hud:
+		if "dialogue_modal" in hud and hud.dialogue_modal and hud.dialogue_modal.visible:
+			velocity = Vector2.ZERO
+			_play_anim(("idle_evil_" if _is_evil else "idle_") + _last_dir)
+			return
+		var qs := str(hud.get("quest_status")) if "quest_status" in hud else ""
+		if qs in ["NOT_STARTED", "IN_PROGRESS", "TRIGGERING_FIRE_DIALOGUE", "EXTINGUISH_TREES", "TRIGGERING_ARSONIST_DIALOGUE", "FIND_ARSONIST", "TRIGGERING_BOSS_INTRO"]:
+			velocity = Vector2.ZERO
+			_play_anim("idle_front")
+			return
 	var active_detect := maxf(detection_radius, 225.0) if _is_evil else detection_radius
 
 	if player and is_instance_valid(player) and not player.get("is_dead"):
@@ -566,6 +576,29 @@ func _on_molotov_impact(proj: Node2D, impact_pos: Vector2) -> void:
 	ft.tween_property(proj, "modulate:a", 0.0, 0.4)
 	ft.tween_callback(proj.queue_free)
 
+func _trigger_phase2_dialogue_then_evolve(hud: Node) -> void:
+	if _awaiting_phase2_dialogue or _is_evolving or _is_evil:
+		return
+	_awaiting_phase2_dialogue = true
+	_is_throwing = false
+	_is_stick_attacking = false
+	_clear_pending_telegraphs()
+	velocity = Vector2.ZERO
+	_play_anim("idle_" + _last_dir)
+	if hud and hud.has_method("start_dialogue") and hud.has_signal("dialogue_finished"):
+		hud.dialogue_finished.connect(func():
+			_awaiting_phase2_dialogue = false
+			if not is_dead:
+				_start_evolution()
+		, CONNECT_ONE_SHOT)
+		var p2_lines: Array[String] = [
+			"Pelaku Pembakar: Sialan... tidak bisa begini terus, kalau tidak aku akan kalah!"
+		]
+		hud.start_dialogue("Pelaku Pembakar", p2_lines)
+	else:
+		_awaiting_phase2_dialogue = false
+		_start_evolution()
+
 func _start_evolution() -> void:
 	if _is_evolving or _is_evil:
 		return
@@ -727,19 +760,22 @@ func _process_evil_aura(delta: float, interval: float) -> void:
 	t.chain().tween_callback(ember.queue_free)
 
 func take_damage(amount: float, knockback_dir: Vector2 = Vector2.ZERO) -> void:
-	if is_dead or _is_evolving:
+	if is_dead or _is_evolving or _awaiting_phase2_dialogue or _awaiting_defeat_dialogue:
+		return
+
+	var h_check = _get_hud()
+	if h_check and "dialogue_modal" in h_check and h_check.dialogue_modal and h_check.dialogue_modal.visible:
 		return
 
 	health = max(0.0, health - amount)
 
-	# Evolusi ke Evil Boss saat darah tersisa <= 25% dari darah awal
+	# Evolusi ke Evil Boss saat darah tersisa <= 25% dari darah awal (dengan dialog fase 2 dulu)
 	if not _is_evil and health <= _base_max_health * 0.25:
 		health = max(1.0, health)
 		health_changed.emit(health, max_health)
-		var h_evo = _get_hud()
-		if h_evo and h_evo.has_method("update_boss_hp"):
-			h_evo.update_boss_hp(health, max_health)
-		_start_evolution()
+		if h_check and h_check.has_method("update_boss_hp"):
+			h_check.update_boss_hp(health, max_health)
+		_trigger_phase2_dialogue_then_evolve(h_check)
 		return
 
 	health_changed.emit(health, max_health)
@@ -756,27 +792,37 @@ func take_damage(amount: float, knockback_dir: Vector2 = Vector2.ZERO) -> void:
 		var tween = create_tween()
 		tween.tween_property(sprite, "modulate", Color.WHITE if (_is_evil or health > max_health * 0.5) else Color(1.0, 0.8, 0.8), 0.2)
 
-	# Panggil minion Slime hanya saat fase normal (<= 70% dan <= 35%)
-	if not _is_evil:
-		if health <= max_health * 0.7 and not _wave1_spawned:
-			_wave1_spawned = true
-			_summon_slime_minions(2)
-		if health <= max_health * 0.35 and not _wave2_spawned:
-			_wave2_spawned = true
-			_summon_slime_minions(2)
-
 	if health <= 0.0:
-		_die()
+		_trigger_defeat_dialogue(hud)
 
-func _summon_slime_minions(count: int = 2) -> void:
-	var slime_scene = load("res://asset/enemy_slime.tscn")
-	if not slime_scene or not get_parent():
+func _trigger_defeat_dialogue(hud: Node) -> void:
+	if _awaiting_defeat_dialogue or is_dead:
 		return
-	var offsets = [Vector2(-26, 10), Vector2(26, 10), Vector2(0, 26), Vector2(0, -24)]
-	for i in range(count):
-		var minion = slime_scene.instantiate()
-		minion.global_position = global_position + offsets[i % offsets.size()]
-		get_parent().add_child(minion)
+	_awaiting_defeat_dialogue = true
+	health = 1.0
+	health_changed.emit(health, max_health)
+	if hud and hud.has_method("update_boss_hp"):
+		hud.update_boss_hp(health, max_health)
+	_is_throwing = false
+	_is_stick_attacking = false
+	_clear_pending_telegraphs()
+	velocity = Vector2.ZERO
+	_play_anim(("idle_evil_" if _is_evil else "idle_") + _last_dir)
+	if hud and hud.has_method("start_dialogue") and hud.has_signal("dialogue_finished"):
+		hud.dialogue_finished.connect(func():
+			_awaiting_defeat_dialogue = false
+			health = 0.0
+			if not is_dead:
+				_die()
+		, CONNECT_ONE_SHOT)
+		var defeat_lines: Array[String] = [
+			"Pelaku Pembakar: Sialan kau! Ini belum selesai, tunggu saja!"
+		]
+		hud.start_dialogue("Pelaku Pembakar", defeat_lines)
+	else:
+		_awaiting_defeat_dialogue = false
+		health = 0.0
+		_die()
 
 func _die() -> void:
 	is_dead = true
@@ -789,6 +835,8 @@ func _die() -> void:
 	var hud = _get_hud()
 	if hud and hud.has_method("on_boss_defeated"):
 		hud.on_boss_defeated(_get_display_name())
+	if hud and hud.has_method("on_arsonist_defeated"):
+		hud.on_arsonist_defeated()
 
 	_spawn_drop_item("potion_red", Vector2(-20, 0))
 	_spawn_drop_item("potion_red", Vector2(20, 0))

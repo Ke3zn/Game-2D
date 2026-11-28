@@ -28,7 +28,6 @@ signal dialogue_finished
 
 @onready var joystick_base: Panel = %JoystickBase
 @onready var joystick_knob: Panel = %JoystickKnob
-@onready var controls_guide: PanelContainer = %ControlsGuide
 @onready var guide_toggle_btn: Button = %GuideToggleBtn
 @onready var guide_content: VBoxContainer = %GuideContent
 
@@ -72,20 +71,25 @@ var quest_target_count: int = 2
 
 var current_dialogue_lines: Array[String] = []
 var current_dialogue_idx: int = 0
-var inventory_items: Dictionary = {
-	1: {"id": "pentungan", "name": "Pentungan Kayu", "desc": "Senjata pemukul dasar untuk perlindungan diri. Mengkonsumsi 8 energi saat diayunkan. (Terpasang di Slot 2 Hotbar)", "icon": null}
-}
+var _default_dialogue_speaker: String = ""
+var _dialogue_typing_tween: Tween = null
+var _is_typing_dialogue: bool = false
+var _sfx_talk: AudioStreamPlayer = null
+const SFX_TALK_PATH := "res://asset/music/sfx/talkingsynth.mp3"
+var inventory_items: Dictionary = {}
 
 var slots: Array[PanelContainer] = []
 var item_icons: Array[TextureRect] = []
 
 var blood_tween: Tween
 var energy_tween: Tween
-var current_active_slot: int = 1
-var hotbar_equips: Array[String] = ["hand", "pentungan", ""]
+var current_active_slot: int = 0
+var hotbar_equips: Array[String] = ["hand", "", ""]
 var _selected_inv_slot: int = -1
 var _equip_btn_row: HBoxContainer = null
+var _drink_btn: Button = null
 var coin_count: int = 0
+var _obj_arrow_layer: Control = null
 
 func _ready() -> void:
 	add_to_group("hud")
@@ -117,9 +121,14 @@ func _ready() -> void:
 		quest_status = str(get_tree().get_meta("quest_status"))
 	if get_tree().has_meta("quest_current_count"):
 		quest_current_count = int(get_tree().get_meta("quest_current_count"))
+	if get_tree().has_meta("quest_target_count"):
+		quest_target_count = int(get_tree().get_meta("quest_target_count"))
 	var has_apar: bool = get_tree().get_meta("has_apar", false)
+	var has_pentungan: bool = get_tree().get_meta("has_pentungan", false)
 
-	# Slot 1 (index 0) selalu Tangan Kosong; APAR masuk ke Slot 3 jika sudah didapat dari Kakek
+	# Slot 1 (index 0) selalu Tangan Kosong; Pentungan (Slot 2) & APAR (Slot 3) didapat setelah bicara dengan Kakek
+	if has_pentungan:
+		_register_pentungan_item()
 	if has_apar:
 		_register_apar_item()
 
@@ -128,9 +137,6 @@ func _ready() -> void:
 		var img_tas = Image.load_from_file("res://asset/tools/tas.png")
 		if img_tas and tas_icon:
 			tas_icon.texture = ImageTexture.create_from_image(img_tas)
-
-	if item_icon_1 and item_icon_1.texture and inventory_items.has(1):
-		inventory_items[1]["icon"] = item_icon_1.texture
 
 	# Hubungkan event klik mouse pada setiap slot hotbar
 	for i in range(slots.size()):
@@ -151,9 +157,11 @@ func _ready() -> void:
 	# Inisialisasi slot grid tas
 	_setup_inventory_grid()
 
-	# Setup Analog Virtual Joystick & Panduan Kontrol
+	# Setup Analog Virtual Joystick, Panduan Kontrol, Panah Objektif & Suara Dialog
 	_setup_joystick()
 	_setup_controls_guide()
+	_setup_objective_arrow()
+	_setup_talk_sfx()
 
 	# Hubungkan tombol next dialog
 	if dialogue_next_btn:
@@ -213,11 +221,14 @@ func _on_active_slot_changed(slot_idx: int) -> void:
 
 func _on_slot_gui_input(event: InputEvent, slot_index: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var was_same := (current_active_slot == slot_index)
 		var player = get_tree().get_first_node_in_group("player")
 		if player and player.has_method("set_active_slot"):
 			player.set_active_slot(slot_index)
 		else:
 			set_active_slot(slot_index)
+		if was_same and slot_index >= 0 and slot_index < hotbar_equips.size() and hotbar_equips[slot_index] == "potion_red":
+			consume_potion_from_hotbar()
 
 func set_active_slot(index: int) -> void:
 	current_active_slot = clampi(index, 0, 2)
@@ -231,10 +242,6 @@ func set_active_slot(index: int) -> void:
 		else:
 			if slot_normal_style:
 				slot.add_theme_stylebox_override("panel", slot_normal_style)
-
-func set_slot_icon(index: int, texture: Texture2D) -> void:
-	if index >= 0 and index < item_icons.size() and item_icons[index]:
-		item_icons[index].texture = texture
 
 func set_blood(current: float, max_val: float, animate: bool = true) -> void:
 	if not blood_bar:
@@ -279,6 +286,287 @@ func _process(delta: float) -> void:
 		var k_vector = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 		var target_pos = _joystick_center - _knob_half_size + (k_vector * 32.0)
 		joystick_knob.position = joystick_knob.position.lerp(target_pos, min(1.0, 18.0 * delta))
+	if _obj_arrow_layer:
+		_obj_arrow_layer.queue_redraw()
+	if quest_status == "IN_PROGRESS":
+		_check_fire_area_trigger()
+	elif quest_status == "FIND_ARSONIST":
+		_check_arsonist_encounter_trigger()
+	elif quest_status == "QUEST2_GO_FOREST":
+		_check_forest_arrival_trigger()
+	elif quest_status == "QUEST2_EXPLORE_FOREST":
+		_check_forest_monster_sight_trigger()
+
+func _setup_objective_arrow() -> void:
+	var ctrl := get_node_or_null("Control")
+	if not ctrl or _obj_arrow_layer:
+		return
+	_obj_arrow_layer = Control.new()
+	_obj_arrow_layer.name = "ObjectiveArrowLayer"
+	_obj_arrow_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_obj_arrow_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ctrl.add_child(_obj_arrow_layer)
+	ctrl.move_child(_obj_arrow_layer, 0)
+	_obj_arrow_layer.draw.connect(_on_draw_objective_arrow)
+
+func _get_kakek_node() -> Node2D:
+	var kakek := get_tree().get_first_node_in_group("npc") as Node2D
+	if kakek and is_instance_valid(kakek):
+		return kakek
+	var cur := get_tree().current_scene
+	if cur:
+		return cur.get_node_or_null("NPC_Kakek") as Node2D
+	return null
+
+func _get_boss_location_node() -> Node2D:
+	var cur := get_tree().current_scene
+	if cur:
+		var bn := cur.get_node_or_null("BossNormal") as Node2D
+		if bn and is_instance_valid(bn) and not ("is_dead" in bn and bn.is_dead):
+			return bn
+	for b in get_tree().get_nodes_in_group("boss"):
+		if is_instance_valid(b) and b is Node2D and not ("is_dead" in b and b.is_dead):
+			return b as Node2D
+	return null
+
+func _get_nearest_burning_tree() -> Node2D:
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	var best: Node2D = null
+	var best_d := INF
+	for t in get_tree().get_nodes_in_group("burning_tree"):
+		if not is_instance_valid(t) or not (t is Node2D):
+			continue
+		if t.has_method("is_extinguished") and t.is_extinguished():
+			continue
+		var d := player.global_position.distance_to((t as Node2D).global_position) if player else 0.0
+		if d < best_d:
+			best_d = d
+			best = t as Node2D
+	return best
+
+func _check_fire_area_trigger() -> void:
+	if dialogue_modal and dialogue_modal.visible:
+		return
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	if not player or not is_instance_valid(player):
+		return
+	var near_tree := _get_nearest_burning_tree()
+	if near_tree and player.global_position.distance_to(near_tree.global_position) <= 165.0:
+		quest_status = "TRIGGERING_FIRE_DIALOGUE"
+		var on_done := func() -> void:
+			quest_status = "EXTINGUISH_TREES"
+			get_tree().set_meta("quest_status", quest_status)
+			_update_quest_ui()
+		dialogue_finished.connect(on_done, CONNECT_ONE_SHOT)
+		start_dialogue("Rojali", ["\"Ya ampun, kenapa bisa pohon ini kebakaran?!\""])
+
+const EXTINGUISH_TREE_GOAL: int = 10
+
+func _get_extinguish_progress() -> Vector2i:
+	var trees := get_tree().get_nodes_in_group("burning_tree")
+	var total_t := trees.size()
+	var done_t := 0
+	for t in trees:
+		if is_instance_valid(t) and t.has_method("is_extinguished") and t.is_extinguished():
+			done_t += 1
+	var target_t := mini(EXTINGUISH_TREE_GOAL, total_t)
+	return Vector2i(mini(done_t, target_t), target_t)
+
+func _get_remaining_fire_progress() -> Vector2i:
+	var trees := get_tree().get_nodes_in_group("burning_tree")
+	var total_t := trees.size()
+	var done_t := 0
+	for t in trees:
+		if is_instance_valid(t) and t.has_method("is_extinguished") and t.is_extinguished():
+			done_t += 1
+	var base_done := int(get_tree().get_meta("remaining_fire_base", 0))
+	var target_rem := int(get_tree().get_meta("remaining_fire_target", 8))
+	var done_rem := clampi(done_t - base_done, 0, target_rem)
+	if done_t >= total_t and total_t > 0:
+		done_rem = target_rem
+	return Vector2i(done_rem, target_rem)
+
+func on_burning_tree_extinguished() -> void:
+	if quest_status == "EXTINGUISH_TREES":
+		_update_quest_ui()
+		var prog := _get_extinguish_progress()
+		if prog.y > 0 and prog.x >= prog.y:
+			quest_status = "TRIGGERING_ARSONIST_DIALOGUE"
+			var on_done := func() -> void:
+				quest_status = "FIND_ARSONIST"
+				get_tree().set_meta("quest_status", quest_status)
+				_update_quest_ui()
+			dialogue_finished.connect(on_done, CONNECT_ONE_SHOT)
+			start_dialogue("Rojali", ["\"Siapa yang melakukan pembakaran ini?!\""])
+	elif quest_status == "EXTINGUISH_REMAINING":
+		_update_quest_ui()
+		var rem := _get_remaining_fire_progress()
+		if rem.y <= 0 or rem.x >= rem.y or _get_nearest_burning_tree() == null:
+			quest_status = "READY_TO_TURN_IN"
+			get_tree().set_meta("quest_status", quest_status)
+			_update_quest_ui()
+
+func _is_target_visible_and_close(player: Node2D, target: Node2D, max_dist: float) -> bool:
+	var diff := target.global_position - player.global_position
+	return diff.length() <= max_dist and absf(diff.x) <= 95.0 and absf(diff.y) <= 60.0
+
+func _check_arsonist_encounter_trigger() -> void:
+	if dialogue_modal and dialogue_modal.visible:
+		return
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	var boss := _get_boss_location_node()
+	if not player or not is_instance_valid(player) or not boss or not is_instance_valid(boss):
+		return
+	if _is_target_visible_and_close(player, boss, 85.0):
+		quest_status = "TRIGGERING_BOSS_INTRO"
+		var on_done := func() -> void:
+			quest_status = "DEFEAT_ARSONIST"
+			get_tree().set_meta("quest_status", quest_status)
+			_update_quest_ui()
+		dialogue_finished.connect(on_done, CONNECT_ONE_SHOT)
+		start_dialogue("Rojali", [
+			"Rojali: Jadi kamu yang melakukan pembakaran ini?",
+			"Pelaku Pembakar: Iya, memang kenapa? Hutan ini sengaja saya bakar agar saya bisa membangun lahan yang ingin saya bangun.",
+			"Rojali: Sialan kau!"
+		])
+
+func on_arsonist_defeated() -> void:
+	if quest_status == "DEFEAT_ARSONIST" or quest_status == "FIND_ARSONIST":
+		var trees := get_tree().get_nodes_in_group("burning_tree")
+		var total_t := trees.size()
+		var done_t := 0
+		for t in trees:
+			if is_instance_valid(t) and t.has_method("is_extinguished") and t.is_extinguished():
+				done_t += 1
+		var remaining := maxi(0, total_t - done_t)
+		if remaining > 0:
+			get_tree().set_meta("remaining_fire_base", done_t)
+			get_tree().set_meta("remaining_fire_target", mini(8, remaining))
+			quest_status = "EXTINGUISH_REMAINING"
+		else:
+			quest_status = "READY_TO_TURN_IN"
+		get_tree().set_meta("quest_status", quest_status)
+		_update_quest_ui()
+
+func _check_forest_arrival_trigger() -> void:
+	if dialogue_modal and dialogue_modal.visible:
+		return
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	if not player or not is_instance_valid(player):
+		return
+	# Area Forest berada di timur laut (kanan atas)
+	if player.global_position.x >= 870.0 and player.global_position.y <= 360.0:
+		quest_status = "TRIGGERING_Q2_ARRIVAL"
+		var on_done := func() -> void:
+			quest_status = "QUEST2_EXPLORE_FOREST"
+			get_tree().set_meta("quest_status", quest_status)
+			_update_quest_ui()
+		dialogue_finished.connect(on_done, CONNECT_ONE_SHOT)
+		start_dialogue("Rojali", ["Rojali: \"Monster apa yang muncul di daerah ini?\""])
+
+func _check_forest_monster_sight_trigger() -> void:
+	if dialogue_modal and dialogue_modal.visible:
+		return
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	var monster := _get_nearest_forest_slime(true)
+	if not player or not is_instance_valid(player) or not monster or not is_instance_valid(monster):
+		return
+	if _is_target_visible_and_close(player, monster, 80.0):
+		quest_status = "TRIGGERING_Q2_SIGHT"
+		var on_done := func() -> void:
+			_begin_quest2_slime_hunt()
+		dialogue_finished.connect(on_done, CONNECT_ONE_SHOT)
+		start_dialogue("Rojali", ["Rojali: \"Wah ternyata slime monsternya, aku harus segera membasminya!\""])
+
+func _begin_quest2_slime_hunt() -> void:
+	quest_status = "QUEST2_SLIME"
+	var alive_slimes := 0
+	for e in get_tree().get_nodes_in_group("enemy"):
+		if is_instance_valid(e) and not ("is_dead" in e and e.is_dead):
+			if not e.is_in_group("boss_normal"):
+				alive_slimes += 1
+	quest_target_count = maxi(1, alive_slimes)
+	quest_current_count = 0
+	get_tree().set_meta("quest_status", quest_status)
+	get_tree().set_meta("quest_current_count", quest_current_count)
+	get_tree().set_meta("quest_target_count", quest_target_count)
+	_update_quest_ui()
+
+func _get_nearest_forest_slime(include_boss_slime: bool = true) -> Node2D:
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	var best: Node2D = null
+	var best_d := INF
+	for e in get_tree().get_nodes_in_group("enemy"):
+		if not is_instance_valid(e) or not (e is Node2D):
+			continue
+		if e.is_in_group("boss_normal"):
+			continue
+		if not include_boss_slime and e.is_in_group("boss"):
+			continue
+		if "is_dead" in e and e.is_dead:
+			continue
+		var d := player.global_position.distance_to((e as Node2D).global_position) if player else 0.0
+		if d < best_d:
+			best_d = d
+			best = e as Node2D
+	return best
+
+func _on_draw_objective_arrow() -> void:
+	if not _obj_arrow_layer:
+		return
+	if not (quest_status in ["NOT_STARTED", "IN_PROGRESS", "EXTINGUISH_TREES", "FIND_ARSONIST", "DEFEAT_ARSONIST", "EXTINGUISH_REMAINING", "READY_TO_TURN_IN", "COMPLETED", "QUEST2_GO_FOREST", "QUEST2_EXPLORE_FOREST", "QUEST2_SLIME", "QUEST2_READY"]):
+		return
+	if dialogue_modal and dialogue_modal.visible:
+		return
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	var target: Node2D = null
+	var target_pos := Vector2.ZERO
+	var has_target := false
+	if quest_status == "IN_PROGRESS" or quest_status == "FIND_ARSONIST" or quest_status == "DEFEAT_ARSONIST":
+		target = _get_boss_location_node()
+	elif quest_status == "EXTINGUISH_TREES" or quest_status == "EXTINGUISH_REMAINING":
+		target = _get_nearest_burning_tree()
+	elif quest_status == "QUEST2_GO_FOREST":
+		var cur := get_tree().current_scene
+		if cur and cur.has_node("Tanah"):
+			target_pos = Vector2(960.0, 260.0)
+			has_target = true
+	elif quest_status == "QUEST2_EXPLORE_FOREST" or quest_status == "QUEST2_SLIME":
+		target = _get_nearest_forest_slime(true)
+	else:
+		target = _get_kakek_node()
+	if target and is_instance_valid(target):
+		target_pos = target.global_position
+		has_target = true
+	if not player or not is_instance_valid(player) or not has_target:
+		return
+	var diff := target_pos - player.global_position
+	if diff.length() <= 45.0:
+		return
+	var xform := get_viewport().get_canvas_transform()
+	var p_screen: Vector2 = xform * player.global_position
+	var t_screen: Vector2 = xform * target_pos
+	var dir := (t_screen - p_screen).normalized()
+	if dir == Vector2.ZERO:
+		return
+
+	var pulse := 1.0 + 0.08 * sin(Time.get_ticks_msec() * 0.008)
+	var arrow_pos := p_screen + dir * (48.0 * pulse)
+	var vp_size := get_viewport().get_visible_rect().size
+	arrow_pos.x = clampf(arrow_pos.x, 32.0, vp_size.x - 32.0)
+	arrow_pos.y = clampf(arrow_pos.y, 32.0, vp_size.y - 32.0)
+
+	var perp := Vector2(-dir.y, dir.x)
+	var tip := arrow_pos + dir * 10.0
+	var left := arrow_pos - dir * 6.0 + perp * 7.0
+	var right := arrow_pos - dir * 6.0 - perp * 7.0
+	var col := Color(1.0, 0.86, 0.2, 0.95)
+	if quest_status == "IN_PROGRESS":
+		col = Color(1.0, 0.52, 0.16, 0.95)
+	elif quest_status == "READY_TO_TURN_IN" or quest_status == "QUEST2_READY":
+		col = Color(0.35, 0.95, 0.5, 0.95)
+	_obj_arrow_layer.draw_colored_polygon(PackedVector2Array([tip + dir * 2.0, left + perp * 2.0 - dir * 2.0, right - perp * 2.0 - dir * 2.0]), Color(0.1, 0.06, 0.02, 0.9))
+	_obj_arrow_layer.draw_colored_polygon(PackedVector2Array([tip, left, right]), col)
 
 func _setup_joystick() -> void:
 	if joystick_base:
@@ -292,6 +580,12 @@ func _toggle_controls_guide() -> void:
 	if guide_content and guide_toggle_btn:
 		guide_content.visible = not guide_content.visible
 		guide_toggle_btn.text = "−" if guide_content.visible else "+"
+		var sep := guide_content.get_parent().get_node_or_null("HSeparator") as Control
+		if sep:
+			sep.visible = guide_content.visible
+		var cg := get_node_or_null("%ControlsGuide") as Control
+		if cg:
+			cg.size.y = 0
 
 func _on_joystick_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -391,7 +685,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		# Jika dialog sedang aktif, utamakan kontrol dialog
 		if dialogue_modal and dialogue_modal.visible:
-			if event.keycode == KEY_E or event.keycode == KEY_F or event.keycode == KEY_SPACE:
+			if event.keycode == KEY_E or event.keycode == KEY_SPACE:
 				advance_dialogue()
 				get_viewport().set_input_as_handled()
 				return
@@ -401,32 +695,109 @@ func _unhandled_input(event: InputEvent) -> void:
 				return
 
 		# Kontrol tas inventory
-		if event.keycode == KEY_B or event.keycode == KEY_I or event.keycode == KEY_TAB:
+		if event.keycode == KEY_B:
 			toggle_inventory()
 			get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_ESCAPE and inventory_modal and inventory_modal.visible:
 			close_inventory()
 			get_viewport().set_input_as_handled()
 
+func _setup_talk_sfx() -> void:
+	if _sfx_talk:
+		return
+	_sfx_talk = AudioStreamPlayer.new()
+	_sfx_talk.volume_db = -8.0
+	if ResourceLoader.exists(SFX_TALK_PATH):
+		_sfx_talk.stream = load(SFX_TALK_PATH)
+	elif FileAccess.file_exists(SFX_TALK_PATH):
+		_sfx_talk.stream = AudioStreamMP3.load_from_file(SFX_TALK_PATH)
+	_sfx_talk.finished.connect(func():
+		if _is_typing_dialogue and dialogue_modal and dialogue_modal.visible and _sfx_talk.stream and is_inside_tree():
+			_sfx_talk.play()
+	)
+	add_child(_sfx_talk)
+
+func _start_talk_sfx(speaker_name: String) -> void:
+	if not _sfx_talk or not _sfx_talk.stream:
+		return
+	if speaker_name == "Rojali":
+		_sfx_talk.pitch_scale = 1.06
+	elif speaker_name == "Pelaku Pembakar":
+		_sfx_talk.pitch_scale = 0.86
+	else:
+		_sfx_talk.pitch_scale = 0.94
+	if not _sfx_talk.playing:
+		_sfx_talk.play()
+
+func _stop_talk_sfx() -> void:
+	if _sfx_talk and _sfx_talk.playing:
+		_sfx_talk.stop()
+
+func _finish_dialogue_typing() -> void:
+	if _dialogue_typing_tween and _dialogue_typing_tween.is_valid():
+		_dialogue_typing_tween.kill()
+	_dialogue_typing_tween = null
+	_is_typing_dialogue = false
+	_stop_talk_sfx()
+	if dialogue_text:
+		dialogue_text.visible_characters = -1
+
+func _apply_dialogue_line(raw_line: String) -> void:
+	var shown_speaker := _default_dialogue_speaker
+	var shown_text := raw_line
+	if raw_line.begins_with("Rojali:"):
+		shown_speaker = "Rojali"
+		shown_text = raw_line.substr(7).strip_edges()
+	elif raw_line.begins_with("Kakek:"):
+		shown_speaker = "Kakek Warga Desa"
+		shown_text = raw_line.substr(6).strip_edges()
+	elif raw_line.begins_with("Pelaku Pembakar:"):
+		shown_speaker = "Pelaku Pembakar"
+		shown_text = raw_line.substr(16).strip_edges()
+	if speaker_label:
+		speaker_label.text = shown_speaker
+	if dialogue_text:
+		if _dialogue_typing_tween and _dialogue_typing_tween.is_valid():
+			_dialogue_typing_tween.kill()
+		dialogue_text.text = shown_text
+		var total_chars := shown_text.length()
+		if total_chars > 0:
+			dialogue_text.visible_characters = 0
+			_is_typing_dialogue = true
+			_start_talk_sfx(shown_speaker)
+			var duration := clampf(float(total_chars) * 0.025, 0.35, 2.8)
+			_dialogue_typing_tween = create_tween()
+			_dialogue_typing_tween.tween_property(dialogue_text, "visible_characters", total_chars, duration)
+			_dialogue_typing_tween.tween_callback(func():
+				_is_typing_dialogue = false
+				_stop_talk_sfx()
+				if dialogue_text:
+					dialogue_text.visible_characters = -1
+			)
+		else:
+			dialogue_text.visible_characters = -1
+			_is_typing_dialogue = false
+			_stop_talk_sfx()
+
 func start_dialogue(speaker: String, lines: Array[String]) -> void:
 	if lines.is_empty():
 		return
+	_default_dialogue_speaker = speaker
 	current_dialogue_lines = lines
 	current_dialogue_idx = 0
-	if speaker_label:
-		speaker_label.text = speaker
-	if dialogue_text:
-		dialogue_text.text = current_dialogue_lines[0]
+	_apply_dialogue_line(current_dialogue_lines[0])
 	if dialogue_next_btn:
 		dialogue_next_btn.text = "Selesai [ E ] ✓" if current_dialogue_lines.size() == 1 else "Lanjut [ E ] ▶"
 	if dialogue_modal:
 		dialogue_modal.visible = true
 
 func advance_dialogue() -> void:
+	if _is_typing_dialogue:
+		_finish_dialogue_typing()
+		return
 	current_dialogue_idx += 1
 	if current_dialogue_idx < current_dialogue_lines.size():
-		if dialogue_text:
-			dialogue_text.text = current_dialogue_lines[current_dialogue_idx]
+		_apply_dialogue_line(current_dialogue_lines[current_dialogue_idx])
 		if dialogue_next_btn:
 			dialogue_next_btn.text = "Selesai [ E ] ✓" if current_dialogue_idx == current_dialogue_lines.size() - 1 else "Lanjut [ E ] ▶"
 	else:
@@ -434,10 +805,37 @@ func advance_dialogue() -> void:
 		dialogue_finished.emit()
 
 func close_dialogue() -> void:
+	_finish_dialogue_typing()
 	if dialogue_modal:
 		dialogue_modal.visible = false
 	current_dialogue_lines.clear()
 	current_dialogue_idx = 0
+
+func _register_pentungan_item() -> void:
+	var tex: Texture2D = null
+	if ResourceLoader.exists("res://asset/tools/pentungan.png"):
+		tex = load("res://asset/tools/pentungan.png")
+	elif FileAccess.file_exists("res://asset/tools/pentungan.png"):
+		var img = Image.load_from_file("res://asset/tools/pentungan.png")
+		if img:
+			tex = ImageTexture.create_from_image(img)
+	inventory_items[1] = {
+		"id": "pentungan",
+		"name": "Pentungan Kayu",
+		"desc": "Senjata pemukul dasar pemberian Kakek untuk berjaga-jaga. Mengkonsumsi 8 energi saat diayunkan.",
+		"icon": tex
+	}
+	if hotbar_equips[1] != "pentungan" and hotbar_equips[2] != "pentungan":
+		if hotbar_equips[1] == "":
+			hotbar_equips[1] = "pentungan"
+		elif hotbar_equips[2] == "":
+			hotbar_equips[2] = "pentungan"
+		else:
+			hotbar_equips[1] = "pentungan"
+		get_tree().set_meta("hotbar_equips", hotbar_equips.duplicate())
+	get_tree().set_meta("saved_inventory_items", inventory_items.duplicate(true))
+	_update_inv_slot_display(1)
+	_refresh_hotbar_icons()
 
 func _register_apar_item() -> void:
 	var tex: Texture2D = null
@@ -509,6 +907,13 @@ func equip_item_to_hotbar(target_slot: int, item_id: String) -> void:
 	if player and player.has_method("set_active_slot"):
 		player.set_active_slot(target_slot)
 
+func unlock_pentungan() -> void:
+	get_tree().set_meta("has_pentungan", true)
+	_register_pentungan_item()
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_method("grant_pentungan"):
+		player.grant_pentungan()
+
 func unlock_apar() -> void:
 	get_tree().set_meta("has_apar", true)
 	_register_apar_item()
@@ -524,13 +929,21 @@ func start_quest(target_count: int = 2) -> void:
 	get_tree().set_meta("quest_current_count", quest_current_count)
 	_update_quest_ui()
 
+func start_quest_2() -> void:
+	quest_status = "QUEST2_GO_FOREST"
+	quest_current_count = 0
+	get_tree().set_meta("quest_status", quest_status)
+	get_tree().set_meta("quest_current_count", quest_current_count)
+	_update_quest_ui()
+	_show_quest_notif("📜 Quest 2 Baru: Pergi ke Forest!", Color(0.85, 0.55, 0.12, 1.0))
+
 func add_quest_progress(target_type: String, amount: int = 1) -> void:
-	if quest_status != "IN_PROGRESS":
+	if quest_status != "IN_PROGRESS" and quest_status != "QUEST2_SLIME":
 		return
 	if target_type == "slime":
 		quest_current_count = min(quest_target_count, quest_current_count + amount)
-		if quest_current_count >= quest_target_count:
-			quest_status = "READY_TO_TURN_IN"
+		if quest_status == "QUEST2_SLIME" and quest_current_count >= quest_target_count:
+			quest_status = "QUEST2_READY"
 		get_tree().set_meta("quest_status", quest_status)
 		get_tree().set_meta("quest_current_count", quest_current_count)
 		_update_quest_ui()
@@ -540,35 +953,126 @@ func complete_quest() -> void:
 		return
 	quest_status = "COMPLETED"
 	get_tree().set_meta("quest_status", quest_status)
-	add_coins(100)
+	add_coins(10)
 	_update_quest_ui()
+	_show_quest_notif("✓ Misi Telah Selesai!", Color(0.2, 0.65, 0.3, 1.0))
+
+func complete_quest_2() -> void:
+	if quest_status != "QUEST2_READY":
+		return
+	quest_status = "QUEST2_COMPLETED"
+	get_tree().set_meta("quest_status", quest_status)
+	add_coins(25)
+	_update_quest_ui()
+	_show_quest_notif("✓ Quest 2 Telah Selesai!", Color(0.2, 0.65, 0.3, 1.0))
+
+func _show_quest_notif(msg: String, border_col: Color = Color(0.2, 0.65, 0.3, 1.0)) -> void:
+	var ctrl := get_node_or_null("Control")
+	if not ctrl:
+		return
+	var prev := ctrl.get_node_or_null("QuestCompleteNotif")
+	if prev:
+		prev.queue_free()
+	var panel := PanelContainer.new()
+	panel.name = "QuestCompleteNotif"
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.96, 0.92, 0.82, 0.96)
+	style.border_width_left = 3
+	style.border_width_top = 3
+	style.border_width_right = 3
+	style.border_width_bottom = 3
+	style.border_color = border_col
+	style.corner_radius_top_left = 10
+	style.corner_radius_top_right = 10
+	style.corner_radius_bottom_right = 10
+	style.corner_radius_bottom_left = 10
+	style.content_margin_left = 24
+	style.content_margin_top = 12
+	style.content_margin_right = 24
+	style.content_margin_bottom = 12
+	panel.add_theme_stylebox_override("panel", style)
+
+	var lbl := Label.new()
+	lbl.text = msg
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.add_theme_font_size_override("font_size", 20)
+	lbl.add_theme_color_override("font_color", Color(0.18, 0.12, 0.06, 1.0))
+	panel.add_child(lbl)
+
+	panel.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	panel.offset_top = 72.0
+	panel.offset_left = -180.0
+	panel.offset_right = 180.0
+	panel.modulate.a = 0.0
+	ctrl.add_child(panel)
+
+	var t := panel.create_tween()
+	t.tween_property(panel, "modulate:a", 1.0, 0.3)
+	t.tween_interval(3.0)
+	t.tween_property(panel, "modulate:a", 0.0, 0.45)
+	t.tween_callback(panel.queue_free)
 
 func _update_quest_ui() -> void:
 	if not quest_tracker:
 		return
-	if quest_status == "NOT_STARTED":
-		quest_tracker.visible = false
-		return
-
 	quest_tracker.visible = true
-	if quest_status == "IN_PROGRESS":
-		if quest_title_label: quest_title_label.text = "📜 Misi Kakek: Padamkan Api & Basmi Slime"
+	if quest_reward_label:
+		quest_reward_label.visible = false
+	if quest_status == "NOT_STARTED":
+		if quest_title_label: quest_title_label.text = "Temui Kakek"
+		if quest_progress_label: quest_progress_label.visible = false
+	elif quest_status == "IN_PROGRESS":
+		if quest_title_label: quest_title_label.text = "Misi Kakek: Lihat kelokasi tempat kebakaran tersebut"
+		if quest_progress_label: quest_progress_label.visible = false
+	elif quest_status == "EXTINGUISH_TREES":
+		if quest_title_label: quest_title_label.text = "Padamkan api dari pohon"
 		if quest_progress_label:
-			quest_progress_label.text = "• APAR [1] Diterima | Kalahkan Slime: %d / %d" % [quest_current_count, quest_target_count]
+			var prog := _get_extinguish_progress()
+			quest_progress_label.visible = prog.y > 0
+			quest_progress_label.text = "• Pohon padam: %d / %d" % [prog.x, prog.y]
 			quest_progress_label.add_theme_color_override("font_color", Color(0.3, 0.22, 0.15, 1.0))
-		if quest_reward_label: quest_reward_label.text = "Hadiah: 100 Koin Emas 🪙"
+	elif quest_status == "FIND_ARSONIST":
+		if quest_title_label: quest_title_label.text = "Cari orang yang melakukan pembakaran hutan ini"
+		if quest_progress_label: quest_progress_label.visible = false
+	elif quest_status == "DEFEAT_ARSONIST":
+		if quest_title_label: quest_title_label.text = "Kalahkan pelaku pembakar hutan"
+		if quest_progress_label: quest_progress_label.visible = false
+	elif quest_status == "EXTINGUISH_REMAINING":
+		if quest_title_label: quest_title_label.text = "Padamkan api yang masih menyala"
+		if quest_progress_label:
+			var rem := _get_remaining_fire_progress()
+			quest_progress_label.visible = rem.y > 0
+			quest_progress_label.text = "• Pohon padam: %d / %d" % [rem.x, rem.y]
+			quest_progress_label.add_theme_color_override("font_color", Color(0.3, 0.22, 0.15, 1.0))
 	elif quest_status == "READY_TO_TURN_IN":
-		if quest_title_label: quest_title_label.text = "📜 Misi Selesai! (Lapor ke Kakek)"
-		if quest_progress_label:
-			quest_progress_label.text = "• Slime Terbasmi: %d / %d ✓" % [quest_current_count, quest_target_count]
-			quest_progress_label.add_theme_color_override("font_color", Color(0.15, 0.55, 0.2, 1.0))
-		if quest_reward_label: quest_reward_label.text = "Bicaralah pada Kakek untuk hadiah!"
+		if quest_title_label: quest_title_label.text = "Misi Selesai! (Kembali ke Kakek)"
+		if quest_progress_label: quest_progress_label.visible = false
 	elif quest_status == "COMPLETED":
-		if quest_title_label: quest_title_label.text = "✓ Misi Desa Selesai"
+		if quest_title_label: quest_title_label.text = "Temui Kakek (Quest 2)"
+		if quest_progress_label: quest_progress_label.visible = false
+	elif quest_status == "QUEST2_GO_FOREST":
+		if quest_title_label: quest_title_label.text = "Pergi ke Forest"
+		if quest_progress_label: quest_progress_label.visible = false
+	elif quest_status == "QUEST2_EXPLORE_FOREST":
+		if quest_title_label: quest_title_label.text = "Jelajahi Forest"
+		if quest_progress_label: quest_progress_label.visible = false
+	elif quest_status == "QUEST2_SLIME":
+		if quest_title_label: quest_title_label.text = "Bunuh slime-slime ini"
 		if quest_progress_label:
-			quest_progress_label.text = "Desa telah aman dari ancaman Slime!"
+			quest_progress_label.visible = true
+			quest_progress_label.text = "• Slime terbasmi: %d / %d" % [quest_current_count, quest_target_count]
+			quest_progress_label.add_theme_color_override("font_color", Color(0.3, 0.22, 0.15, 1.0))
+	elif quest_status == "QUEST2_READY":
+		if quest_title_label: quest_title_label.text = "Quest 2 Selesai! (Kembali ke Kakek)"
+		if quest_progress_label: quest_progress_label.visible = false
+	elif quest_status == "QUEST2_COMPLETED":
+		if quest_title_label: quest_title_label.text = "✓ Semua Misi Selesai"
+		if quest_progress_label:
+			quest_progress_label.visible = true
+			quest_progress_label.text = "Desa dan Forest telah aman!"
 			quest_progress_label.add_theme_color_override("font_color", Color(0.2, 0.5, 0.25, 1.0))
-		if quest_reward_label: quest_reward_label.text = "Hadiah 100 Koin Emas telah diterima!"
+	quest_tracker.size.y = 0
 
 func show_boss_bar(title: String, current_hp: float, max_hp: float) -> void:
 	if not boss_bar_container:
@@ -635,9 +1139,7 @@ func _on_respawn_pressed() -> void:
 
 func _on_restart_pressed() -> void:
 	hide_game_over()
-	for k in ["has_apar", "quest_status", "quest_current_count", "saved_coins", "saved_inventory_items"]:
-		if get_tree().has_meta(k):
-			get_tree().remove_meta(k)
+	# Pertahankan progres misi, item, koin, dan pohon padam saat mengulang scene setelah kalah
 	get_tree().reload_current_scene()
 
 func _setup_inventory_grid() -> void:
@@ -795,6 +1297,16 @@ func _ensure_equip_buttons() -> void:
 	var parent_vbox := inv_detail_desc.get_parent()
 	if not parent_vbox:
 		return
+	_drink_btn = Button.new()
+	_drink_btn.text = "Minum (+40 Darah)"
+	_drink_btn.focus_mode = Control.FOCUS_NONE
+	_drink_btn.add_theme_font_size_override("font_size", 13)
+	_drink_btn.visible = false
+	_drink_btn.pressed.connect(func():
+		drink_potion_from_inventory(_selected_inv_slot)
+	)
+	parent_vbox.add_child(_drink_btn)
+
 	_equip_btn_row = HBoxContainer.new()
 	_equip_btn_row.add_theme_constant_override("separation", 8)
 	parent_vbox.add_child(_equip_btn_row)
@@ -810,11 +1322,47 @@ func _ensure_equip_buttons() -> void:
 		)
 		_equip_btn_row.add_child(btn)
 
+func drink_potion_from_inventory(slot_idx: int) -> bool:
+	if not inventory_items.has(slot_idx):
+		return false
+	var it = inventory_items[slot_idx]
+	if str(it.get("id", "")) != "potion_red":
+		return false
+	var player = get_tree().get_first_node_in_group("player")
+	if not player or not player.has_method("drink_potion"):
+		return false
+	if not player.drink_potion(40.0):
+		if inv_detail_desc:
+			inv_detail_desc.text = it.get("desc", "") + "\n(Darah Anda sudah penuh %d/%d!)" % [ceil(player.current_blood), ceil(player.max_blood)]
+		return false
+
+	it["count"] = int(it.get("count", 1)) - 1
+	if it["count"] <= 0:
+		inventory_items.erase(slot_idx)
+		for i in [1, 2]:
+			if hotbar_equips[i] == "potion_red":
+				hotbar_equips[i] = ""
+		get_tree().set_meta("hotbar_equips", hotbar_equips.duplicate())
+		_refresh_hotbar_icons()
+	get_tree().set_meta("saved_inventory_items", inventory_items.duplicate(true))
+	_update_inv_slot_display(slot_idx)
+	if inventory_modal and inventory_modal.visible:
+		close_inventory()
+	return true
+
+func consume_potion_from_hotbar() -> bool:
+	for k in inventory_items.keys():
+		var it = inventory_items[k]
+		if it is Dictionary and str(it.get("id", "")) == "potion_red":
+			return drink_potion_from_inventory(k)
+	return false
+
 func _select_inv_item(slot_idx: int) -> void:
 	_selected_inv_slot = slot_idx
 	_ensure_equip_buttons()
 	if not inventory_items.has(slot_idx):
 		if _equip_btn_row: _equip_btn_row.visible = false
+		if _drink_btn: _drink_btn.visible = false
 		if inv_detail_title: inv_detail_title.text = "Slot Kosong (%d)" % (slot_idx + 1)
 		if inv_detail_desc: inv_detail_desc.text = "Ruang penyimpanan tas belum terisi."
 		if inv_detail_icon: inv_detail_icon.texture = null
@@ -824,6 +1372,8 @@ func _select_inv_item(slot_idx: int) -> void:
 	var item_id: String = str(it.get("id", ""))
 	if _equip_btn_row:
 		_equip_btn_row.visible = (item_id != "coin")
+	if _drink_btn:
+		_drink_btn.visible = (item_id == "potion_red")
 	if inv_detail_title: inv_detail_title.text = it.get("name", "")
 	if inv_detail_icon:
 		inv_detail_icon.texture = _find_item_icon(item_id)
@@ -832,22 +1382,11 @@ func _select_inv_item(slot_idx: int) -> void:
 		if inv_detail_desc: inv_detail_desc.text = it.get("desc", "") + "\n(Pilih 'Pasang Slot 2' atau 'Pasang Slot 3' untuk menukar slot)"
 	elif item_id == "potion_red":
 		var player = get_tree().get_first_node_in_group("player")
-		if player and player.has_method("heal") and player.current_blood < player.max_blood:
-			player.heal(40.0)
-			it["count"] = it.get("count", 1) - 1
-			if inv_detail_desc:
-				inv_detail_desc.text = "Darah berhasil dipulihkan +40! Sisa ramuan di tas: %d botol." % it["count"]
-			if it["count"] <= 0:
-				inventory_items.erase(slot_idx)
-				if slot_idx == 2 and item_icon_2:
-					item_icon_2.texture = null
-			_update_inv_slot_display(slot_idx)
-		else:
-			if inv_detail_desc:
-				if player and player.current_blood >= player.max_blood:
-					inv_detail_desc.text = it.get("desc", "") + "\n(Darah Anda sudah penuh 100/100!)"
-				else:
-					inv_detail_desc.text = it.get("desc", "") + "\n(Klik item ini untuk meminum dan memulihkan 40 Darah)"
+		if inv_detail_desc:
+			if player and player.current_blood >= player.max_blood:
+				inv_detail_desc.text = it.get("desc", "") + "\n(Darah penuh %d/%d. Bisa juga dipasang ke Hotbar Slot 2/3!)" % [ceil(player.current_blood), ceil(player.max_blood)]
+			else:
+				inv_detail_desc.text = it.get("desc", "") + "\n(Tekan 'Minum (+40 Darah)' atau pasang ke Hotbar lalu tekan Serang)"
 	else:
 		if inv_detail_desc:
 			inv_detail_desc.text = it.get("desc", "") + " (Jumlah: %d)" % it.get("count", 1)

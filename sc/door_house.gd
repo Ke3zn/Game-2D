@@ -2,7 +2,7 @@ extends Area2D
 class_name DoorHouse
 
 @export var target_scene: String = "res://asset/interior_house.tscn"
-@export var prompt_text: String = "[E/F] Masuk Rumah"
+@export var prompt_text: String = "[E] Masuk Rumah"
 @export var spawn_meta_key: String = ""
 @export var loading_title: String = ""
 
@@ -21,7 +21,7 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _player_in_range and not _is_transitioning:
-		if event is InputEventKey and event.pressed and (event.keycode == KEY_E or event.keycode == KEY_F or event.keycode == KEY_SPACE):
+		if event is InputEventKey and event.pressed and event.keycode == KEY_E:
 			enter_door()
 
 func _on_body_entered(body: Node2D) -> void:

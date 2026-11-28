@@ -1,6 +1,5 @@
 extends Control
 
-@export var map_radius: float = 62.0
 @export var border_color: Color = Color(0.12, 0.09, 0.06, 1.0)
 @export var border_width: float = 4.0
 
@@ -26,6 +25,7 @@ var _fountains: Array[Vector2] = []
 var _bridges: Array[Vector2] = []
 var _house_door_pos: Vector2 = Vector2(760.0, 580.0)
 var _store_door_pos: Vector2 = Vector2(839.0, 738.0)
+var _kakek_pos: Vector2 = Vector2(694.0, 771.0)
 var _baked: bool = false
 
 func _ready() -> void:
@@ -79,6 +79,7 @@ func _bake_real_map() -> void:
 		_bridges.assign(cache.get("bridges", []))
 		_house_door_pos = cache.get("house_door", _house_door_pos)
 		_store_door_pos = cache.get("store_door", _store_door_pos)
+		_kakek_pos = cache.get("kakek_pos", _kakek_pos)
 		_baked = true
 		return
 
@@ -114,6 +115,9 @@ func _bake_real_map() -> void:
 	var d_store := root_scene.get_node_or_null("Door_WeaponStore") as Node2D
 	if d_store:
 		_store_door_pos = d_store.global_position
+	var kakek_node := root_scene.get_node_or_null("NPC_Kakek") as Node2D
+	if kakek_node:
+		_kakek_pos = kakek_node.global_position
 
 	for ch in root_scene.get_children():
 		if not (ch is Node2D):
@@ -185,7 +189,8 @@ func _bake_real_map() -> void:
 			"fountains": _fountains.duplicate(),
 			"bridges": _bridges.duplicate(),
 			"house_door": _house_door_pos,
-			"store_door": _store_door_pos
+			"store_door": _store_door_pos,
+			"kakek_pos": _kakek_pos
 		})
 
 func _draw_mini_house(pos: Vector2) -> void:
@@ -259,13 +264,25 @@ func _draw() -> void:
 			draw_circle(b_pos, 3.8, Color(0.1, 0.05, 0.05, 0.95))
 			draw_circle(b_pos, 2.6, Color(0.96, 0.26, 0.22, 1.0))
 
-	# 5. Label Wilayah akurat sesuai posisi map
+	# 5. Penanda Kakek (tampil mencolok saat misi belum dimulai atau siap lapor)
+	var q_status := str(get_tree().get_meta("quest_status", "NOT_STARTED"))
+	var kakek_m := _world_to_minimap(_kakek_pos, center, r)
+	var show_kakek_marker := q_status in ["NOT_STARTED", "READY_TO_TURN_IN", "COMPLETED", "QUEST2_READY"]
+	if show_kakek_marker:
+		var k_pulse := 0.9 + 0.2 * sin(Time.get_ticks_msec() * 0.007)
+		draw_circle(kakek_m, 5.2 * k_pulse, Color(0.08, 0.06, 0.02, 0.95))
+		draw_circle(kakek_m, 3.8 * k_pulse, Color(0.22, 0.92, 0.45, 1.0))
+
+	# 6. Label Wilayah akurat sesuai posisi map
 	var font := _ui_font if _ui_font else ThemeDB.fallback_font
 	if font:
 		_draw_outlined_text(font, _world_to_minimap(Vector2(370, 90), center, r), "Boss", 10, Color(1.0, 0.84, 0.78, 1.0))
 		_draw_outlined_text(font, _world_to_minimap(Vector2(1287, 140), center, r), "Forest", 10, Color(0.95, 1.0, 0.90, 1.0))
 		_draw_outlined_text(font, my_house_m + Vector2(0, -8), "Rumah", 8, Color(0.70, 0.92, 1.0, 1.0))
 		_draw_outlined_text(font, store_m + Vector2(0, 11), "Toko", 8, Color(1.0, 0.90, 0.45, 1.0))
+		if show_kakek_marker:
+			var k_tag := "Kakek ?" if (q_status == "READY_TO_TURN_IN" or q_status == "QUEST2_READY") else "Kakek !"
+			_draw_outlined_text(font, kakek_m + Vector2(0, 12), k_tag, 9, Color(0.45, 1.0, 0.62, 1.0))
 
 	# 6. Posisi Player Realtime (jika di dalam rumah/toko, tampilkan titik di bangunan yang dimasuki)
 	if player and is_instance_valid(player):

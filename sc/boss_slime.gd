@@ -365,6 +365,8 @@ func _die() -> void:
 	var hud = _get_hud()
 	if hud and hud.has_method("on_boss_defeated"):
 		hud.on_boss_defeated(boss_name)
+	if hud and hud.has_method("add_quest_progress"):
+		hud.add_quest_progress("slime", 1)
 
 	# Drop Hadiah Legendaris (2 Ramuan Merah + 1 Tumpukan Koin)
 	_spawn_drop_item("potion_red", Vector2(-20, 0))

@@ -17,7 +17,16 @@ func _ready() -> void:
 	if sprite:
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		sprite.animation_finished.connect(_on_animation_finished)
+		var ext_list = get_tree().get_meta("extinguished_trees", [])
+		if ext_list is Array and name in ext_list:
+			fire_level = 0.0
+			current_stage = Stage.STAGE_4_FINAL
+			sprite.play("stage_4_final")
+			return
 		sprite.play("stage_1_burning")
+
+func is_extinguished() -> bool:
+	return current_stage == Stage.STAGE_4_OUT or current_stage == Stage.STAGE_4_FINAL
 
 func _process(delta: float) -> void:
 	if _steam_cooldown > 0.0:
@@ -49,6 +58,14 @@ func apply_apar_spray(spray_delta: float) -> void:
 		current_stage = next_stage
 		_play_stage_anim(current_stage)
 		_spawn_steam_puff(4 if current_stage != Stage.STAGE_4_OUT else 7)
+		if current_stage == Stage.STAGE_4_OUT:
+			var ext_list: Array = get_tree().get_meta("extinguished_trees", []).duplicate()
+			if not (name in ext_list):
+				ext_list.append(name)
+				get_tree().set_meta("extinguished_trees", ext_list)
+			var hud = get_tree().get_first_node_in_group("hud")
+			if hud and hud.has_method("on_burning_tree_extinguished"):
+				hud.on_burning_tree_extinguished()
 
 	if sprite and current_stage != Stage.STAGE_4_OUT:
 		sprite.modulate = Color(0.9, 0.96, 1.0, 1.0)
