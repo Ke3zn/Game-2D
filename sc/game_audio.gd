@@ -6,6 +6,7 @@ const SFX_FIRE_PATH := "res://asset/music/sfx/fire.wav"
 
 const FIRE_HEAR_RADIUS := 185.0
 const FIRE_FULL_VOL_RADIUS := 42.0
+const PROLOGUE_BGM_DB := -12.0
 const QUIET_BGM_DB := -17.0
 const BATTLE_BGM_DB := -15.0
 
@@ -45,6 +46,18 @@ func _make_loop_player(path: String, initial_db: float) -> AudioStreamPlayer:
 	return player_node
 
 func _process(delta: float) -> void:
+	var in_prologue: bool = bool(get_tree().get_meta("prologue_active", false))
+	if in_prologue:
+		_quiet_target_db = PROLOGUE_BGM_DB
+		_battle_target_db = -60.0
+		if _bgm_quiet:
+			_bgm_quiet.volume_db = move_toward(_bgm_quiet.volume_db, _quiet_target_db, delta * 36.0)
+			if not _bgm_quiet.playing and _bgm_quiet.stream:
+				_bgm_quiet.play()
+		if _sfx_fire and _sfx_fire.playing:
+			_sfx_fire.stop()
+		return
+
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if not player or not is_instance_valid(player):
 		return

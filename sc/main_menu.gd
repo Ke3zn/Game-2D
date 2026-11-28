@@ -87,7 +87,34 @@ func _ready() -> void:
 		fullscreen_check.toggled.connect(_on_fullscreen_toggled)
 
 	_spawn_fireflies()
+	resized.connect(_align_menu_buttons)
+	call_deferred("_align_menu_buttons")
 	call_deferred("_update_cursor", 0, false)
+
+func _align_menu_buttons() -> void:
+	var bg := get_node_or_null("MainScreenBg") as TextureRect
+	var vbox := get_node_or_null("MenuVBox") as VBoxContainer
+	if not bg or not bg.texture or not vbox:
+		return
+	var tex_sz := bg.texture.get_size()
+	if tex_sz.x <= 0.0 or tex_sz.y <= 0.0:
+		return
+	var vp_sz := size
+	var sc := maxf(vp_sz.x / tex_sz.x, vp_sz.y / tex_sz.y)
+	var origin := (vp_sz - tex_sz * sc) * 0.5
+	# Dalam gambar 1024x576, keempat baris tombol berada di area x=[413..611], y=[321..450]
+	var top_left := origin + Vector2(413.0, 321.0) * sc
+	var box_sz := Vector2(198.0, 129.0) * sc
+	vbox.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	vbox.position = top_left
+	vbox.size = box_sz
+	var sep := roundi(3.7 * sc)
+	vbox.add_theme_constant_override("separation", sep)
+	var row_h := (box_sz.y - float(sep) * 3.0) / 4.0
+	for btn in menu_buttons:
+		if btn:
+			btn.custom_minimum_size = Vector2(box_sz.x, row_h)
+	call_deferred("_update_cursor", _selected_idx, false)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _is_starting:
@@ -116,21 +143,24 @@ func _on_btn_hovered(idx: int) -> void:
 
 func _update_cursor(idx: int, animate: bool = true) -> void:
 	_selected_idx = clampi(idx, 0, menu_buttons.size() - 1)
+	var transparent := Color(0, 0, 0, 0)
 	for i in range(menu_buttons.size()):
 		var btn = menu_buttons[i]
 		if not btn:
 			continue
-		if i == _selected_idx:
-			btn.add_theme_color_override("font_color", Color(1.0, 0.96, 0.72, 1.0))
-			btn.add_theme_color_override("font_hover_color", Color(1.0, 0.96, 0.72, 1.0))
+		btn.add_theme_color_override("font_color", transparent)
+		btn.add_theme_color_override("font_hover_color", transparent)
+		btn.add_theme_color_override("font_pressed_color", transparent)
+		var active_box := btn.get_theme_stylebox("hover")
+		if i == _selected_idx and active_box:
+			btn.add_theme_stylebox_override("normal", active_box)
 		else:
-			btn.add_theme_color_override("font_color", Color(0.95, 0.92, 0.84, 0.85))
-			btn.add_theme_color_override("font_hover_color", Color(1.0, 0.96, 0.72, 1.0))
+			btn.remove_theme_stylebox_override("normal")
 
 	if cursor_label and menu_buttons[_selected_idx]:
 		var target_btn = menu_buttons[_selected_idx]
 		var target_y = target_btn.global_position.y + (target_btn.size.y - cursor_label.size.y) * 0.5
-		var target_x = target_btn.global_position.x - 42.0
+		var target_x = target_btn.global_position.x + 14.0
 		if animate:
 			if _cursor_tween and _cursor_tween.is_valid():
 				_cursor_tween.kill()
@@ -143,6 +173,8 @@ func _on_start_pressed() -> void:
 	if _is_starting:
 		return
 	_is_starting = true
+	get_tree().remove_meta("prologue_shown")
+	get_tree().set_meta("prologue_pending", true)
 	if _bgm_player and _bgm_player.playing:
 		var bt = create_tween()
 		bt.tween_property(_bgm_player, "volume_db", -50.0, 0.38)

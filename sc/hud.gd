@@ -46,6 +46,11 @@ var _active_joystick_dir: Vector2 = Vector2.ZERO
 @onready var inv_detail_desc: Label = %InvDetailDesc
 
 @onready var dialogue_modal: Control = %DialogueModal
+@onready var prologue_backdrop: ColorRect = %PrologueBackdrop
+@onready var prologue_panel: Control = %ProloguePanel
+@onready var prologue_text_label: Label = %PrologueText
+@onready var prologue_page_label: Label = %ProloguePageLabel
+@onready var prologue_next_btn: Button = %PrologueNextBtn
 @onready var speaker_label: Label = %SpeakerLabel
 @onready var dialogue_text: Label = %DialogueText
 @onready var dialogue_next_btn: Button = %DialogueNextBtn
@@ -72,6 +77,7 @@ var quest_target_count: int = 2
 var current_dialogue_lines: Array[String] = []
 var current_dialogue_idx: int = 0
 var _default_dialogue_speaker: String = ""
+var _is_prologue_dialogue: bool = false
 var _dialogue_typing_tween: Tween = null
 var _is_typing_dialogue: bool = false
 var _sfx_talk: AudioStreamPlayer = null
@@ -80,6 +86,7 @@ var inventory_items: Dictionary = {}
 
 var slots: Array[PanelContainer] = []
 var item_icons: Array[TextureRect] = []
+var _hotbar_count_labels: Array[Label] = []
 
 var blood_tween: Tween
 var energy_tween: Tween
@@ -90,11 +97,17 @@ var _equip_btn_row: HBoxContainer = null
 var _drink_btn: Button = null
 var coin_count: int = 0
 var _obj_arrow_layer: Control = null
+var _cliff_gate_body: StaticBody2D = null
+var _cliff_gate_shape: CollisionShape2D = null
+var _cliff_gate_sensor: Area2D = null
+var _cliff_gate_warn_cd_msec: int = 0
+var _player_at_cliff_gate: bool = false
 
 func _ready() -> void:
 	add_to_group("hud")
 	slots = [slot_0, slot_1, slot_2]
 	item_icons = [item_icon_0, item_icon_1, item_icon_2]
+	_setup_hotbar_count_badges()
 
 	# Pulihkan status quest, tas, hotbar, koin & APAR lintas scene (mis. saat keluar/masuk rumah/toko)
 	if get_tree().has_meta("saved_coins"):
@@ -163,9 +176,11 @@ func _ready() -> void:
 	_setup_objective_arrow()
 	_setup_talk_sfx()
 
-	# Hubungkan tombol next dialog
+	# Hubungkan tombol next dialog & prolog
 	if dialogue_next_btn:
 		dialogue_next_btn.pressed.connect(advance_dialogue)
+	if prologue_next_btn:
+		prologue_next_btn.pressed.connect(advance_dialogue)
 
 	# Hubungkan tombol Game Over
 	if respawn_btn:
@@ -185,6 +200,9 @@ func _ready() -> void:
 		connect_player(player)
 	else:
 		get_tree().node_added.connect(_on_node_added)
+
+	call_deferred("_setup_cliff_boss_gate")
+	call_deferred("_maybe_start_opening_prologue")
 
 func _on_node_added(node: Node) -> void:
 	if node.is_in_group("player"):
@@ -227,8 +245,13 @@ func _on_slot_gui_input(event: InputEvent, slot_index: int) -> void:
 			player.set_active_slot(slot_index)
 		else:
 			set_active_slot(slot_index)
-		if was_same and slot_index >= 0 and slot_index < hotbar_equips.size() and hotbar_equips[slot_index] == "potion_red":
-			consume_potion_from_hotbar()
+		if slot_index >= 0 and slot_index < hotbar_equips.size() and hotbar_equips[slot_index] == "potion_red":
+			if was_same:
+				if not consume_potion_from_hotbar():
+					if player and "current_blood" in player and "max_blood" in player and player.current_blood >= player.max_blood:
+						_show_quest_notif("Darah sudah penuh!", Color(0.85, 0.55, 0.15, 1.0))
+			else:
+				_show_quest_notif("Tekan [ E ] atau klik lagi untuk minum ramuan", Color(0.85, 0.32, 0.32, 1.0))
 
 func set_active_slot(index: int) -> void:
 	current_active_slot = clampi(index, 0, 2)
@@ -296,6 +319,11 @@ func _process(delta: float) -> void:
 		_check_forest_arrival_trigger()
 	elif quest_status == "QUEST2_EXPLORE_FOREST":
 		_check_forest_monster_sight_trigger()
+	if _player_at_cliff_gate and _is_cliff_boss_gate_locked():
+		var now_msec := Time.get_ticks_msec()
+		if now_msec - _cliff_gate_warn_cd_msec >= 2200:
+			_cliff_gate_warn_cd_msec = now_msec
+			_show_quest_notif("Padamkan api yang di bawah dulu!", Color(0.92, 0.36, 0.14, 1.0))
 
 func _setup_objective_arrow() -> void:
 	var ctrl := get_node_or_null("Control")
@@ -344,14 +372,121 @@ func _get_nearest_burning_tree() -> Node2D:
 			best = t as Node2D
 	return best
 
+func _maybe_start_opening_prologue() -> void:
+	if not is_inside_tree():
+		return
+	var cur := get_tree().current_scene
+	if not cur or not cur.has_node("NPC_Kakek"):
+		return
+	if quest_status != "NOT_STARTED":
+		return
+	if get_tree().get_meta("prologue_shown", false):
+		return
+	get_tree().set_meta("prologue_shown", true)
+	get_tree().remove_meta("prologue_pending")
+	get_tree().set_meta("prologue_active", true)
+	if prologue_backdrop:
+		prologue_backdrop.visible = true
+		prologue_backdrop.modulate = Color(1, 1, 1, 1)
+		prologue_backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	await get_tree().create_timer(0.15).timeout
+	if not is_inside_tree() or quest_status != "NOT_STARTED":
+		_end_prologue_backdrop(false)
+		return
+	if is_dialogue_open():
+		_end_prologue_backdrop(false)
+		return
+	dialogue_finished.connect(func():
+		_end_prologue_backdrop(true)
+	, CONNECT_ONE_SHOT)
+	start_dialogue("Prolog", [
+		"Di suatu pagi yang cerah, Rojali sedang berkeliling di desanya yang bernama Desa Rimba. Ia senang berjalan santai sambil menikmati pepohonan rindang yang membuat suasana terasa tenang dan nyaman.",
+		"Saat sedang berjalan santai, tiba-tiba terlihat kepulan asap tebal muncul dari arah hutan! Rojali sontak terkejut melihat asap pekat tersebut.",
+		"Kebetulan ia bertemu dengan seorang Kakek warga desa yang juga tampak terkejut. Tanpa berpikir panjang, Rojali pun segera menghampiri Kakek tersebut untuk bertanya."
+	])
+
+func _end_prologue_backdrop(fade: bool = true) -> void:
+	get_tree().set_meta("prologue_active", false)
+	if not prologue_backdrop or not prologue_backdrop.visible:
+		return
+	prologue_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if fade and is_inside_tree():
+		var t := prologue_backdrop.create_tween()
+		t.tween_property(prologue_backdrop, "modulate:a", 0.0, 0.5)
+		t.tween_callback(func():
+			if prologue_backdrop:
+				prologue_backdrop.visible = false
+		)
+	else:
+		prologue_backdrop.visible = false
+
+func _is_cliff_boss_gate_locked() -> bool:
+	return quest_status in ["NOT_STARTED", "IN_PROGRESS", "TRIGGERING_FIRE_DIALOGUE", "EXTINGUISH_TREES"]
+
+func _setup_cliff_boss_gate() -> void:
+	if not is_inside_tree():
+		return
+	var cur := get_tree().current_scene
+	if not cur or not cur.has_node("Lampu Jalan DLL"):
+		return
+	if _cliff_gate_body and is_instance_valid(_cliff_gate_body):
+		_update_cliff_boss_gate()
+		return
+	_cliff_gate_body = StaticBody2D.new()
+	_cliff_gate_body.name = "BossCliffGate"
+	_cliff_gate_body.position = Vector2(432.0, 295.0)
+	_cliff_gate_shape = CollisionShape2D.new()
+	var gate_rect := RectangleShape2D.new()
+	gate_rect.size = Vector2(42.0, 18.0)
+	_cliff_gate_shape.shape = gate_rect
+	_cliff_gate_body.add_child(_cliff_gate_shape)
+	cur.add_child(_cliff_gate_body)
+
+	_cliff_gate_sensor = Area2D.new()
+	_cliff_gate_sensor.name = "BossCliffGateSensor"
+	_cliff_gate_sensor.position = Vector2(432.0, 310.0)
+	_cliff_gate_sensor.collision_layer = 0
+	_cliff_gate_sensor.collision_mask = 1
+	_cliff_gate_sensor.monitorable = false
+	var sensor_shape := CollisionShape2D.new()
+	var sensor_rect := RectangleShape2D.new()
+	sensor_rect.size = Vector2(46.0, 32.0)
+	sensor_shape.shape = sensor_rect
+	_cliff_gate_sensor.add_child(sensor_shape)
+	_cliff_gate_sensor.body_entered.connect(_on_cliff_gate_sensor_entered)
+	_cliff_gate_sensor.body_exited.connect(_on_cliff_gate_sensor_exited)
+	cur.add_child(_cliff_gate_sensor)
+	_update_cliff_boss_gate()
+
+func _update_cliff_boss_gate() -> void:
+	var locked := _is_cliff_boss_gate_locked()
+	if _cliff_gate_shape and is_instance_valid(_cliff_gate_shape):
+		_cliff_gate_shape.set_deferred("disabled", not locked)
+	if _cliff_gate_sensor and is_instance_valid(_cliff_gate_sensor):
+		_cliff_gate_sensor.set_deferred("monitoring", locked)
+	if not locked:
+		_player_at_cliff_gate = false
+
+func _on_cliff_gate_sensor_entered(body: Node) -> void:
+	if body.is_in_group("player") and _is_cliff_boss_gate_locked():
+		_player_at_cliff_gate = true
+		var now_msec := Time.get_ticks_msec()
+		if now_msec - _cliff_gate_warn_cd_msec >= 1200:
+			_cliff_gate_warn_cd_msec = now_msec
+			_show_quest_notif("Padamkan api yang di bawah dulu!", Color(0.92, 0.36, 0.14, 1.0))
+
+func _on_cliff_gate_sensor_exited(body: Node) -> void:
+	if body.is_in_group("player"):
+		_player_at_cliff_gate = false
+
 func _check_fire_area_trigger() -> void:
-	if dialogue_modal and dialogue_modal.visible:
+	if is_dialogue_open():
 		return
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if not player or not is_instance_valid(player):
 		return
 	var near_tree := _get_nearest_burning_tree()
-	if near_tree and player.global_position.distance_to(near_tree.global_position) <= 165.0:
+	if near_tree and player.global_position.y <= 478.0 and player.global_position.distance_to(near_tree.global_position) <= 105.0:
 		quest_status = "TRIGGERING_FIRE_DIALOGUE"
 		var on_done := func() -> void:
 			quest_status = "EXTINGUISH_TREES"
@@ -362,35 +497,46 @@ func _check_fire_area_trigger() -> void:
 
 const EXTINGUISH_TREE_GOAL: int = 10
 
-func _get_extinguish_progress() -> Vector2i:
+func _get_zone_fire_progress(boss_zone: bool) -> Vector2i:
 	var trees := get_tree().get_nodes_in_group("burning_tree")
-	var total_t := trees.size()
-	var done_t := 0
+	var zone_total := 0
+	var zone_done := 0
 	for t in trees:
-		if is_instance_valid(t) and t.has_method("is_extinguished") and t.is_extinguished():
-			done_t += 1
-	var target_t := mini(EXTINGUISH_TREE_GOAL, total_t)
-	return Vector2i(mini(done_t, target_t), target_t)
+		if not is_instance_valid(t) or not (t is Node2D):
+			continue
+		var in_boss_zone := (t as Node2D).global_position.y < 320.0
+		if in_boss_zone != boss_zone:
+			continue
+		zone_total += 1
+		if t.has_method("is_extinguished") and t.is_extinguished():
+			zone_done += 1
+	return Vector2i(zone_done, zone_total)
+
+func _get_extinguish_progress() -> Vector2i:
+	var lp := _get_zone_fire_progress(false)
+	if lp.y > 0:
+		return Vector2i(mini(lp.x, EXTINGUISH_TREE_GOAL), mini(EXTINGUISH_TREE_GOAL, lp.y))
+	return Vector2i(0, EXTINGUISH_TREE_GOAL)
 
 func _get_remaining_fire_progress() -> Vector2i:
-	var trees := get_tree().get_nodes_in_group("burning_tree")
-	var total_t := trees.size()
-	var done_t := 0
-	for t in trees:
-		if is_instance_valid(t) and t.has_method("is_extinguished") and t.is_extinguished():
-			done_t += 1
-	var base_done := int(get_tree().get_meta("remaining_fire_base", 0))
-	var target_rem := int(get_tree().get_meta("remaining_fire_target", 8))
-	var done_rem := clampi(done_t - base_done, 0, target_rem)
-	if done_t >= total_t and total_t > 0:
-		done_rem = target_rem
-	return Vector2i(done_rem, target_rem)
+	var bp := _get_zone_fire_progress(true)
+	if bp.y > 0:
+		return bp
+	return Vector2i(0, 8)
 
-func on_burning_tree_extinguished() -> void:
-	if quest_status == "EXTINGUISH_TREES":
-		_update_quest_ui()
+func on_burning_tree_extinguished(tree_y: float = 999.0) -> void:
+	_update_quest_ui()
+	if tree_y < 320.0:
+		var bp := _get_zone_fire_progress(true)
+		if quest_status == "EXTINGUISH_REMAINING" and (bp.y <= 0 or bp.x >= bp.y or _get_nearest_burning_tree() == null):
+			quest_status = "READY_TO_TURN_IN"
+			get_tree().set_meta("quest_status", quest_status)
+			_update_quest_ui()
+		elif bp.y > 0:
+			_show_quest_notif("🔥 Pohon Padam (Area Bos): %d / %d" % [bp.x, bp.y], Color(0.95, 0.52, 0.18, 1.0))
+	else:
 		var prog := _get_extinguish_progress()
-		if prog.y > 0 and prog.x >= prog.y:
+		if quest_status == "EXTINGUISH_TREES" and prog.y > 0 and prog.x >= prog.y:
 			quest_status = "TRIGGERING_ARSONIST_DIALOGUE"
 			var on_done := func() -> void:
 				quest_status = "FIND_ARSONIST"
@@ -398,20 +544,15 @@ func on_burning_tree_extinguished() -> void:
 				_update_quest_ui()
 			dialogue_finished.connect(on_done, CONNECT_ONE_SHOT)
 			start_dialogue("Rojali", ["\"Siapa yang melakukan pembakaran ini?!\""])
-	elif quest_status == "EXTINGUISH_REMAINING":
-		_update_quest_ui()
-		var rem := _get_remaining_fire_progress()
-		if rem.y <= 0 or rem.x >= rem.y or _get_nearest_burning_tree() == null:
-			quest_status = "READY_TO_TURN_IN"
-			get_tree().set_meta("quest_status", quest_status)
-			_update_quest_ui()
+		elif prog.y > 0:
+			_show_quest_notif("🔥 Pohon Padam: %d / %d" % [prog.x, prog.y], Color(0.95, 0.52, 0.18, 1.0))
 
 func _is_target_visible_and_close(player: Node2D, target: Node2D, max_dist: float) -> bool:
 	var diff := target.global_position - player.global_position
 	return diff.length() <= max_dist and absf(diff.x) <= 95.0 and absf(diff.y) <= 60.0
 
 func _check_arsonist_encounter_trigger() -> void:
-	if dialogue_modal and dialogue_modal.visible:
+	if is_dialogue_open():
 		return
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	var boss := _get_boss_location_node()
@@ -449,7 +590,7 @@ func on_arsonist_defeated() -> void:
 		_update_quest_ui()
 
 func _check_forest_arrival_trigger() -> void:
-	if dialogue_modal and dialogue_modal.visible:
+	if is_dialogue_open():
 		return
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if not player or not is_instance_valid(player):
@@ -465,7 +606,7 @@ func _check_forest_arrival_trigger() -> void:
 		start_dialogue("Rojali", ["Rojali: \"Monster apa yang muncul di daerah ini?\""])
 
 func _check_forest_monster_sight_trigger() -> void:
-	if dialogue_modal and dialogue_modal.visible:
+	if is_dialogue_open():
 		return
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	var monster := _get_nearest_forest_slime(true)
@@ -516,7 +657,7 @@ func _on_draw_objective_arrow() -> void:
 		return
 	if not (quest_status in ["NOT_STARTED", "IN_PROGRESS", "EXTINGUISH_TREES", "FIND_ARSONIST", "DEFEAT_ARSONIST", "EXTINGUISH_REMAINING", "READY_TO_TURN_IN", "COMPLETED", "QUEST2_GO_FOREST", "QUEST2_EXPLORE_FOREST", "QUEST2_SLIME", "QUEST2_READY"]):
 		return
-	if dialogue_modal and dialogue_modal.visible:
+	if is_dialogue_open():
 		return
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	var target: Node2D = null
@@ -684,7 +825,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed:
 		# Jika dialog sedang aktif, utamakan kontrol dialog
-		if dialogue_modal and dialogue_modal.visible:
+		if is_dialogue_open():
 			if event.keycode == KEY_E or event.keycode == KEY_SPACE:
 				advance_dialogue()
 				get_viewport().set_input_as_handled()
@@ -701,6 +842,26 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_ESCAPE and inventory_modal and inventory_modal.visible:
 			close_inventory()
 			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_E and not event.echo and (not inventory_modal or not inventory_modal.visible):
+			if current_active_slot >= 0 and current_active_slot < hotbar_equips.size() and hotbar_equips[current_active_slot] == "potion_red":
+				if not _has_nearby_world_interactable():
+					if not consume_potion_from_hotbar():
+						var p = get_tree().get_first_node_in_group("player")
+						if p and "current_blood" in p and "max_blood" in p and p.current_blood >= p.max_blood:
+							_show_quest_notif("Darah sudah penuh!", Color(0.85, 0.55, 0.15, 1.0))
+					get_viewport().set_input_as_handled()
+
+func _has_nearby_world_interactable() -> bool:
+	for n in get_tree().get_nodes_in_group("npc"):
+		if is_instance_valid(n) and bool(n.get("_player_in_range")):
+			return true
+	for it in get_tree().get_nodes_in_group("item_pickup"):
+		if is_instance_valid(it) and bool(it.get("_can_pickup")) and not bool(it.get("_is_picked_up")):
+			return true
+	for d in get_tree().get_nodes_in_group("door"):
+		if is_instance_valid(d) and bool(d.get("_player_in_range")):
+			return true
+	return false
 
 func _setup_talk_sfx() -> void:
 	if _sfx_talk:
@@ -712,7 +873,7 @@ func _setup_talk_sfx() -> void:
 	elif FileAccess.file_exists(SFX_TALK_PATH):
 		_sfx_talk.stream = AudioStreamMP3.load_from_file(SFX_TALK_PATH)
 	_sfx_talk.finished.connect(func():
-		if _is_typing_dialogue and dialogue_modal and dialogue_modal.visible and _sfx_talk.stream and is_inside_tree():
+		if _is_typing_dialogue and is_dialogue_open() and _sfx_talk.stream and is_inside_tree():
 			_sfx_talk.play()
 	)
 	add_child(_sfx_talk)
@@ -720,6 +881,7 @@ func _setup_talk_sfx() -> void:
 func _start_talk_sfx(speaker_name: String) -> void:
 	if not _sfx_talk or not _sfx_talk.stream:
 		return
+	_sfx_talk.volume_db = -14.0 if speaker_name == "Prolog" else -8.0
 	if speaker_name == "Rojali":
 		_sfx_talk.pitch_scale = 1.06
 	elif speaker_name == "Pelaku Pembakar":
@@ -733,6 +895,29 @@ func _stop_talk_sfx() -> void:
 	if _sfx_talk and _sfx_talk.playing:
 		_sfx_talk.stop()
 
+func is_dialogue_open() -> bool:
+	return (dialogue_modal != null and dialogue_modal.visible) or (prologue_panel != null and prologue_panel.visible)
+
+func _get_active_dialogue_label() -> Label:
+	if _is_prologue_dialogue and prologue_text_label:
+		return prologue_text_label
+	return dialogue_text
+
+func _get_active_next_btn() -> Button:
+	if _is_prologue_dialogue and prologue_next_btn:
+		return prologue_next_btn
+	return dialogue_next_btn
+
+func _update_dialogue_next_button_text() -> void:
+	var btn := _get_active_next_btn()
+	if not btn:
+		return
+	var is_last := current_dialogue_idx >= current_dialogue_lines.size() - 1
+	if _is_prologue_dialogue:
+		btn.text = "Mulai [ E ] ✓" if is_last else "Lanjut [ E ] ▶"
+	else:
+		btn.text = "Selesai [ E ] ✓" if is_last else "Lanjut [ E ] ▶"
+
 func _finish_dialogue_typing() -> void:
 	if _dialogue_typing_tween and _dialogue_typing_tween.is_valid():
 		_dialogue_typing_tween.kill()
@@ -741,6 +926,8 @@ func _finish_dialogue_typing() -> void:
 	_stop_talk_sfx()
 	if dialogue_text:
 		dialogue_text.visible_characters = -1
+	if prologue_text_label:
+		prologue_text_label.visible_characters = -1
 
 func _apply_dialogue_line(raw_line: String) -> void:
 	var shown_speaker := _default_dialogue_speaker
@@ -754,28 +941,31 @@ func _apply_dialogue_line(raw_line: String) -> void:
 	elif raw_line.begins_with("Pelaku Pembakar:"):
 		shown_speaker = "Pelaku Pembakar"
 		shown_text = raw_line.substr(16).strip_edges()
-	if speaker_label:
+	if not _is_prologue_dialogue and speaker_label:
 		speaker_label.text = shown_speaker
-	if dialogue_text:
+	if _is_prologue_dialogue and prologue_page_label:
+		prologue_page_label.text = "Halaman %d / %d" % [current_dialogue_idx + 1, maxi(1, current_dialogue_lines.size())]
+	var target_label := _get_active_dialogue_label()
+	if target_label:
 		if _dialogue_typing_tween and _dialogue_typing_tween.is_valid():
 			_dialogue_typing_tween.kill()
-		dialogue_text.text = shown_text
+		target_label.text = shown_text
 		var total_chars := shown_text.length()
 		if total_chars > 0:
-			dialogue_text.visible_characters = 0
+			target_label.visible_characters = 0
 			_is_typing_dialogue = true
 			_start_talk_sfx(shown_speaker)
 			var duration := clampf(float(total_chars) * 0.025, 0.35, 2.8)
 			_dialogue_typing_tween = create_tween()
-			_dialogue_typing_tween.tween_property(dialogue_text, "visible_characters", total_chars, duration)
+			_dialogue_typing_tween.tween_property(target_label, "visible_characters", total_chars, duration)
 			_dialogue_typing_tween.tween_callback(func():
 				_is_typing_dialogue = false
 				_stop_talk_sfx()
-				if dialogue_text:
-					dialogue_text.visible_characters = -1
+				if target_label:
+					target_label.visible_characters = -1
 			)
 		else:
-			dialogue_text.visible_characters = -1
+			target_label.visible_characters = -1
 			_is_typing_dialogue = false
 			_stop_talk_sfx()
 
@@ -783,13 +973,21 @@ func start_dialogue(speaker: String, lines: Array[String]) -> void:
 	if lines.is_empty():
 		return
 	_default_dialogue_speaker = speaker
+	_is_prologue_dialogue = (speaker == "Prolog")
 	current_dialogue_lines = lines
 	current_dialogue_idx = 0
 	_apply_dialogue_line(current_dialogue_lines[0])
-	if dialogue_next_btn:
-		dialogue_next_btn.text = "Selesai [ E ] ✓" if current_dialogue_lines.size() == 1 else "Lanjut [ E ] ▶"
-	if dialogue_modal:
-		dialogue_modal.visible = true
+	_update_dialogue_next_button_text()
+	if _is_prologue_dialogue and prologue_panel:
+		if dialogue_modal:
+			dialogue_modal.visible = false
+		prologue_panel.visible = true
+		prologue_panel.modulate = Color(1, 1, 1, 1)
+	else:
+		if prologue_panel:
+			prologue_panel.visible = false
+		if dialogue_modal:
+			dialogue_modal.visible = true
 
 func advance_dialogue() -> void:
 	if _is_typing_dialogue:
@@ -798,8 +996,7 @@ func advance_dialogue() -> void:
 	current_dialogue_idx += 1
 	if current_dialogue_idx < current_dialogue_lines.size():
 		_apply_dialogue_line(current_dialogue_lines[current_dialogue_idx])
-		if dialogue_next_btn:
-			dialogue_next_btn.text = "Selesai [ E ] ✓" if current_dialogue_idx == current_dialogue_lines.size() - 1 else "Lanjut [ E ] ▶"
+		_update_dialogue_next_button_text()
 	else:
 		close_dialogue()
 		dialogue_finished.emit()
@@ -808,8 +1005,13 @@ func close_dialogue() -> void:
 	_finish_dialogue_typing()
 	if dialogue_modal:
 		dialogue_modal.visible = false
+	if prologue_panel:
+		prologue_panel.visible = false
+	_is_prologue_dialogue = false
 	current_dialogue_lines.clear()
 	current_dialogue_idx = 0
+	if get_tree().get_meta("prologue_active", false):
+		_end_prologue_backdrop(true)
 
 func _register_pentungan_item() -> void:
 	var tex: Texture2D = null
@@ -881,6 +1083,38 @@ func _find_item_icon(item_id: String) -> Texture2D:
 		return load("res://asset/tools/potion_red.png")
 	return null
 
+func _setup_hotbar_count_badges() -> void:
+	_hotbar_count_labels.clear()
+	for i in range(slots.size()):
+		var s := slots[i]
+		if not s:
+			_hotbar_count_labels.append(null)
+			continue
+		var lbl := s.get_node_or_null("HotbarCountLabel") as Label
+		if not lbl:
+			lbl = Label.new()
+			lbl.name = "HotbarCountLabel"
+			lbl.size_flags_horizontal = Control.SIZE_SHRINK_END
+			lbl.size_flags_vertical = Control.SIZE_SHRINK_END
+			lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			lbl.add_theme_font_size_override("font_size", 14)
+			lbl.add_theme_color_override("font_color", Color(0.18, 0.10, 0.04, 1.0))
+			lbl.add_theme_color_override("font_outline_color", Color(1.0, 0.96, 0.85, 0.95))
+			lbl.add_theme_constant_override("outline_size", 3)
+			lbl.visible = false
+			s.add_child(lbl)
+		_hotbar_count_labels.append(lbl)
+
+func _get_inventory_item_count(item_id: String) -> int:
+	if item_id == "":
+		return 0
+	var total := 0
+	for k in inventory_items.keys():
+		var it = inventory_items[k]
+		if it is Dictionary and str(it.get("id", "")) == item_id:
+			total += int(it.get("count", 1))
+	return total
+
 func _refresh_hotbar_icons() -> void:
 	hotbar_equips[0] = "hand"
 	if item_icon_0:
@@ -889,6 +1123,20 @@ func _refresh_hotbar_icons() -> void:
 		item_icon_1.texture = _find_item_icon(hotbar_equips[1])
 	if item_icon_2:
 		item_icon_2.texture = _find_item_icon(hotbar_equips[2])
+	for i in range(_hotbar_count_labels.size()):
+		var lbl := _hotbar_count_labels[i]
+		if not lbl:
+			continue
+		var eq_id: String = hotbar_equips[i] if i < hotbar_equips.size() else ""
+		var cnt := _get_inventory_item_count(eq_id)
+		if eq_id == "potion_red" and cnt > 0:
+			lbl.text = "x%d " % cnt
+			lbl.visible = true
+		else:
+			lbl.visible = false
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_method("refresh_held_tool_visual"):
+		player.refresh_held_tool_visual()
 
 func equip_item_to_hotbar(target_slot: int, item_id: String) -> void:
 	if target_slot != 1 and target_slot != 2:
@@ -906,6 +1154,8 @@ func equip_item_to_hotbar(target_slot: int, item_id: String) -> void:
 	var player = get_tree().get_first_node_in_group("player")
 	if player and player.has_method("set_active_slot"):
 		player.set_active_slot(target_slot)
+	if player and player.has_method("refresh_held_tool_visual"):
+		player.refresh_held_tool_visual()
 
 func unlock_pentungan() -> void:
 	get_tree().set_meta("has_pentungan", true)
@@ -972,6 +1222,7 @@ func _show_quest_notif(msg: String, border_col: Color = Color(0.2, 0.65, 0.3, 1.
 		return
 	var prev := ctrl.get_node_or_null("QuestCompleteNotif")
 	if prev:
+		ctrl.remove_child(prev)
 		prev.queue_free()
 	var panel := PanelContainer.new()
 	panel.name = "QuestCompleteNotif"
@@ -1001,9 +1252,10 @@ func _show_quest_notif(msg: String, border_col: Color = Color(0.2, 0.65, 0.3, 1.
 	panel.add_child(lbl)
 
 	panel.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	panel.offset_top = 72.0
-	panel.offset_left = -180.0
-	panel.offset_right = 180.0
+	panel.offset_left = -250.0
+	panel.offset_right = 250.0
 	panel.modulate.a = 0.0
 	ctrl.add_child(panel)
 
@@ -1034,10 +1286,18 @@ func _update_quest_ui() -> void:
 			quest_progress_label.add_theme_color_override("font_color", Color(0.3, 0.22, 0.15, 1.0))
 	elif quest_status == "FIND_ARSONIST":
 		if quest_title_label: quest_title_label.text = "Cari orang yang melakukan pembakaran hutan ini"
-		if quest_progress_label: quest_progress_label.visible = false
+		if quest_progress_label:
+			var bp_find := _get_remaining_fire_progress()
+			quest_progress_label.visible = bp_find.y > 0
+			quest_progress_label.text = "• Pohon padam: %d / %d" % [bp_find.x, bp_find.y]
+			quest_progress_label.add_theme_color_override("font_color", Color(0.3, 0.22, 0.15, 1.0))
 	elif quest_status == "DEFEAT_ARSONIST":
 		if quest_title_label: quest_title_label.text = "Kalahkan pelaku pembakar hutan"
-		if quest_progress_label: quest_progress_label.visible = false
+		if quest_progress_label:
+			var bp_boss := _get_remaining_fire_progress()
+			quest_progress_label.visible = bp_boss.y > 0
+			quest_progress_label.text = "• Pohon padam: %d / %d" % [bp_boss.x, bp_boss.y]
+			quest_progress_label.add_theme_color_override("font_color", Color(0.3, 0.22, 0.15, 1.0))
 	elif quest_status == "EXTINGUISH_REMAINING":
 		if quest_title_label: quest_title_label.text = "Padamkan api yang masih menyala"
 		if quest_progress_label:
@@ -1073,6 +1333,7 @@ func _update_quest_ui() -> void:
 			quest_progress_label.text = "Desa dan Forest telah aman!"
 			quest_progress_label.add_theme_color_override("font_color", Color(0.2, 0.5, 0.25, 1.0))
 	quest_tracker.size.y = 0
+	_update_cliff_boss_gate()
 
 func show_boss_bar(title: String, current_hp: float, max_hp: float) -> void:
 	if not boss_bar_container:
@@ -1239,6 +1500,9 @@ func add_item_to_inventory(item_id: String, item_name: String, item_desc: String
 			if tex and not item.get("icon"):
 				item["icon"] = tex
 			_update_inv_slot_display(slot_idx)
+			get_tree().set_meta("saved_inventory_items", inventory_items.duplicate(true))
+			_auto_assign_potion_hotbar(item_id)
+			_refresh_hotbar_icons()
 			return true
 
 	# Cari slot kosong pertama dari slot 0 sampai 14
@@ -1252,14 +1516,23 @@ func add_item_to_inventory(item_id: String, item_name: String, item_desc: String
 				"icon_path": icon_path,
 				"count": count
 			}
-			# Jika masuk ke slot 2 (Hotbar Slot 3), tampilkan juga ikonnya di Hotbar
-			if slot_idx == 2 and item_icon_2 and tex:
-				item_icon_2.texture = tex
 			_update_inv_slot_display(slot_idx)
 			get_tree().set_meta("saved_inventory_items", inventory_items.duplicate(true))
+			_auto_assign_potion_hotbar(item_id)
+			_refresh_hotbar_icons()
 			return true
 
 	return false
+
+func _auto_assign_potion_hotbar(item_id: String) -> void:
+	if item_id != "potion_red":
+		return
+	if hotbar_equips[1] == "potion_red" or hotbar_equips[2] == "potion_red":
+		return
+	if hotbar_equips[2] != "":
+		get_tree().set_meta("saved_slot2_before_potion", hotbar_equips[2])
+	hotbar_equips[2] = "potion_red"
+	get_tree().set_meta("hotbar_equips", hotbar_equips.duplicate())
 
 func _update_coin_ui() -> void:
 	if coin_val_label:
@@ -1339,11 +1612,15 @@ func drink_potion_from_inventory(slot_idx: int) -> bool:
 	it["count"] = int(it.get("count", 1)) - 1
 	if it["count"] <= 0:
 		inventory_items.erase(slot_idx)
+		var restore_slot2 := str(get_tree().get_meta("saved_slot2_before_potion", ""))
+		if restore_slot2 == "" and get_tree().get_meta("has_apar", false) and hotbar_equips[1] != "pemadam":
+			restore_slot2 = "pemadam"
 		for i in [1, 2]:
 			if hotbar_equips[i] == "potion_red":
-				hotbar_equips[i] = ""
+				hotbar_equips[i] = restore_slot2 if (i == 2 and restore_slot2 != "" and hotbar_equips[1] != restore_slot2) else ""
+		get_tree().remove_meta("saved_slot2_before_potion")
 		get_tree().set_meta("hotbar_equips", hotbar_equips.duplicate())
-		_refresh_hotbar_icons()
+	_refresh_hotbar_icons()
 	get_tree().set_meta("saved_inventory_items", inventory_items.duplicate(true))
 	_update_inv_slot_display(slot_idx)
 	if inventory_modal and inventory_modal.visible:

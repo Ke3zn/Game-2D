@@ -50,6 +50,8 @@ var _sfx_walk: AudioStreamPlayer = null
 var _sfx_run: AudioStreamPlayer = null
 var _is_walking_sfx: bool = false
 var _is_running_sfx: bool = false
+var _held_potion_sprite: Sprite2D = null
+var _potion_prompt_label: Label = null
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -62,6 +64,7 @@ func _ready() -> void:
 		max_blood += bonus_hp
 		current_blood = minf(max_blood, current_blood + bonus_hp)
 	_setup_audio()
+	_setup_held_potion_visual()
 	if sprite:
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		_play_state_anim("idle")
@@ -133,6 +136,19 @@ func _physics_process(delta: float) -> void:
 	_knockback_velocity = _knockback_velocity.move_toward(Vector2.ZERO, delta * 280.0)
 	_attack_lunge_velocity = _attack_lunge_velocity.move_toward(Vector2.ZERO, delta * 320.0)
 
+	if _is_dialogue_open():
+		direction = Vector2.ZERO
+		is_spraying_apar = false
+		_stop_apar_sfx()
+		_stop_move_sfx()
+		velocity = _knockback_velocity
+		if sprite:
+			sprite.speed_scale = 1.0
+		_play_state_anim("idle")
+		_update_held_potion_visual()
+		move_and_slide()
+		return
+
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	if is_attacking:
@@ -147,6 +163,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			# Tetap izinkan sedikit kendali arah + momentum lunge agar serangan terasa luwes, bukan membeku
 			velocity = direction * (speed * 0.35) + _attack_lunge_velocity + _knockback_velocity
+			_update_held_potion_visual()
 			move_and_slide()
 			return
 
@@ -218,10 +235,69 @@ func _physics_process(delta: float) -> void:
 				var hud = get_tree().get_first_node_in_group("hud")
 				if hud and hud.has_method("flash_energy_bar"):
 					hud.flash_energy_bar()
+		_update_held_potion_visual()
 		move_and_slide()
 		return
 
+	_update_held_potion_visual()
 	move_and_slide()
+
+func refresh_held_tool_visual() -> void:
+	if not is_attacking and not is_hurt and not is_dead:
+		_play_state_anim(_get_move_state())
+	_update_held_potion_visual()
+
+func _setup_held_potion_visual() -> void:
+	var tex: Texture2D = null
+	if ResourceLoader.exists("res://asset/tools/potion_red.png"):
+		tex = load("res://asset/tools/potion_red.png")
+	elif FileAccess.file_exists("res://asset/tools/potion_red.png"):
+		var img := Image.load_from_file("res://asset/tools/potion_red.png")
+		if img:
+			tex = ImageTexture.create_from_image(img)
+	if tex:
+		_held_potion_sprite = Sprite2D.new()
+		_held_potion_sprite.texture = tex
+		_held_potion_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		_held_potion_sprite.scale = Vector2(0.22, 0.22)
+		_held_potion_sprite.z_index = 5
+		_held_potion_sprite.visible = false
+		add_child(_held_potion_sprite)
+
+	_potion_prompt_label = Label.new()
+	_potion_prompt_label.text = "[E] Minum"
+	_potion_prompt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_potion_prompt_label.position = Vector2(-28, -22)
+	_potion_prompt_label.size = Vector2(56, 14)
+	_potion_prompt_label.z_index = 6
+	_potion_prompt_label.add_theme_font_size_override("font_size", 8)
+	_potion_prompt_label.add_theme_color_override("font_color", Color(1.0, 0.94, 0.72, 1.0))
+	_potion_prompt_label.add_theme_color_override("font_outline_color", Color(0.1, 0.05, 0.02, 1.0))
+	_potion_prompt_label.add_theme_constant_override("outline_size", 3)
+	_potion_prompt_label.visible = false
+	add_child(_potion_prompt_label)
+
+func _update_held_potion_visual() -> void:
+	var holding_potion := not is_dead and _get_active_item_id() == "potion_red" and not _is_dialogue_open()
+	if _held_potion_sprite:
+		_held_potion_sprite.visible = holding_potion
+		if holding_potion:
+			var bob := sin(Time.get_ticks_msec() * 0.008) * 1.0
+			match last_direction:
+				"left":
+					_held_potion_sprite.position = Vector2(-6.0, 2.0 + bob)
+					_held_potion_sprite.z_index = 5
+				"right":
+					_held_potion_sprite.position = Vector2(6.0, 2.0 + bob)
+					_held_potion_sprite.z_index = 5
+				"back":
+					_held_potion_sprite.position = Vector2(5.0, 1.0 + bob)
+					_held_potion_sprite.z_index = -1
+				_:
+					_held_potion_sprite.position = Vector2(5.0, 3.0 + bob)
+					_held_potion_sprite.z_index = 5
+	if _potion_prompt_label:
+		_potion_prompt_label.visible = holding_potion and current_blood < max_blood
 
 func _get_active_item_id() -> String:
 	if active_slot == 0:
@@ -398,8 +474,11 @@ func _stop_apar_sfx() -> void:
 
 func _is_dialogue_open() -> bool:
 	var hud = get_tree().get_first_node_in_group("hud")
-	if hud and "dialogue_modal" in hud and hud.dialogue_modal:
-		return hud.dialogue_modal.visible
+	if hud:
+		if hud.has_method("is_dialogue_open"):
+			return hud.is_dialogue_open()
+		if "dialogue_modal" in hud and hud.dialogue_modal:
+			return hud.dialogue_modal.visible
 	return false
 
 func _process_continuous_apar_spray(delta: float) -> void:
@@ -558,4 +637,3 @@ func _die() -> void:
 		tween.tween_property(sprite, "rotation_degrees", 90.0, 0.35)
 		tween.tween_property(sprite, "modulate", Color(0.85, 0.2, 0.2, 0.8), 0.35)
 		tween.tween_property(sprite, "position:y", sprite.position.y + 6.0, 0.35)
-		_play_state_anim("idle")

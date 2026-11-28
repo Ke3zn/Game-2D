@@ -65,7 +65,7 @@ func apply_apar_spray(spray_delta: float) -> void:
 				get_tree().set_meta("extinguished_trees", ext_list)
 			var hud = get_tree().get_first_node_in_group("hud")
 			if hud and hud.has_method("on_burning_tree_extinguished"):
-				hud.on_burning_tree_extinguished()
+				hud.on_burning_tree_extinguished(global_position.y)
 
 	if sprite and current_stage != Stage.STAGE_4_OUT:
 		sprite.modulate = Color(0.9, 0.96, 1.0, 1.0)

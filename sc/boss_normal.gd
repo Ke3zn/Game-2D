@@ -171,7 +171,8 @@ func _physics_process(delta: float) -> void:
 
 	var hud = _get_hud()
 	if hud:
-		if "dialogue_modal" in hud and hud.dialogue_modal and hud.dialogue_modal.visible:
+		var dlg_open: bool = bool((hud.has_method("is_dialogue_open") and hud.is_dialogue_open()) or ("dialogue_modal" in hud and hud.dialogue_modal and hud.dialogue_modal.visible))
+		if dlg_open:
 			velocity = Vector2.ZERO
 			_play_anim(("idle_evil_" if _is_evil else "idle_") + _last_dir)
 			return
@@ -331,7 +332,8 @@ func _start_throw_fireball(p: Node2D) -> void:
 	var use_triple := (_evil_throw_count % 3 == 0) or (health <= max_health * 0.5)
 	var angles: Array[float] = [0.0]
 	if use_triple:
-		angles = [0.0, -0.32, 0.32]
+		angles.append(-0.32)
+		angles.append(0.32)
 
 	var parent = get_parent()
 	for ang in angles:
@@ -764,7 +766,7 @@ func take_damage(amount: float, knockback_dir: Vector2 = Vector2.ZERO) -> void:
 		return
 
 	var h_check = _get_hud()
-	if h_check and "dialogue_modal" in h_check and h_check.dialogue_modal and h_check.dialogue_modal.visible:
+	if h_check and ((h_check.has_method("is_dialogue_open") and h_check.is_dialogue_open()) or ("dialogue_modal" in h_check and h_check.dialogue_modal and h_check.dialogue_modal.visible)):
 		return
 
 	health = max(0.0, health - amount)

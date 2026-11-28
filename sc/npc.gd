@@ -76,7 +76,7 @@ func interact() -> void:
 			hud = game.get_node_or_null("HUD")
 	if not hud or not hud.has_method("start_dialogue"):
 		return
-	if "dialogue_modal" in hud and hud.dialogue_modal and hud.dialogue_modal.visible:
+	if (hud.has_method("is_dialogue_open") and hud.is_dialogue_open()) or ("dialogue_modal" in hud and hud.dialogue_modal and hud.dialogue_modal.visible):
 		return
 
 	var q_status = hud.get("quest_status") if "quest_status" in hud else "NOT_STARTED"
