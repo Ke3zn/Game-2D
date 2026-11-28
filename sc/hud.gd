@@ -532,8 +532,6 @@ func on_burning_tree_extinguished(tree_y: float = 999.0) -> void:
 			quest_status = "READY_TO_TURN_IN"
 			get_tree().set_meta("quest_status", quest_status)
 			_update_quest_ui()
-		elif bp.y > 0:
-			_show_quest_notif("🔥 Pohon Padam (Area Bos): %d / %d" % [bp.x, bp.y], Color(0.95, 0.52, 0.18, 1.0))
 	else:
 		var prog := _get_extinguish_progress()
 		if quest_status == "EXTINGUISH_TREES" and prog.y > 0 and prog.x >= prog.y:
@@ -544,8 +542,6 @@ func on_burning_tree_extinguished(tree_y: float = 999.0) -> void:
 				_update_quest_ui()
 			dialogue_finished.connect(on_done, CONNECT_ONE_SHOT)
 			start_dialogue("Rojali", ["\"Siapa yang melakukan pembakaran ini?!\""])
-		elif prog.y > 0:
-			_show_quest_notif("🔥 Pohon Padam: %d / %d" % [prog.x, prog.y], Color(0.95, 0.52, 0.18, 1.0))
 
 func _is_target_visible_and_close(player: Node2D, target: Node2D, max_dist: float) -> bool:
 	var diff := target.global_position - player.global_position
