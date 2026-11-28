@@ -63,12 +63,20 @@ var _active_joystick_dir: Vector2 = Vector2.ZERO
 @onready var boss_bar_container: Control = %BossBarContainer
 @onready var boss_name_label: Label = %BossNameLabel
 @onready var boss_hp_val_label: Label = %BossHpValLabel
+
+@onready var pause_modal: Control = %PauseModal
+@onready var pause_resume_btn: Button = %PauseResumeBtn
+@onready var pause_main_menu_btn: Button = %PauseMainMenuBtn
+@onready var pause_settings_btn: Button = %PauseSettingsBtn
+@onready var pause_settings_modal: Control = %PauseSettingsModal
+@onready var pause_volume_slider: HSlider = %PauseVolumeSlider
+@onready var pause_volume_val_label: Label = %PauseVolumeValLabel
+@onready var pause_settings_close_btn: Button = %PauseSettingsCloseBtn
 @onready var boss_progress_bar: TextureProgressBar = %BossProgressBar
 @onready var victory_banner: Control = %VictoryBanner
 
 @onready var game_over_modal: Control = %GameOverModal
 @onready var respawn_btn: Button = %RespawnBtn
-@onready var restart_btn: Button = %RestartBtn
 
 var quest_status: String = "NOT_STARTED"
 var quest_current_count: int = 0
@@ -181,12 +189,21 @@ func _ready() -> void:
 		dialogue_next_btn.pressed.connect(advance_dialogue)
 	if prologue_next_btn:
 		prologue_next_btn.pressed.connect(advance_dialogue)
+	if pause_resume_btn:
+		pause_resume_btn.pressed.connect(_close_pause_menu)
+	if pause_main_menu_btn:
+		pause_main_menu_btn.pressed.connect(_on_pause_main_menu_pressed)
+	if pause_settings_btn:
+		pause_settings_btn.pressed.connect(_on_pause_settings_pressed)
+	if pause_settings_close_btn:
+		pause_settings_close_btn.pressed.connect(_close_pause_settings)
+	if pause_volume_slider:
+		_sync_pause_volume_slider()
+		pause_volume_slider.value_changed.connect(_on_pause_volume_changed)
 
 	# Hubungkan tombol Game Over
 	if respawn_btn:
 		respawn_btn.pressed.connect(_on_respawn_pressed)
-	if restart_btn:
-		restart_btn.pressed.connect(_on_restart_pressed)
 
 	# Update visual awal
 	_refresh_hotbar_icons()
@@ -304,6 +321,8 @@ func flash_energy_bar() -> void:
 	t.tween_property(energy_bar, "modulate", Color.WHITE, 0.14)
 
 func _process(delta: float) -> void:
+	if get_tree().paused:
+		return
 	# Jika tidak sedang di-drag manual, sinkronkan posisi knob joystick dengan tombol keyboard (WASD / Panah)
 	if not _is_dragging_joystick and joystick_knob:
 		var k_vector = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -389,6 +408,7 @@ func _maybe_start_opening_prologue() -> void:
 		prologue_backdrop.visible = true
 		prologue_backdrop.modulate = Color(1, 1, 1, 1)
 		prologue_backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	_set_gameplay_hud_visible(false)
 	await get_tree().create_timer(0.15).timeout
 	if not is_inside_tree() or quest_status != "NOT_STARTED":
 		_end_prologue_backdrop(false)
@@ -407,6 +427,7 @@ func _maybe_start_opening_prologue() -> void:
 
 func _end_prologue_backdrop(fade: bool = true) -> void:
 	get_tree().set_meta("prologue_active", false)
+	_set_gameplay_hud_visible(true)
 	if not prologue_backdrop or not prologue_backdrop.visible:
 		return
 	prologue_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -419,6 +440,12 @@ func _end_prologue_backdrop(fade: bool = true) -> void:
 		)
 	else:
 		prologue_backdrop.visible = false
+
+func _set_gameplay_hud_visible(show_hud: bool) -> void:
+	for node_name in ["TopLeftContainer", "HotbarContainer", "QuestTracker", "ControlsGuide", "JoystickBase", "TasButton"]:
+		var n := get_node_or_null("Control/" + node_name) as CanvasItem
+		if n:
+			n.visible = show_hud
 
 func _is_cliff_boss_gate_locked() -> bool:
 	return quest_status in ["NOT_STARTED", "IN_PROGRESS", "TRIGGERING_FIRE_DIALOGUE", "EXTINGUISH_TREES"]
@@ -532,8 +559,6 @@ func on_burning_tree_extinguished(tree_y: float = 999.0) -> void:
 			quest_status = "READY_TO_TURN_IN"
 			get_tree().set_meta("quest_status", quest_status)
 			_update_quest_ui()
-		elif bp.y > 0:
-			_show_quest_notif("🔥 Pohon Padam (Area Bos): %d / %d" % [bp.x, bp.y], Color(0.95, 0.52, 0.18, 1.0))
 	else:
 		var prog := _get_extinguish_progress()
 		if quest_status == "EXTINGUISH_TREES" and prog.y > 0 and prog.x >= prog.y:
@@ -544,8 +569,6 @@ func on_burning_tree_extinguished(tree_y: float = 999.0) -> void:
 				_update_quest_ui()
 			dialogue_finished.connect(on_done, CONNECT_ONE_SHOT)
 			start_dialogue("Rojali", ["\"Siapa yang melakukan pembakaran ini?!\""])
-		elif prog.y > 0:
-			_show_quest_notif("🔥 Pohon Padam: %d / %d" % [prog.x, prog.y], Color(0.95, 0.52, 0.18, 1.0))
 
 func _is_target_visible_and_close(player: Node2D, target: Node2D, max_dist: float) -> bool:
 	var diff := target.global_position - player.global_position
@@ -566,8 +589,8 @@ func _check_arsonist_encounter_trigger() -> void:
 			_update_quest_ui()
 		dialogue_finished.connect(on_done, CONNECT_ONE_SHOT)
 		start_dialogue("Rojali", [
-			"Rojali: Jadi kamu yang melakukan pembakaran ini?",
-			"Pelaku Pembakar: Iya, memang kenapa? Hutan ini sengaja saya bakar agar saya bisa membangun lahan yang ingin saya bangun.",
+			"Rojali: Apakah kamu yang melakukan pembakaran ini?",
+			"Pelaku Pembakar: Iya aku yang melakukannya, memang kenapa? Hutan ini sengaja saya bakar agar saya bisa membangun lahan yang ingin saya bangun.",
 			"Rojali: Sialan kau!"
 		])
 
@@ -612,7 +635,7 @@ func _check_forest_monster_sight_trigger() -> void:
 	var monster := _get_nearest_forest_slime(true)
 	if not player or not is_instance_valid(player) or not monster or not is_instance_valid(monster):
 		return
-	if _is_target_visible_and_close(player, monster, 80.0):
+	if _is_target_visible_and_close(player, monster, 90.0):
 		quest_status = "TRIGGERING_Q2_SIGHT"
 		var on_done := func() -> void:
 			_begin_quest2_slime_hunt()
@@ -824,6 +847,17 @@ func _unhandled_input(event: InputEvent) -> void:
 			_release_joystick()
 
 	if event is InputEventKey and event.pressed:
+		if pause_settings_modal and pause_settings_modal.visible:
+			if event.keycode == KEY_ESCAPE and not event.echo:
+				_close_pause_settings()
+				get_viewport().set_input_as_handled()
+			return
+		if pause_modal and pause_modal.visible:
+			if event.keycode == KEY_ESCAPE and not event.echo:
+				_close_pause_menu()
+				get_viewport().set_input_as_handled()
+			return
+
 		# Jika dialog sedang aktif, utamakan kontrol dialog
 		if is_dialogue_open():
 			if event.keycode == KEY_E or event.keycode == KEY_SPACE:
@@ -842,6 +876,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_ESCAPE and inventory_modal and inventory_modal.visible:
 			close_inventory()
 			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_ESCAPE and not event.echo:
+			var go_modal := get_node_or_null("%GameOverModal") as Control
+			if not go_modal or not go_modal.visible:
+				_open_pause_menu()
+				get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_E and not event.echo and (not inventory_modal or not inventory_modal.visible):
 			if current_active_slot >= 0 and current_active_slot < hotbar_equips.size() and hotbar_equips[current_active_slot] == "potion_red":
 				if not _has_nearby_world_interactable():
@@ -850,6 +889,57 @@ func _unhandled_input(event: InputEvent) -> void:
 						if p and "current_blood" in p and "max_blood" in p and p.current_blood >= p.max_blood:
 							_show_quest_notif("Darah sudah penuh!", Color(0.85, 0.55, 0.15, 1.0))
 					get_viewport().set_input_as_handled()
+
+func _open_pause_menu() -> void:
+	if not pause_modal:
+		return
+	pause_modal.visible = true
+	get_tree().paused = true
+
+func _close_pause_menu() -> void:
+	if pause_modal:
+		pause_modal.visible = false
+	get_tree().paused = false
+
+func _on_pause_main_menu_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://asset/main_menu.tscn")
+
+func _on_pause_settings_pressed() -> void:
+	_sync_pause_volume_slider()
+	if pause_modal:
+		pause_modal.visible = false
+	if pause_settings_modal:
+		pause_settings_modal.visible = true
+
+func _close_pause_settings() -> void:
+	if pause_settings_modal:
+		pause_settings_modal.visible = false
+	if pause_modal:
+		pause_modal.visible = true
+
+func _sync_pause_volume_slider() -> void:
+	if not pause_volume_slider:
+		return
+	var bus_idx := AudioServer.get_bus_index("Master")
+	var linear := 100.0
+	if bus_idx >= 0:
+		if AudioServer.is_bus_mute(bus_idx):
+			linear = 0.0
+		else:
+			linear = clampf(db_to_linear(AudioServer.get_bus_volume_db(bus_idx)) * 100.0, 0.0, 100.0)
+	pause_volume_slider.set_value_no_signal(linear)
+	if pause_volume_val_label:
+		pause_volume_val_label.text = "%d%%" % int(round(linear))
+
+func _on_pause_volume_changed(val: float) -> void:
+	if pause_volume_val_label:
+		pause_volume_val_label.text = "%d%%" % int(round(val))
+	var bus_idx := AudioServer.get_bus_index("Master")
+	if bus_idx >= 0:
+		AudioServer.set_bus_mute(bus_idx, val <= 0.5)
+		if val > 0.5:
+			AudioServer.set_bus_volume_db(bus_idx, linear_to_db(val / 100.0))
 
 func _has_nearby_world_interactable() -> bool:
 	for n in get_tree().get_nodes_in_group("npc"):
@@ -914,7 +1004,7 @@ func _update_dialogue_next_button_text() -> void:
 		return
 	var is_last := current_dialogue_idx >= current_dialogue_lines.size() - 1
 	if _is_prologue_dialogue:
-		btn.text = "Mulai [ E ] ✓" if is_last else "Lanjut [ E ] ▶"
+		btn.text = "Mulai ✓" if is_last else "Lanjut ▶"
 	else:
 		btn.text = "Selesai [ E ] ✓" if is_last else "Lanjut [ E ] ▶"
 
@@ -1286,18 +1376,10 @@ func _update_quest_ui() -> void:
 			quest_progress_label.add_theme_color_override("font_color", Color(0.3, 0.22, 0.15, 1.0))
 	elif quest_status == "FIND_ARSONIST":
 		if quest_title_label: quest_title_label.text = "Cari orang yang melakukan pembakaran hutan ini"
-		if quest_progress_label:
-			var bp_find := _get_remaining_fire_progress()
-			quest_progress_label.visible = bp_find.y > 0
-			quest_progress_label.text = "• Pohon padam: %d / %d" % [bp_find.x, bp_find.y]
-			quest_progress_label.add_theme_color_override("font_color", Color(0.3, 0.22, 0.15, 1.0))
+		if quest_progress_label: quest_progress_label.visible = false
 	elif quest_status == "DEFEAT_ARSONIST":
 		if quest_title_label: quest_title_label.text = "Kalahkan pelaku pembakar hutan"
-		if quest_progress_label:
-			var bp_boss := _get_remaining_fire_progress()
-			quest_progress_label.visible = bp_boss.y > 0
-			quest_progress_label.text = "• Pohon padam: %d / %d" % [bp_boss.x, bp_boss.y]
-			quest_progress_label.add_theme_color_override("font_color", Color(0.3, 0.22, 0.15, 1.0))
+		if quest_progress_label: quest_progress_label.visible = false
 	elif quest_status == "EXTINGUISH_REMAINING":
 		if quest_title_label: quest_title_label.text = "Padamkan api yang masih menyala"
 		if quest_progress_label:
@@ -1397,11 +1479,6 @@ func _on_respawn_pressed() -> void:
 	get_tree().set_meta("minimap_interior_pos", Vector2(760.0, 580.0))
 	# Pindah dan bangkit di kasur rumah desa
 	get_tree().change_scene_to_file("res://asset/interior_house.tscn")
-
-func _on_restart_pressed() -> void:
-	hide_game_over()
-	# Pertahankan progres misi, item, koin, dan pohon padam saat mengulang scene setelah kalah
-	get_tree().reload_current_scene()
 
 func _setup_inventory_grid() -> void:
 	if not inv_grid:

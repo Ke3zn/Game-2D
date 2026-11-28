@@ -41,6 +41,27 @@ corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_btn"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_menu_panel"]
+bg_color = Color(0.16, 0.25, 0.14, 0.94)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.55, 0.36, 0.2, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_idle"]
+bg_color = Color(0.08, 0.12, 0.08, 0.42)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_active"]
 bg_color = Color(1, 0.92, 0.55, 0.14)
 border_width_left = 2
@@ -413,73 +434,96 @@ text = "PENJAGA HUTAN"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MenuVBox" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -185.0
-offset_top = 62.0
-offset_right = 185.0
-offset_bottom = 304.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 7
+[node name="MenuPanel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 720.0
+offset_top = 544.0
+offset_right = 1222.0
+offset_bottom = 878.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_menu_panel")
+
+[node name="Margin" type="MarginContainer" parent="MenuPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 12
+
+[node name="MenuVBox" type="VBoxContainer" parent="MenuPanel/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
 alignment = 1
 
-[node name="BtnStart" type="Button" parent="MenuVBox"]
+[node name="BtnStart" type="Button" parent="MenuPanel/Margin/MenuVBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
+size_flags_vertical = 3
 focus_mode = 0
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 0)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 0)
-theme_override_styles/normal = SubResource("StyleBoxEmpty_btn")
+theme_override_colors/font_color = Color(0.75, 0.74, 0.68, 0.95)
+theme_override_colors/font_pressed_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.96, 0.82, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_idle")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_active")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_active")
-text = "START GAME"
+text = "Mulai Permainan"
 
-[node name="BtnGuide" type="Button" parent="MenuVBox"]
+[node name="BtnGuide" type="Button" parent="MenuPanel/Margin/MenuVBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
+size_flags_vertical = 3
 focus_mode = 0
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 0)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 0)
-theme_override_styles/normal = SubResource("StyleBoxEmpty_btn")
+theme_override_colors/font_color = Color(0.75, 0.74, 0.68, 0.95)
+theme_override_colors/font_pressed_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.96, 0.82, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_idle")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_active")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_active")
-text = "PANDUAN"
+text = "Panduan Bermain"
 
-[node name="BtnSettings" type="Button" parent="MenuVBox"]
+[node name="BtnSettings" type="Button" parent="MenuPanel/Margin/MenuVBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
+size_flags_vertical = 3
 focus_mode = 0
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 0)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 0)
-theme_override_styles/normal = SubResource("StyleBoxEmpty_btn")
+theme_override_colors/font_color = Color(0.75, 0.74, 0.68, 0.95)
+theme_override_colors/font_pressed_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.96, 0.82, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_idle")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_active")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_active")
-text = "SETTINGS"
+text = "Pengaturan"
 
-[node name="BtnQuit" type="Button" parent="MenuVBox"]
+[node name="BtnCredit" type="Button" parent="MenuPanel/Margin/MenuVBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
+size_flags_vertical = 3
 focus_mode = 0
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 0)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 0)
-theme_override_styles/normal = SubResource("StyleBoxEmpty_btn")
+theme_override_colors/font_color = Color(0.75, 0.74, 0.68, 0.95)
+theme_override_colors/font_pressed_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.96, 0.82, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_idle")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_active")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_active")
-text = "QUIT"
+text = "Credit"
+
+[node name="BtnQuit" type="Button" parent="MenuPanel/Margin/MenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_colors/font_color = Color(0.75, 0.74, 0.68, 0.95)
+theme_override_colors/font_pressed_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.96, 0.82, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_idle")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_active")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_active")
+text = "Keluar dari game"
 
 [node name="MenuCursor" type="Label" parent="."]
 unique_name_in_owner = true
@@ -576,14 +620,15 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
 theme_override_font_sizes/font_size = 21
-text = "• Jalan / Bergerak : WASD / Tombol Panah / Analog Kiri
-• Lari Cepat (Sprint) : Tahan Shift
-• Serang / Semprot APAR : Spasi atau Klik Kiri Mouse
-• Bicara Kakek / Masuk Rumah / Ambil Item : Tekan E atau F
-• Ganti Alat (APAR / Pentungan) : Tekan 1, 2, 3 atau Scroll
-• Buka Tas / Ramuan : Tekan B / I / TAB atau Klik Tombol Tas
+text = "• Gerak / Jalan : Analog / WASD / Tombol Panah
+• Lari (Sprint) : Tahan Shift
+• Serang pakai senjata : Spasi / Klik Mouse
+• Bicara Kakek / Ambil Barang / Masuk Rumah : [ E ]
+• Buka Tas : [ B ] / Klik Tombol Tas
+• Pilih Slot / Ramuan : [ 1, 2, 3 ] / Scroll
+• Tutup Menu : [ ESC ]
 
-Kalahkan Slime King dan Boss Pembakar untuk menyelamatkan desa!"
+Kalahkan Pelaku Pembakar Hutan dan Slime untuk menyelamatkan desa!"
 autowrap_mode = 2
 
 [node name="BtnCloseGuide" type="Button" parent="GuideModal/Panel/Margin/VBox"]
@@ -597,7 +642,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_modal_btn")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_modal_btn")
 theme_override_styles/hover = SubResource("StyleBoxFlat_modal_btn")
-text = "Tutup [ ESC ]"
+text = "Tutup"
 
 [node name="SettingsModal" type="Control" parent="."]
 unique_name_in_owner = true
@@ -626,9 +671,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -310.0
-offset_top = -185.0
+offset_top = -145.0
 offset_right = 310.0
-offset_bottom = 185.0
+offset_bottom = 145.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
@@ -677,14 +722,6 @@ theme_override_font_sizes/font_size = 22
 text = "100%"
 horizontal_alignment = 2
 
-[node name="FullscreenCheck" type="CheckButton" parent="SettingsModal/Panel/Margin/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
-theme_override_font_sizes/font_size = 22
-text = "Layar Penuh (Fullscreen)"
-
 [node name="BtnCloseSettings" type="Button" parent="SettingsModal/Panel/Margin/VBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 52)
@@ -696,7 +733,88 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_modal_btn")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_modal_btn")
 theme_override_styles/hover = SubResource("StyleBoxFlat_modal_btn")
-text = "Tutup [ ESC ]"
+text = "Tutup"
+
+[node name="CreditModal" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="CreditModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="PanelContainer" parent="CreditModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -195.0
+offset_right = 320.0
+offset_bottom = 195.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="Margin" type="MarginContainer" parent="CreditModal/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="CreditModal/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="CreditModal/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.14, 0.08, 1)
+theme_override_font_sizes/font_size = 32
+text = "✨ CREDIT"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="CreditModal/Panel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
+theme_override_font_sizes/font_size = 21
+text = "Petualangan di Desa Rimba
+
+• Pengembang Game : Tim Desa Rimba
+• Musik & Efek Suara : Baim
+• Aset Pixel Art : CraftPix & Aset Kustom
+• Engine : Godot Engine 4.7
+
+Terima kasih sudah bermain!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="BtnCloseCredit" type="Button" parent="CreditModal/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 52)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 0.98, 0.92, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_modal_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_modal_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_modal_btn")
+text = "Tutup"
 
 [node name="FadeRect" type="ColorRect" parent="."]
 unique_name_in_owner = true

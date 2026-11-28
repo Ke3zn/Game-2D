@@ -7,15 +7,16 @@ const OPENING_BGM_PATH := "res://asset/music/background music/baim_opening_backs
 	%BtnStart,
 	%BtnGuide,
 	%BtnSettings,
+	%BtnCredit,
 	%BtnQuit
 ]
 @onready var cursor_label: Label = %MenuCursor
 @onready var title_banner: Control = %TitleBanner
 @onready var guide_modal: Control = %GuideModal
 @onready var settings_modal: Control = %SettingsModal
+@onready var credit_modal: Control = %CreditModal
 @onready var volume_slider: HSlider = %VolumeSlider
 @onready var volume_val_label: Label = %VolumeValLabel
-@onready var fullscreen_check: CheckButton = %FullscreenCheck
 @onready var fade_rect: ColorRect = %FadeRect
 @onready var particles_layer: Control = %ParticlesLayer
 @onready var hero_preview: TextureRect = %HeroPreview
@@ -69,9 +70,11 @@ func _ready() -> void:
 	%BtnStart.pressed.connect(_on_start_pressed)
 	%BtnGuide.pressed.connect(_on_guide_pressed)
 	%BtnSettings.pressed.connect(_on_settings_pressed)
+	%BtnCredit.pressed.connect(_on_credit_pressed)
 	%BtnQuit.pressed.connect(_on_quit_pressed)
 	%BtnCloseGuide.pressed.connect(_close_modals)
 	%BtnCloseSettings.pressed.connect(_close_modals)
+	%BtnCloseCredit.pressed.connect(_close_modals)
 
 	if volume_slider:
 		var bus_idx = AudioServer.get_bus_index("Master")
@@ -81,11 +84,6 @@ func _ready() -> void:
 		_update_volume_label(linear)
 		volume_slider.value_changed.connect(_on_volume_changed)
 
-	if fullscreen_check:
-		var mode = DisplayServer.window_get_mode()
-		fullscreen_check.button_pressed = (mode == DisplayServer.WINDOW_MODE_FULLSCREEN or mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
-		fullscreen_check.toggled.connect(_on_fullscreen_toggled)
-
 	_spawn_fireflies()
 	resized.connect(_align_menu_buttons)
 	call_deferred("_align_menu_buttons")
@@ -93,8 +91,9 @@ func _ready() -> void:
 
 func _align_menu_buttons() -> void:
 	var bg := get_node_or_null("MainScreenBg") as TextureRect
-	var vbox := get_node_or_null("MenuVBox") as VBoxContainer
-	if not bg or not bg.texture or not vbox:
+	var panel := get_node_or_null("MenuPanel") as PanelContainer
+	var vbox := %MenuVBox as VBoxContainer
+	if not bg or not bg.texture or not panel or not vbox:
 		return
 	var tex_sz := bg.texture.get_size()
 	if tex_sz.x <= 0.0 or tex_sz.y <= 0.0:
@@ -102,25 +101,23 @@ func _align_menu_buttons() -> void:
 	var vp_sz := size
 	var sc := maxf(vp_sz.x / tex_sz.x, vp_sz.y / tex_sz.y)
 	var origin := (vp_sz - tex_sz * sc) * 0.5
-	# Dalam gambar 1024x576, keempat baris tombol berada di area x=[413..611], y=[321..450]
-	var top_left := origin + Vector2(413.0, 321.0) * sc
-	var box_sz := Vector2(198.0, 129.0) * sc
-	vbox.set_anchors_preset(Control.PRESET_TOP_LEFT)
-	vbox.position = top_left
-	vbox.size = box_sz
-	var sep := roundi(3.7 * sc)
-	vbox.add_theme_constant_override("separation", sep)
-	var row_h := (box_sz.y - float(sep) * 3.0) / 4.0
+	# Tutupi kotak kayu di gambar 1024x576 (x=[384..652], y=[290..468]) agar 5 tombol muat rapi
+	panel.position = origin + Vector2(384.0, 290.0) * sc
+	panel.size = Vector2(268.0, 178.0) * sc
+	vbox.add_theme_constant_override("separation", roundi(3.5 * sc))
+	var fsize := maxi(16, roundi(14.5 * sc))
 	for btn in menu_buttons:
 		if btn:
-			btn.custom_minimum_size = Vector2(box_sz.x, row_h)
+			btn.add_theme_font_size_override("font_size", fsize)
+	if cursor_label:
+		cursor_label.add_theme_font_size_override("font_size", maxi(14, roundi(13.0 * sc)))
 	call_deferred("_update_cursor", _selected_idx, false)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _is_starting:
 		return
 
-	if (guide_modal and guide_modal.visible) or (settings_modal and settings_modal.visible):
+	if (guide_modal and guide_modal.visible) or (settings_modal and settings_modal.visible) or (credit_modal and credit_modal.visible):
 		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 			_close_modals()
 			get_viewport().set_input_as_handled()
@@ -143,16 +140,18 @@ func _on_btn_hovered(idx: int) -> void:
 
 func _update_cursor(idx: int, animate: bool = true) -> void:
 	_selected_idx = clampi(idx, 0, menu_buttons.size() - 1)
-	var transparent := Color(0, 0, 0, 0)
+	var idle_color := Color(0.75, 0.74, 0.68, 0.95)
+	var active_color := Color(1.0, 0.96, 0.82, 1.0)
 	for i in range(menu_buttons.size()):
 		var btn = menu_buttons[i]
 		if not btn:
 			continue
-		btn.add_theme_color_override("font_color", transparent)
-		btn.add_theme_color_override("font_hover_color", transparent)
-		btn.add_theme_color_override("font_pressed_color", transparent)
+		var is_active := (i == _selected_idx)
+		btn.add_theme_color_override("font_color", active_color if is_active else idle_color)
+		btn.add_theme_color_override("font_hover_color", active_color)
+		btn.add_theme_color_override("font_pressed_color", active_color)
 		var active_box := btn.get_theme_stylebox("hover")
-		if i == _selected_idx and active_box:
+		if is_active and active_box:
 			btn.add_theme_stylebox_override("normal", active_box)
 		else:
 			btn.remove_theme_stylebox_override("normal")
@@ -193,18 +192,32 @@ func _on_guide_pressed() -> void:
 		guide_modal.visible = true
 	if settings_modal:
 		settings_modal.visible = false
+	if credit_modal:
+		credit_modal.visible = false
 
 func _on_settings_pressed() -> void:
 	if settings_modal:
 		settings_modal.visible = true
 	if guide_modal:
 		guide_modal.visible = false
+	if credit_modal:
+		credit_modal.visible = false
+
+func _on_credit_pressed() -> void:
+	if credit_modal:
+		credit_modal.visible = true
+	if guide_modal:
+		guide_modal.visible = false
+	if settings_modal:
+		settings_modal.visible = false
 
 func _close_modals() -> void:
 	if guide_modal:
 		guide_modal.visible = false
 	if settings_modal:
 		settings_modal.visible = false
+	if credit_modal:
+		credit_modal.visible = false
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
@@ -220,12 +233,6 @@ func _on_volume_changed(val: float) -> void:
 func _update_volume_label(val: float) -> void:
 	if volume_val_label:
 		volume_val_label.text = "%d%%" % int(round(val))
-
-func _on_fullscreen_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
 func _spawn_fireflies() -> void:
 	if not particles_layer:

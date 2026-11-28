@@ -435,7 +435,65 @@ default_font = ExtResource("14_pixelify")
 [sub_resource type="Theme" id="Theme_prologue"]
 default_font = ExtResource("24_irish_grover")
 
+[sub_resource type="Shader" id="Shader_prologue_blur"]
+code = "shader_type canvas_item;
+
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear_mipmap;
+uniform float blur_amount : hint_range(0.0, 6.0) = 3.2;
+uniform float dim_amount : hint_range(0.0, 1.0) = 0.25;
+
+void fragment() {
+	vec4 col = textureLod(screen_texture, SCREEN_UV, blur_amount);
+	col.rgb = mix(col.rgb, vec3(0.0), dim_amount);
+	COLOR = vec4(col.rgb, COLOR.a);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_prologue_blur"]
+shader = SubResource("Shader_prologue_blur")
+shader_parameter/blur_amount = 3.2
+shader_parameter/dim_amount = 0.25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_card"]
+bg_color = Color(0.956863, 0.909804, 0.803922, 0.98)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.2, 0.14, 0.08, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.55)
+shadow_size = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_btn"]
+bg_color = Color(0.86, 0.78, 0.58, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.2, 0.14, 0.08, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_btn_hover"]
+bg_color = Color(0.95, 0.88, 0.68, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.2, 0.14, 0.08, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="HUD" type="CanvasLayer"]
+process_mode = 3
 script = ExtResource("1_hud")
 slot_normal_style = SubResource("StyleBoxFlat_slot_normal")
 slot_active_style = SubResource("StyleBoxFlat_slot_active")
@@ -1309,6 +1367,7 @@ horizontal_alignment = 1
 [node name="PrologueBackdrop" type="ColorRect" parent="Control"]
 unique_name_in_owner = true
 visible = false
+material = SubResource("ShaderMaterial_prologue_blur")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1316,7 +1375,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 1)
+color = Color(1, 1, 1, 1)
 
 [node name="ProloguePanel" type="PanelContainer" parent="Control"]
 unique_name_in_owner = true
@@ -1366,7 +1425,7 @@ theme_override_colors/font_color = Color(0.96, 0.82, 0.36, 1)
 theme_override_colors/font_outline_color = Color(0.03, 0.05, 0.03, 1)
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 24
-text = "PROLOG  -  DESA RIMBA"
+text = "DESA RIMBA"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1413,7 +1472,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 theme_override_colors/font_color = Color(0.68, 0.72, 0.62, 0.85)
 theme_override_font_sizes/font_size = 18
-text = "Tekan [ E ] / Spasi"
+
 vertical_alignment = 1
 
 [node name="PrologueNextBtn" type="Button" parent="Control/ProloguePanel/OuterMargin/InnerFrame/VBox/Footer"]
@@ -1428,7 +1487,7 @@ theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_prologue_btn_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_prologue_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_prologue_btn_hover")
-text = "Lanjut [ E ] ▶"
+text = "Lanjut ▶"
 
 [node name="DialogueModal" type="Control" parent="Control"]
 unique_name_in_owner = true
@@ -1529,7 +1588,7 @@ theme_override_font_sizes/font_size = 13
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_normal")
-text = "Lanjut [ E ] ▶"
+text = "Lanjut ▶"
 
 [node name="BossBarContainer" type="VBoxContainer" parent="Control"]
 unique_name_in_owner = true
@@ -1634,16 +1693,7 @@ theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 20
-text = "BOS TELAH DIKALAHKAN!"
-horizontal_alignment = 1
-
-[node name="VictorySub" type="Label" parent="Control/VictoryBanner/Margin/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.95, 0.9, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 14
-text = "Pulau kini kembali aman!"
+text = "Kamu Berhasil Mengalahkan Boss!"
 horizontal_alignment = 1
 
 [node name="GameOverModal" type="Control" parent="Control"]
@@ -1694,8 +1744,7 @@ theme_override_colors/font_color = Color(0.98, 0.96, 0.92, 1)
 theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 18
-text = "Darah Anda telah habis dalam pertarungan.
-Jangan menyerah, pulihkan diri dan coba lagi!"
+
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -1720,25 +1769,195 @@ theme_override_font_sizes/font_size = 17
 theme_override_styles/normal = SubResource("StyleBoxTexture_go_btn_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_go_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_go_btn_hover")
-text = "Bangkit di Kasur Rumah Desa"
+text = "Hidup Kembali"
 icon = ExtResource("10_go_house")
 expand_icon = true
 
-[node name="RestartBtn" type="Button" parent="Control/GameOverModal/GameOverPanel/VBox/BtnBox"]
+[node name="PauseModal" type="Control" parent="Control"]
 unique_name_in_owner = true
-texture_filter = 1
-custom_minimum_size = Vector2(400, 48)
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="Control/PauseModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.62)
+
+[node name="Panel" type="PanelContainer" parent="Control/PauseModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -175.0
+offset_right = 230.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pause_card")
+
+[node name="Margin" type="MarginContainer" parent="Control/PauseModal/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Control/PauseModal/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="Title" type="Label" parent="Control/PauseModal/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.14, 0.08, 1)
+theme_override_font_sizes/font_size = 28
+text = "MENU JEDA"
+horizontal_alignment = 1
+
+[node name="PauseResumeBtn" type="Button" parent="Control/PauseModal/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 focus_mode = 0
-theme_override_colors/font_color = Color(0.08, 0.06, 0.04, 1)
-theme_override_colors/font_hover_color = Color(0.08, 0.06, 0.04, 1)
-theme_override_colors/font_pressed_color = Color(0.08, 0.06, 0.04, 1)
-theme_override_constants/icon_max_width = 26
-theme_override_constants/h_separation = 12
-theme_override_font_sizes/font_size = 17
-theme_override_styles/normal = SubResource("StyleBoxTexture_go_btn_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_go_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxTexture_go_btn_hover")
-text = "Ulangi Pertarungan (Restart)"
-icon = ExtResource("11_go_restart")
-expand_icon = true
+theme_override_colors/font_color = Color(0.18, 0.12, 0.06, 1)
+theme_override_colors/font_hover_color = Color(0.1, 0.06, 0.02, 1)
+theme_override_colors/font_pressed_color = Color(0.1, 0.06, 0.02, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_pause_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pause_btn_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pause_btn_hover")
+text = "Lanjutkan"
+
+[node name="PauseSettingsBtn" type="Button" parent="Control/PauseModal/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.18, 0.12, 0.06, 1)
+theme_override_colors/font_hover_color = Color(0.1, 0.06, 0.02, 1)
+theme_override_colors/font_pressed_color = Color(0.1, 0.06, 0.02, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_pause_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pause_btn_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pause_btn_hover")
+text = "Pengaturan"
+
+[node name="PauseMainMenuBtn" type="Button" parent="Control/PauseModal/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.18, 0.12, 0.06, 1)
+theme_override_colors/font_hover_color = Color(0.1, 0.06, 0.02, 1)
+theme_override_colors/font_pressed_color = Color(0.1, 0.06, 0.02, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_pause_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pause_btn_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pause_btn_hover")
+text = "Kembali ke Menu Utama"
+
+[node name="PauseSettingsModal" type="Control" parent="Control"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="Control/PauseSettingsModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.62)
+
+[node name="Panel" type="PanelContainer" parent="Control/PauseSettingsModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -135.0
+offset_right = 280.0
+offset_bottom = 135.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pause_card")
+
+[node name="Margin" type="MarginContainer" parent="Control/PauseSettingsModal/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Control/PauseSettingsModal/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="Control/PauseSettingsModal/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.14, 0.08, 1)
+theme_override_font_sizes/font_size = 28
+text = "⚙ PENGATURAN"
+horizontal_alignment = 1
+
+[node name="VolRow" type="HBoxContainer" parent="Control/PauseSettingsModal/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="VolLabel" type="Label" parent="Control/PauseSettingsModal/Panel/Margin/VBox/VolRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
+theme_override_font_sizes/font_size = 20
+text = "Volume Suara"
+
+[node name="PauseVolumeSlider" type="HSlider" parent="Control/PauseSettingsModal/Panel/Margin/VBox/VolRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 100.0
+
+[node name="PauseVolumeValLabel" type="Label" parent="Control/PauseSettingsModal/Panel/Margin/VBox/VolRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
+theme_override_font_sizes/font_size = 20
+text = "100%"
+horizontal_alignment = 2
+
+[node name="PauseSettingsCloseBtn" type="Button" parent="Control/PauseSettingsModal/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_colors/font_color = Color(0.18, 0.12, 0.06, 1)
+theme_override_colors/font_hover_color = Color(0.1, 0.06, 0.02, 1)
+theme_override_colors/font_pressed_color = Color(0.1, 0.06, 0.02, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_pause_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pause_btn_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pause_btn_hover")
+text = "Tutup"

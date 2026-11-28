@@ -7,7 +7,8 @@ signal died()
 @export var boss_name: String = "👑 SLIME KING"
 @export var max_health: float = 180.0
 @export var health: float = 180.0
-@export var damage: float = 20.0
+@export var damage: float = 10.0
+@export var slam_damage: float = 8.0
 @export var speed: float = 22.0
 @export var detection_radius: float = 180.0
 @export var slam_cooldown: float = 4.0
@@ -80,6 +81,15 @@ func _physics_process(delta: float) -> void:
 		player = get_tree().get_first_node_in_group("player") as Node2D
 
 	var hud = _get_hud()
+	if hud:
+		if (hud.has_method("is_dialogue_open") and hud.is_dialogue_open()) or ("quest_status" in hud and hud.quest_status != "QUEST2_SLIME"):
+			velocity = Vector2.ZERO
+			if _was_player_in_range:
+				_was_player_in_range = false
+				if hud.has_method("hide_boss_bar"):
+					hud.hide_boss_bar()
+			move_and_slide()
+			return
 
 	if player and is_instance_valid(player):
 		z_index = 1 if player.global_position.y > global_position.y else 2
@@ -279,7 +289,7 @@ func _on_slam_impact() -> void:
 		if dist <= 50.0:
 			if player.has_method("take_damage"):
 				var kb = (player.global_position - global_position).normalized() * 110.0
-				player.take_damage(15.0, kb)
+				player.take_damage(slam_damage, kb)
 
 	_is_slamming = false
 

@@ -49,6 +49,17 @@ func _physics_process(delta: float) -> void:
 	if not player or not is_instance_valid(player):
 		player = get_tree().get_first_node_in_group("player") as Node2D
 
+	var hud = get_tree().get_first_node_in_group("hud")
+	if not hud:
+		var cur = get_tree().current_scene
+		if cur:
+			hud = cur.get_node_or_null("HUD")
+	if hud:
+		if (hud.has_method("is_dialogue_open") and hud.is_dialogue_open()) or ("quest_status" in hud and hud.quest_status != "QUEST2_SLIME"):
+			velocity = Vector2.ZERO
+			move_and_slide()
+			return
+
 	if player and is_instance_valid(player):
 		var dist = global_position.distance_to(player.global_position)
 		if dist <= detection_radius:
